@@ -6,11 +6,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemographicinfoComponent } from './demographicinfo/demographicinfo.component';
+import { TablefilterPipe } from './pipes/tablefilter.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DemographicinfoComponent
+    DemographicinfoComponent,
+    TablefilterPipe
   ],
   imports: [
     BrowserModule,

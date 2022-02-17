@@ -113,6 +113,7 @@ export class DemographicinfoComponent {
   displayStyle = "none";  
   openPopup(): void {
     this.displayStyle = "block";
+    this.filterModel = '';
   }
   closePopup(): void {
     this.displayStyle = "none";

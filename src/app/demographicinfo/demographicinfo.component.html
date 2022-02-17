@@ -72,7 +72,7 @@
       </div>
       <div class="modal-body">
       <p>
-        <input type="text" placeholder="Search" class="form-control col-md-6">     
+        <input type="text" placeholder="Search" [(ngModel)]="filterModel" class="form-control col-md-6">     
       </p>
       <table class="table">
         <thead>
@@ -87,7 +87,7 @@
           </th>
         </thead>
         <tbody>
-          <tr *ngFor="let dem of demoGraphicList">          
+          <tr *ngFor="let dem of demoGraphicList | tablefilter:filterModel">          
             <td>{{dem.demTypeId}}</td>
             <td>{{dem.typeDescAr}}</td>
             <td>{{dem.typeDescEn}}</td> 
