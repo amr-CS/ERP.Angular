@@ -2,7 +2,7 @@
     <div class="form-group">
       <div class="row">
         <div class="col-md-2">
-          <input #demographicID type="text" class="form-control" placeholder="ID" />
+          <input #demographicID type="number" class="form-control" placeholder="ID" />
         </div>
         <div class="col-md-1">
           <input type="button" id="btnSearch" value="Search" (click)="demoGraphicGetById(demographicID.value)" class="btn btn-primary" />
@@ -16,9 +16,7 @@
       </div>
     
       <hr />
-    
-    
-    
+
     </div>
     <div class="form-group">
       <input type="text" class="form-control" [class.is-invalid]="demographictypeDescAr.invalid && (demographictypeDescAr.touched ||demographictypeDescAr.dirty)"
@@ -28,6 +26,7 @@
     <div class="form-group">
       <input type="text" class="form-control" placeholder="Demographic Type Description (EN)" [(ngModel)]="demographic.typeDescEn" />
     </div>
+
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="demographic">
       <thead>
         <tr>
@@ -62,6 +61,73 @@
     </table>
     <!--<input type="button" value="Save All" class="btn btn-primary" (click)="demoGraphicCreateUpdate()" [disabled]="true"/>-->
     <input type="button" value="Save All" class="btn btn-primary" (click)="demoGraphicCreateUpdate()" />
+    <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="Show Data">
+
     <!--<input type="submit" value="Save All" class="btn btn-primary" />-->
     <!--</form>-->
     
+
+    <!-----------------------------------------Modal------------------------------------------>
+ <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" style="overflow-y: auto;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Demographic Details</h4>
+      </div>
+      <div class="modal-body">       
+      <table class="table">
+        <thead>
+          <th>
+           Id
+          </th>
+          <th>
+            Arabic Description
+          </th>
+          <th>
+            English Description
+          </th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dem of demoGraphicList; let i = index">          
+            <td>{{dem.demTypeId}}</td>
+            <td>{{dem.typeDescAr}}</td>
+            <td>{{dem.typeDescEn}}</td> 
+            <td><input type="button" value="Select" class="btn btn-default" (click)="demoGraphicGetById(dem.demTypeId);closePopup()" /></td>           
+          </tr>
+        </tbody>
+      </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">GeeksForGeeks</h4>
+      </div>
+      <div class="modal-body">
+        <p>One Stop Solution for all CS problems</p>
+  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" 
+                (click)="closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
