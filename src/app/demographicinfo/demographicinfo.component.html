@@ -1,8 +1,8 @@
-<!--<form #demoForm="ngForm" (submit)="demoGraphicCreateUpdate()">-->
+<form #myForm="ngForm" (submit)="demoGraphicCreateUpdate()">
     <div class="form-group">
       <div class="row">
         <div class="col-md-2">
-          <input #demographicID type="number" class="form-control" placeholder="ID" [ngModel]="demTypeIdModel"/>
+          <input #demographicID type="number" class="form-control" placeholder="ID" [ngModel]="demTypeIdModel" [ngModelOptions]="{standalone: true}"/>
         </div>
         <div class="col-md-1">
           <input type="button" id="btnSearch" value="Search" (click)="demoGraphicGetById(demographicID.value)" class="btn btn-primary" />
@@ -16,15 +16,18 @@
       </div>
     
       <hr />
-
     </div>
+    <!-- [class.is-invalid]="demographictypeDescAr.invalid && (demographictypeDescAr.touched ||demographictypeDescAr.dirty)" -->
     <div class="form-group">
-      <input type="text" class="form-control" [class.is-invalid]="demographictypeDescAr.invalid && (demographictypeDescAr.touched ||demographictypeDescAr.dirty)"
+      <input type="text" class="form-control" name="demographictypeDescAr" 
              #demographictypeDescAr="ngModel"
              placeholder="Demographic Type Description (AR)" [(ngModel)]="demographic.typeDescAr" required />
+             <span  class="text-danger" *ngIf="demographictypeDescAr.invalid && (demographictypeDescAr.touched ||demographictypeDescAr.dirty)">
+              Field Required!
+            </span>
     </div>
     <div class="form-group">
-      <input type="text" class="form-control" placeholder="Demographic Type Description (EN)" [(ngModel)]="demographic.typeDescEn" />
+      <input type="text" class="form-control" name="demographictypeDescEn" placeholder="Demographic Type Description (EN)" [(ngModel)]="demographic.typeDescEn" />
     </div>
 
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="demographic">
@@ -37,31 +40,41 @@
     
       </thead>
       <tbody>
-        <tr *ngFor="let dem of demographic.demographicTypeDtltbl; let i = index">
-          <td><input [(ngModel)]="dem.choicesAr" required class="form-control" type="text" name="{{dem.choicesAr}}" /></td>
-          <td><input [(ngModel)]="dem.choicesEn" class="form-control" type="text" name="{{dem.choicesEn}}" /></td>
-          <td><input [(ngModel)]="dem.weightValue" required class="form-control" type="number" name="{{dem.weightValue}}" /></td>
+        <tr *ngFor="let dem of demographic.demographicTypeDtltbl; let i = index">          
+          <td><input [(ngModel)]="dem.choicesAr"  class="form-control" type="text" name="{{'choicesAr' + i}}" required/>
+          <span  class="text-danger" *ngIf="!dem.choicesAr">
+            Field Required!
+          </span>
+        </td>
+
+          <td><input [(ngModel)]="dem.choicesEn" class="form-control" type="text" name="{{'choicesEn' + i}}" /></td>
+
+          <td><input  [(ngModel)]="dem.weightValue"  class="form-control" type="number" name="{{'weightValue' + i}}" required/>
+            <span class="text-danger" *ngIf="!dem.weightValue">
+              Field Required!
+            </span>
+        </td>
           <td><input type="button" value="Remove" class="btn btn-default" (click)="removeDemoGraphicDetail(i)" /></td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesAr" [(ngModel)]="newDemoGraphicDetail.choicesAr" required name="newDemoGraphicDetailchoicesAr" (change)="addDemoGraphicDetail()" /></td>
+          <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesAr" [(ngModel)]="newDemoGraphicDetail.choicesAr" name="newDemoGraphicDetailchoicesAr" (change)="addDemoGraphicDetail()" /></td>
           <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesEn" [(ngModel)]="newDemoGraphicDetail.choicesEn" name="newDemoGraphicDetailchoicesEn" (change)="addDemoGraphicDetail()" /></td>
-          <td><input class="form-control" type="number" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" required name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" /></td>
+          <td><input class="form-control" type="number" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" /></td>
     
           <td><input type="button" value="Add" class="btn btn-default" (click)="addDemoGraphicDetail()" /></td>
         </tr>
       </tfoot>
     
     </table>
-    <!--<input type="button" value="Save All" class="btn btn-primary" (click)="demoGraphicCreateUpdate()" [disabled]="true"/>-->
-    <input type="button" value="Save All" class="btn btn-primary" (click)="demoGraphicCreateUpdate()" />
+    
+    <input type="submit" value="Save All" class="btn btn-primary" [disabled]="!myForm.valid"/>
     <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="Show Data">
 
-    <!--<input type="submit" value="Save All" class="btn btn-primary" />-->
-    <!--</form>-->
     
+    <!--</form>-->
+  </form>    
 
     <!-----------------------------------------Modal------------------------------------------>
  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" style="overflow-y: auto;">
