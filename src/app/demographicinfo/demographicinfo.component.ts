@@ -14,6 +14,8 @@ import { Validators } from '@angular/forms';
 export class DemographicinfoComponent {
   service: DemoGraphicService;
   router: Router;
+  filterModel:string;
+  demTypeIdModel:string;
 
   public demographic: DemographicInfo = { demTypeId: 0, typeDescEn: '', typeDescAr: '', demographicTypeDtltbl: [] };
   public demoGraphicList: DemographicInfo[] = [];
@@ -24,6 +26,8 @@ export class DemographicinfoComponent {
     this.service = service;
     this.router = router;
     this.demoGraphicGetAll();
+    this.filterModel = '';
+    this.demTypeIdModel = '';
   }
 
 
@@ -39,6 +43,7 @@ export class DemographicinfoComponent {
       this.service.demoGraphicGetById(Number(id)).subscribe(result => {
         if (result !== null) {
           this.demographic = result;
+          this.demTypeIdModel = String(result.demTypeId);
         }
       }, error => console.error(error));
     }

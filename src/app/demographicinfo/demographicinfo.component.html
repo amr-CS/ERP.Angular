@@ -2,7 +2,7 @@
     <div class="form-group">
       <div class="row">
         <div class="col-md-2">
-          <input #demographicID type="number" class="form-control" placeholder="ID" />
+          <input #demographicID type="number" class="form-control" placeholder="ID" [ngModel]="demTypeIdModel"/>
         </div>
         <div class="col-md-1">
           <input type="button" id="btnSearch" value="Search" (click)="demoGraphicGetById(demographicID.value)" class="btn btn-primary" />
@@ -41,10 +41,6 @@
           <td><input [(ngModel)]="dem.choicesAr" required class="form-control" type="text" name="{{dem.choicesAr}}" /></td>
           <td><input [(ngModel)]="dem.choicesEn" class="form-control" type="text" name="{{dem.choicesEn}}" /></td>
           <td><input [(ngModel)]="dem.weightValue" required class="form-control" type="number" name="{{dem.weightValue}}" /></td>
-          <!--<td>{{dem.choicesAr}}</td>
-          <td>{{dem.choicesEn}}</td>
-          <td>{{dem.weightValue}}</td>-->
-
           <td><input type="button" value="Remove" class="btn btn-default" (click)="removeDemoGraphicDetail(i)" /></td>
         </tr>
       </tbody>
@@ -72,9 +68,12 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title">Demographic Details</h4>
+        <h4 class="modal-title">Demographic Info</h4>
       </div>
-      <div class="modal-body">       
+      <div class="modal-body">
+      <p>
+        <input type="text" placeholder="Search" class="form-control col-md-6">     
+      </p>
       <table class="table">
         <thead>
           <th>
@@ -88,11 +87,11 @@
           </th>
         </thead>
         <tbody>
-          <tr *ngFor="let dem of demoGraphicList; let i = index">          
+          <tr *ngFor="let dem of demoGraphicList">          
             <td>{{dem.demTypeId}}</td>
             <td>{{dem.typeDescAr}}</td>
             <td>{{dem.typeDescEn}}</td> 
-            <td><input type="button" value="Select" class="btn btn-default" (click)="demoGraphicGetById(dem.demTypeId);closePopup()" /></td>           
+            <td><input type="button" value="Select" class="btn btn-link" (click)="demoGraphicGetById(dem.demTypeId);closePopup()" /></td>            
           </tr>
         </tbody>
       </table>
@@ -106,28 +105,3 @@
     </div>
   </div>
 </div>
-
-
-<!-- <div
-  class="modal"
-  tabindex="-1"
-  role="dialog"
-  [ngStyle]="{'display':displayStyle}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title">GeeksForGeeks</h4>
-      </div>
-      <div class="modal-body">
-        <p>One Stop Solution for all CS problems</p>
-  
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" 
-                (click)="closePopup()">
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-</div> -->
