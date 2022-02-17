@@ -1,8 +1,8 @@
-import { TablefilterPipe } from './tablefilter.pipe';
+import { DemographicfilterPipe } from "./demographicfilter.pipe";
 
 describe('TablefilterPipe', () => {
   it('create an instance', () => {
-    const pipe = new TablefilterPipe();
+    const pipe = new DemographicfilterPipe();
     expect(pipe).toBeTruthy();
   });
 });

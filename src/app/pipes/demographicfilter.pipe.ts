@@ -2,10 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { DemographicInfo } from '../interfaces/demographicInfo.interface';
 
 @Pipe({
-  name: 'tablefilter',
-  pure:false
+  name: 'demographicfilter'
 })
-export class TablefilterPipe implements PipeTransform {
+export class DemographicfilterPipe implements PipeTransform {
 
   transform(demoGraphicInfoList : DemographicInfo[], filterModel:string) {
     if (filterModel)

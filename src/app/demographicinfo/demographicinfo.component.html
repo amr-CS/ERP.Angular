@@ -87,7 +87,7 @@
           </th>
         </thead>
         <tbody>
-          <tr *ngFor="let dem of demoGraphicList | tablefilter:filterModel">          
+          <tr *ngFor="let dem of demoGraphicList | demographicfilter:filterModel">          
             <td>{{dem.demTypeId}}</td>
             <td>{{dem.typeDescAr}}</td>
             <td>{{dem.typeDescEn}}</td> 
