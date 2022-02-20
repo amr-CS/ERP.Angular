@@ -2,6 +2,7 @@ export interface DemographicInfo {
     demTypeId: number;
     typeDescAr: string;
     typeDescEn: string;
+    demTypeDate: string;
     demographicTypeDtltbl: DemographicInfoDetails[];
   }
   
@@ -10,5 +11,5 @@ export interface DemographicInfo {
     demTypeId: number;
     choicesAr: string;
     choicesEn: string;
-    weightValue: number;
+    weightValue: string;
   }

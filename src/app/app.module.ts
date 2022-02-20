@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemographicinfoComponent } from './demographicinfo/demographicinfo.component';
 import { DemographicfilterPipe } from './pipes/demographicfilter.pipe';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { DemographicfilterPipe } from './pipes/demographicfilter.pipe';
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

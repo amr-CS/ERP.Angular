@@ -3,7 +3,9 @@ import { empty } from 'rxjs';
 import { Router } from '@angular/router';
 import { DemographicInfo, DemographicInfoDetails } from '../interfaces/demographicInfo.interface';
 import { DemoGraphicService } from '../services/demographic.service';
-import { Validators } from '@angular/forms';
+import { NgForm, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+
 
 
 @Component({
@@ -14,20 +16,28 @@ import { Validators } from '@angular/forms';
 export class DemographicinfoComponent {
   service: DemoGraphicService;
   router: Router;
-  filterModel:string;
+  
+
+  textFilterModel:string;
+  dateFromFilterModel?:Date;
+  dateToFilterModel?:Date;
+  
   demTypeIdModel:string;
+  datePipe:DatePipe;
 
-  public demographic: DemographicInfo = { demTypeId: 0, typeDescEn: '', typeDescAr: '', demographicTypeDtltbl: [] };
+  public demographic: DemographicInfo = { demTypeId: 0, typeDescEn: '', typeDescAr: '', demographicTypeDtltbl: []
+  ,demTypeDate :''};
   public demoGraphicList: DemographicInfo[] = [];
-  public newDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: 0, demTypeDtlId: 0, demTypeId: 0 };
+  public newDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
 
 
-  constructor(service: DemoGraphicService, router: Router) {
+  constructor(service: DemoGraphicService, router: Router,datePipe:DatePipe){
     this.service = service;
     this.router = router;
     this.demoGraphicGetAll();
-    this.filterModel = '';
+    this.textFilterModel = '';
     this.demTypeIdModel = '';
+    this.datePipe = datePipe;
   }
 
 
@@ -43,7 +53,8 @@ export class DemographicinfoComponent {
       this.service.demoGraphicGetById(Number(id)).subscribe(result => {
         if (result !== null) {
           this.demographic = result;
-          this.demTypeIdModel = String(result.demTypeId);
+          this.demTypeIdModel = String(result.demTypeId); 
+          this.demographic.demTypeDate = this.datePipe.transform(this.demographic.demTypeDate,'yyyy-MM-dd') || '';          
         }
       }, error => console.error(error));
     }
@@ -65,17 +76,17 @@ export class DemographicinfoComponent {
 
   }
 
-  demoGraphicCreateUpdate() {
-    //if (this.Validate()) {
-      console.log(this.demographic);
+  demoGraphicCreateUpdate(myForm:NgForm) {
+    // force the UI validation to appear
+    myForm.form.markAllAsTouched();
+    
+    if (this.Validate(myForm)) {
       this.service.demoGraphicCreateUpdate(this.demographic).
         subscribe(result => {
           alert('Success');
           this.reloadPage();
         }, error => console.error(error));
-    //}
-
-
+    }    
   }
 
   reloadPage() {
@@ -96,24 +107,32 @@ export class DemographicinfoComponent {
       this.demographic.demographicTypeDtltbl = [];
     }
     this.demographic.demographicTypeDtltbl.push(this.newDemoGraphicDetail);
-    this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: 0, demTypeDtlId: 0, demTypeId: 0 };
+    this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
   }  
 
-  //Validate() {
-
-  //  if (!this.demographic.typeDescAr) {
-  //    return false;
-  //  }
-    
-
-  //  return true;
-  //}
+  // UI Valiadtion When Submit
+  isDetailsEmpty = false;
+  Validate(myForm:NgForm) {
+    this.isDetailsEmpty = false;
+    if(this.demographic.demographicTypeDtltbl == null || this.demographic.demographicTypeDtltbl.length < 1)
+    {     
+      this.isDetailsEmpty = true;
+      return false;
+    }   
+    if(!myForm.valid){
+        return false;
+    }
+        
+   return true;
+  }
 
 // <----- modal ----->
   displayStyle = "none";  
   openPopup(): void {
     this.displayStyle = "block";
-    this.filterModel = '';
+    this.textFilterModel = '';
+    this.dateFromFilterModel = new Date();
+    this.dateToFilterModel =new Date();
   }
   closePopup(): void {
     this.displayStyle = "none";

@@ -1,4 +1,10 @@
-<form #myForm="ngForm" (submit)="demoGraphicCreateUpdate()">
+<form #myForm="ngForm" (submit)="demoGraphicCreateUpdate(myForm)">
+  <div class="form group" *ngIf="isDetailsEmpty">
+    <span  class="text-danger" >
+      At least enter one Details!
+    </span>
+  </div>
+<br/>
     <div class="form-group">
       <div class="row">
         <div class="col-md-2">
@@ -17,7 +23,6 @@
     
       <hr />
     </div>
-    <!-- [class.is-invalid]="demographictypeDescAr.invalid && (demographictypeDescAr.touched ||demographictypeDescAr.dirty)" -->
     <div class="form-group">
       <input type="text" class="form-control" name="demographictypeDescAr" 
              #demographictypeDescAr="ngModel"
@@ -28,6 +33,15 @@
     </div>
     <div class="form-group">
       <input type="text" class="form-control" name="demographictypeDescEn" placeholder="Demographic Type Description (EN)" [(ngModel)]="demographic.typeDescEn" />
+    </div>
+
+    <div class="form-group">
+      <input type="date" class="form-control" name="demographictypeDate" 
+      #demographictypeDate="ngModel"
+      placeholder="Demographic Type Date" [(ngModel)]="demographic.demTypeDate"  required/>
+      <span  class="text-danger" *ngIf="demographictypeDate.invalid && (demographictypeDate.touched ||demographictypeDate.dirty)">
+        Field Required!
+      </span>
     </div>
 
     <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="demographic">
@@ -61,19 +75,19 @@
         <tr>
           <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesAr" [(ngModel)]="newDemoGraphicDetail.choicesAr" name="newDemoGraphicDetailchoicesAr" (change)="addDemoGraphicDetail()" /></td>
           <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesEn" [(ngModel)]="newDemoGraphicDetail.choicesEn" name="newDemoGraphicDetailchoicesEn" (change)="addDemoGraphicDetail()" /></td>
-          <td><input class="form-control" type="number" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" /></td>
+          <td><input class="form-control" type="tel" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" 
+            /></td>
     
           <td><input type="button" value="Add" class="btn btn-default" (click)="addDemoGraphicDetail()" /></td>
         </tr>
       </tfoot>
     
     </table>
-    
-    <input type="submit" value="Save All" class="btn btn-primary" [disabled]="!myForm.valid"/>
+    <input type="submit" value="Save All" class="btn btn-primary"/>
     <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="Show Data">
 
     
-    <!--</form>-->
+
   </form>    
 
     <!-----------------------------------------Modal------------------------------------------>
@@ -87,9 +101,24 @@
         </button>
       </div>
       <div class="modal-body">
-      <p>
-        <input type="text" placeholder="Search" [(ngModel)]="filterModel" class="form-control col-md-6">     
-      </p>
+        <p>
+          <input type="text" placeholder="Search" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+        </p>
+        <div class="row">
+          <div class="form-group col-md-4">
+            <label>From</label>
+            <input type="date" placeholder="From" [(ngModel)]="dateFromFilterModel" class="form-control">
+          </div>
+          <div class="form-group col-md-4">
+            <label>To</label>
+            <input type="date" placeholder="To" [(ngModel)]="dateToFilterModel" class="form-control"> 
+          </div>
+          <div class="form-group col-md-2">
+            <label>&nbsp;</label>
+            <input type="button" value="Search Dates" class="btn btn-primary"/>
+          </div>
+        </div>         
+                    
       <table class="table">
         <thead>
           <th>
@@ -101,12 +130,16 @@
           <th>
             English Description
           </th>
+          <th>
+            Date
+          </th>
         </thead>
         <tbody>
-          <tr *ngFor="let dem of demoGraphicList | demographicfilter:filterModel">          
+          <tr *ngFor="let dem of demoGraphicList | demographicfilter:textFilterModel">          
             <td>{{dem.demTypeId}}</td>
             <td>{{dem.typeDescAr}}</td>
             <td>{{dem.typeDescEn}}</td> 
+            <td>{{dem.demTypeDate | date}}</td> 
             <td><input type="button" value="Select" class="btn btn-link" (click)="demoGraphicGetById(dem.demTypeId);closePopup()" /></td>            
           </tr>
         </tbody>
