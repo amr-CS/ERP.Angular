@@ -19,8 +19,8 @@ export class DemographicinfoComponent {
   
 
   textFilterModel:string;
-  dateFromFilterModel?:Date;
-  dateToFilterModel?:Date;
+  dateFromFilterModel:Date;
+  dateToFilterModel:Date;
   
   demTypeIdModel:string;
   datePipe:DatePipe;
@@ -38,6 +38,8 @@ export class DemographicinfoComponent {
     this.textFilterModel = '';
     this.demTypeIdModel = '';
     this.datePipe = datePipe;
+    this.dateFromFilterModel = new Date();
+    this.dateToFilterModel = new Date();
   }
 
 
@@ -108,7 +110,20 @@ export class DemographicinfoComponent {
     }
     this.demographic.demographicTypeDtltbl.push(this.newDemoGraphicDetail);
     this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
-  }  
+  }
+  
+
+  // Date Filter
+  isDateFilter = false;
+  filterDemoGraphicListByDate(){   
+    this.textFilterModel = '';
+    this.isDateFilter = true;      
+  }
+
+  modalSearchKeyUp(){
+    this.isDateFilter = false;
+    console.log('here');   
+  }
 
   // UI Valiadtion When Submit
   isDetailsEmpty = false;
@@ -133,6 +148,7 @@ export class DemographicinfoComponent {
     this.textFilterModel = '';
     this.dateFromFilterModel = new Date();
     this.dateToFilterModel =new Date();
+    this.isDateFilter = false;
   }
   closePopup(): void {
     this.displayStyle = "none";
