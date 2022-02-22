@@ -15,10 +15,10 @@
     margin-top: -2rem;
     background: white;
     color: black;
+    font-size: 2rem;
 }
-/*.page__content-data {
+.page__content-data {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
-*/
