@@ -29,7 +29,7 @@ export class DemographicinfoComponent {
   ,demTypeDate :''};
   public demoGraphicList: DemographicInfo[] = [];
   public newDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
-
+  public oldDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
 
   constructor(service: DemoGraphicService, router: Router,datePipe:DatePipe){
     this.service = service;
@@ -40,13 +40,13 @@ export class DemographicinfoComponent {
     this.datePipe = datePipe;
     this.dateFromFilterModel = new Date();
     this.dateToFilterModel = new Date();
+    
   }
 
 
   demoGraphicGetAll() {
     this.service.demoGraphicGetAll().subscribe(result => {
       this.demoGraphicList = result;
-      console.log(result);
     }, error => console.error(error));
   }
 
@@ -103,15 +103,34 @@ export class DemographicinfoComponent {
     this.demographic.demographicTypeDtltbl.splice(index, 1);
   }
 
-  addDemoGraphicDetail() {
+ 
+
+  addDemoGraphicDetail() {    
     this.newDemoGraphicDetail.demTypeId = this.demographic.demTypeId;
     if (this.demographic.demographicTypeDtltbl === null) {
       this.demographic.demographicTypeDtltbl = [];
     }
     this.demographic.demographicTypeDtltbl.push(this.newDemoGraphicDetail);
-    this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
+    this.oldDemoGraphicDetail = this.newDemoGraphicDetail;    
+    this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 }; 
+    console.log(this.oldDemoGraphicDetail);
+  }
+
+  
+  
+  setFocus(t:any,index:number) {  
+    var tbodyRows = t.childNodes[1].children.length;    
+    
+    if(tbodyRows > 0 && this.oldDemoGraphicDetail.choicesAr)
+    {
+      //childeNodes of 1 refer to the table body
+      t.childNodes[1].children[tbodyRows - 1].childNodes[index||0].childNodes[0].focus(); 
+    }
+    
+    this.oldDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 }; 
   }
   
+
 
   // Date Filter
   isDateFilter = false;
@@ -121,9 +140,10 @@ export class DemographicinfoComponent {
   }
 
   modalSearchKeyUp(){
-    this.isDateFilter = false;
-    console.log('here');   
+    this.isDateFilter = false;   
   }
+
+
 
   // UI Valiadtion When Submit
   isDetailsEmpty = false;

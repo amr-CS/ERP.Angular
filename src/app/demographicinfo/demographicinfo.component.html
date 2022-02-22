@@ -44,7 +44,7 @@
       </span>
     </div>
 
-    <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="demographic">
+    <table #table class='table table-striped' aria-labelledby="tableLabel" *ngIf="demographic">
       <thead>
         <tr>
           <th>Answer Description(AR)</th>
@@ -62,8 +62,7 @@
         </td>
 
           <td><input [(ngModel)]="dem.choicesEn" class="form-control" type="text" name="{{'choicesEn' + i}}" /></td>
-
-          <td><input  [(ngModel)]="dem.weightValue"  class="form-control" type="number" name="{{'weightValue' + i}}" required/>
+          <td><input [(ngModel)]="dem.weightValue"  class="form-control" type="number" name="{{'weightValue' + i}}" required/>
             <span class="text-danger" *ngIf="!dem.weightValue">
               Field Required!
             </span>
@@ -73,12 +72,12 @@
       </tbody>
       <tfoot>
         <tr>
-          <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesAr" [(ngModel)]="newDemoGraphicDetail.choicesAr" name="newDemoGraphicDetailchoicesAr" (change)="addDemoGraphicDetail()" /></td>
-          <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesEn" [(ngModel)]="newDemoGraphicDetail.choicesEn" name="newDemoGraphicDetailchoicesEn" (change)="addDemoGraphicDetail()" /></td>
-          <td><input class="form-control" type="tel" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" 
+          <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesAr" [(ngModel)]="newDemoGraphicDetail.choicesAr" name="newDemoGraphicDetailchoicesAr" (change)="addDemoGraphicDetail()" (blur)="setFocus(table,1)"/></td>
+          <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesEn" [(ngModel)]="newDemoGraphicDetail.choicesEn" name="newDemoGraphicDetailchoicesEn" (change)="addDemoGraphicDetail()" (blur)="setFocus(table,2)"/></td>
+          <td><input class="form-control" type="tel" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" (blur)="setFocus(table,3)"
             /></td>
     
-          <td><input type="button" value="Add" class="btn btn-default" (click)="addDemoGraphicDetail()" /></td>
+          <td><input type="button" value="Add" class="btn btn-default" (click)="addDemoGraphicDetail()" (blur)="setFocus(table,0)"/></td>
         </tr>
       </tfoot>
     
