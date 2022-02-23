@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DemographicinfoComponent } from './demographicinfo/demographicinfo.component';
@@ -20,7 +20,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 
+export function HttpLoaderFactory(http:HttpClient){
+  return new TranslateHttpLoader(http,'./assets/i18n/','.json');
+}
 
 
 @NgModule({
@@ -45,7 +50,16 @@ import { MatListModule } from '@angular/material/list';
     MatDividerModule,
     MatMenuModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+
+    TranslateModule.forRoot({
+      defaultLanguage:'ar-AR',
+      loader:{
+        provide:TranslateLoader,
+        useFactory:HttpLoaderFactory,
+        deps:[HttpClient]
+      }
+    })
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

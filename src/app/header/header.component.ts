@@ -1,4 +1,5 @@
 import { Component, OnInit ,Output,EventEmitter} from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-header',
@@ -7,12 +8,21 @@ import { Component, OnInit ,Output,EventEmitter} from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
  @Output() togglesidebare:EventEmitter<any>=new EventEmitter();
-  constructor() { }
+
+  lang:string;
+  constructor(private translateService:TranslateService) {
+    this.lang = 'ar-AR';
+  }
 
   ngOnInit() {
+
   }
   toggleSidebar() {
     this.togglesidebare.emit();
+  }
+  
+  changeLang(lang:string){    
+    this.translateService.use(lang);    
   }
 
 }

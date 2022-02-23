@@ -3,6 +3,36 @@
     <button mat-icon-button (click)="toggleSidebar()">
       <mat-icon>menu</mat-icon>
     </button>
+
+
+<!--     
+      <mat-list-option>
+        <mat-list-item>عربى</mat-list-item>
+        <mat-list-item>English</mat-list-item>
+      </mat-list-option -->
+      <nav class="container mb-4 mt-4">
+        <div class="row">
+          <div class="col-10"></div>
+          <div class="col-2">
+            <select #selectedLang class="custom-select" (change)="changeLang(selectedLang.value)">
+              <option value="ar-AR" [selected]="lang == 'ar-AR'">{{'arabic'|translate}}</option>
+              <option value="en-EN" [selected]="lang == 'en-EN'">{{'english'|translate}}</option>
+            </select>
+          </div>
+
+
+        </div>
+      </nav>
+
+        <!-- <div class="language-picker-area"> 
+            <select #selectedLang class="language-picker" (change)="changeLang(selectedLang.value)">
+              <option value="ar" [selected]="lang == 'ar'">عربى</option>
+              <option value="en" [selected]="lang == 'en'">English</option>
+            </select>    
+          </div> -->
+
+
+    
     <div class="row mr-2 ml-auto">
       <ul class="row m-0 align-items-center">
         <li>
@@ -12,14 +42,14 @@
             class="user mt-2 d-flex align-items-center">
             <img src="./assets/user.jpg" alt="" class="user-image mr-1 p-2" />
 
-            User Name
+            {{'user_name'|translate}}
             <mat-icon class="user-image-icon ml-1"
               >keyboard_arrow_down</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
             <button mat-menu-item>
               <mat-icon>exit_to_app</mat-icon>
-              Logout
+              {{'log_out' | translate}}
             </button>
           </mat-menu>
         </li>

@@ -70,7 +70,7 @@ export class DemographicinfoComponent {
       if (confirm('are you sure to delete DemoGraphic ' + id)) {
         this.service.demoGraphicDelete(Number(id)).subscribe(result => {
           isSuccess = result;
-          this.reloadPage();
+          this.reloadComponent();
         }, error => alert('Not Found'));
       }
     }
@@ -86,12 +86,12 @@ export class DemographicinfoComponent {
       this.service.demoGraphicCreateUpdate(this.demographic).
         subscribe(result => {
           alert('Success');
-          this.reloadPage();
+          this.reloadComponent();
         }, error => console.error(error));
     }    
   }
 
-  reloadPage() {
+  reloadComponent() {
     let currentUrl = this.router.url;
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
