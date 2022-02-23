@@ -42,7 +42,7 @@
           <div class="form-group">
             <input type="date" class="form-control" name="demographictypeDate" 
             #demographictypeDate="ngModel"
-            placeholder="Demographic Type Date" [(ngModel)]="demographic.demTypeDate"  required/>
+            [(ngModel)]="demographic.demTypeDate"  required />
             <span  class="text-danger" *ngIf="demographictypeDate.invalid && (demographictypeDate.touched ||demographictypeDate.dirty)">
               {{'required_field'|translate}}
             </span>
