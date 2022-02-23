@@ -113,22 +113,25 @@ export class DemographicinfoComponent {
     this.demographic.demographicTypeDtltbl.push(this.newDemoGraphicDetail);
     this.oldDemoGraphicDetail = this.newDemoGraphicDetail;    
     this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 }; 
-    console.log(this.oldDemoGraphicDetail);
   }
 
   
   
   setFocus(t:any,index:number) {  
+    
     var tbodyRows = t.childNodes[1].children.length;    
     
-    if(tbodyRows > 0 && this.oldDemoGraphicDetail.choicesAr)
+    // adjust focus only if we have data on the new inserted row
+    if(tbodyRows > 0 && (this.oldDemoGraphicDetail.choicesAr || this.oldDemoGraphicDetail.choicesEn
+      || this.oldDemoGraphicDetail.weightValue))
     {
       //childeNodes of 1 refer to the table body
-      t.childNodes[1].children[tbodyRows - 1].childNodes[index||0].childNodes[0].focus(); 
+      t.childNodes[1].children[tbodyRows - 1].childNodes[index].childNodes[0].focus(); 
     }
-    
+        
     this.oldDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 }; 
-  }
+  
+}
   
 
 

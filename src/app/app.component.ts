@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'DemoGraphicInfoAngular';
+
+
+   _opened: boolean = true;
+
+   funtogglesidebar() {
+    this._opened = !this._opened;
+  }
+
+
 }
