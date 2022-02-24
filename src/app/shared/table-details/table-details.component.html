@@ -1,0 +1,32 @@
+<table #table class='table table-striped' aria-labelledby="tableLabel" *ngIf="item">
+    <thead>
+      <tr>
+        <th *ngFor="let col of columns">{{ col |translate }}</th>      
+      </tr>  
+    </thead>
+    
+    <tbody>
+      <tr *ngFor="let item of details; let i = index">     
+        <td *ngFor="let row of rows">
+            <input [(ngModel)]="item[row.propertyName]"  class="form-control" type="{{row.type}}" name="{{row.propertyName + i}}" required/>
+            <span  class="text-danger" *ngIf="!item[row.propertyName] && row.isRequired">
+              {{'required_field'|translate}}
+            </span>
+          </td>         
+          <td>
+            <input type="button" value="{{'remove'|translate}}" class="btn btn-default" (click)="removeItemDetail(i)" />
+          </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td *ngFor="let row of rows">
+            <input class="form-control" type="{{row.type}}"  [(ngModel)]="itemDetailNew[row.propertyName]" name="{{'New'+ row.propertyName}}" (change)="addItemDetail()" (blur)="setFocus(table,$event.target)"/>
+        </td>          
+        <td>
+             <input type="button" value="{{'add'|translate}}" class="btn btn-default" (click)="addItemDetail()"/>
+        </td>
+      </tr>
+    </tfoot>
+  
+  </table>

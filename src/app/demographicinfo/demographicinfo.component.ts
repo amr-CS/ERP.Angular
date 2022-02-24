@@ -5,6 +5,7 @@ import { DemographicInfo, DemographicInfoDetails } from '../interfaces/demograph
 import { DemoGraphicService } from '../services/demographic.service';
 import { NgForm, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { RowCommon } from '../interfaces/rowcommon.interface';
 
 
 
@@ -13,7 +14,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './demographicinfo.component.html',
   styleUrls: ['./demographicinfo.component.css']
 })
-export class DemographicinfoComponent {
+export class DemographicinfoComponent  {
   service: DemoGraphicService;
   router: Router;
   
@@ -24,12 +25,14 @@ export class DemographicinfoComponent {
   
   demTypeIdModel:string;
   datePipe:DatePipe;
+  public demographicColumns : Array<string>;
+  public demographicRows : Array<RowCommon>;
 
   public demographic: DemographicInfo = { demTypeId: 0, typeDescEn: '', typeDescAr: '', demographicTypeDtltbl: []
   ,demTypeDate :''};
   public demoGraphicList: DemographicInfo[] = [];
   public newDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
-  public oldDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
+  
 
   constructor(service: DemoGraphicService, router: Router,datePipe:DatePipe){
     this.service = service;
@@ -40,7 +43,15 @@ export class DemographicinfoComponent {
     this.datePipe = datePipe;
     this.dateFromFilterModel = new Date();
     this.dateToFilterModel = new Date();
-    
+
+    // Supported Columns & Rows for dynamic table
+    this.demographicColumns = ['answer_description_ar','answer_description_en','weight'];
+    this.demographicRows = [
+      {propertyName:'choicesAr', isRequired:true, type:"text"},                            
+      {propertyName:'choicesEn', isRequired:false, type:"text"},                            
+      {propertyName:'weightValue', isRequired:true, type:"number"}
+    ];
+
   }
 
 
@@ -99,39 +110,7 @@ export class DemographicinfoComponent {
   }
 
 
-  removeDemoGraphicDetail(index:number) {
-    this.demographic.demographicTypeDtltbl.splice(index, 1);
-  }
 
- 
-
-  addDemoGraphicDetail() {    
-    this.newDemoGraphicDetail.demTypeId = this.demographic.demTypeId;
-    if (this.demographic.demographicTypeDtltbl === null) {
-      this.demographic.demographicTypeDtltbl = [];
-    }
-    this.demographic.demographicTypeDtltbl.push(this.newDemoGraphicDetail);
-    this.oldDemoGraphicDetail = this.newDemoGraphicDetail;    
-    this.newDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 }; 
-  }
-
-  
-  
-  setFocus(t:any,index:number) {  
-    
-    var tbodyRows = t.childNodes[1].children.length;    
-    
-    // adjust focus only if we have data on the new inserted row
-    if(tbodyRows > 0 && (this.oldDemoGraphicDetail.choicesAr || this.oldDemoGraphicDetail.choicesEn
-      || this.oldDemoGraphicDetail.weightValue))
-    {
-      //childeNodes of 1 refer to the table body
-      t.childNodes[1].children[tbodyRows - 1].childNodes[index].childNodes[0].focus(); 
-    }
-        
-    this.oldDemoGraphicDetail = { choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 }; 
-  
-}
   
 
 

@@ -48,50 +48,16 @@
             </span>
           </div>
       
-          <table #table class='table table-striped' aria-labelledby="tableLabel" *ngIf="demographic">
-            <thead>
-              <tr>
-                <th>{{'answer_description_ar'|translate}}</th>
-                <th>{{'answer_description_en'|translate}}</th>
-                <th>{{'weight'|translate}}</th>
-              </tr>
-          
-            </thead>
-            <tbody>
-              <tr *ngFor="let dem of demographic.demographicTypeDtltbl; let i = index">          
-                <td><input [(ngModel)]="dem.choicesAr"  class="form-control" type="text" name="{{'choicesAr' + i}}" required/>
-                <span  class="text-danger" *ngIf="!dem.choicesAr">
-                  {{'required_field'|translate}}
-                </span>
-              </td>
-      
-                <td><input [(ngModel)]="dem.choicesEn" class="form-control" type="text" name="{{'choicesEn' + i}}" /></td>
-      
-                <td><input  [(ngModel)]="dem.weightValue"  class="form-control" type="number" name="{{'weightValue' + i}}" required/>
-                  <span class="text-danger" *ngIf="!dem.weightValue">
-                    {{'required_field'|translate}}
-                  </span>
-              </td>
-                <td><input type="button" value="{{'remove'|translate}}" class="btn btn-default" (click)="removeDemoGraphicDetail(i)" /></td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesAr" [(ngModel)]="newDemoGraphicDetail.choicesAr" name="newDemoGraphicDetailchoicesAr" (change)="addDemoGraphicDetail()" (blur)="setFocus(table,1)"/></td>
-                <td><input class="form-control" type="text" id="newDemoGraphicDetailchoicesEn" [(ngModel)]="newDemoGraphicDetail.choicesEn" name="newDemoGraphicDetailchoicesEn" (change)="addDemoGraphicDetail()" (blur)="setFocus(table,2)"/></td>
-                <td><input class="form-control" type="tel" id="newDemoGraphicDetailweightValue" [(ngModel)]="newDemoGraphicDetail.weightValue" name="newDemoGraphicDetailweightValue" (change)="addDemoGraphicDetail()" (blur)="setFocus(table,3)"
-             /></td>
-          
-             <td><input type="button" value="{{'add'|translate}}" class="btn btn-default" (click)="addDemoGraphicDetail()"/></td>
-              </tr>
-            </tfoot>
-          
-          </table>
+          <app-table-details [item] = "demographic"
+          [details] = "demographic.demographicTypeDtltbl" 
+          [itemDetailNew] = "newDemoGraphicDetail"
+          [columns] ="demographicColumns"
+          [rows] ="demographicRows"
+          ></app-table-details>
+
           <input type="submit" value="{{'save-all'|translate}}" class="btn btn-primary"/>
           <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="{{'show-data'|translate}}">
-      
-          
-      
+                      
         </form>    
       
     </div>

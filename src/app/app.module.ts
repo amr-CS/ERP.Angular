@@ -22,6 +22,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TableDetailsComponent } from './shared/table-details/table-details.component';
 
 export function HttpLoaderFactory(http:HttpClient){
   return new TranslateHttpLoader(http,'./assets/i18n/','.json');
@@ -36,7 +37,8 @@ export function HttpLoaderFactory(http:HttpClient){
       HeaderComponent,
       SidebarComponent,
       HomeComponent,
-      DashboardComponent
+      DashboardComponent,
+      TableDetailsComponent
    ],
   imports: [
     BrowserModule,
