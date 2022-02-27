@@ -1,0 +1,419 @@
+<div class="container-fluid">
+
+  <!-- Title -->
+  <div class="bg-light border rounded p-3 mb-3">{{'gl_voucher' |translate}}</div>
+  <!-- Utlity -->
+  <div class="divUtilityBar d-flex ">
+    <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="{{'search'|translate}}">
+    <input type="submit" value="{{'save-all'|translate}}" class="btn btn-primary"/>
+  </div>
+
+  <!-- Head -->
+  <div class="bg-white border rounded p-3">
+
+      <div class="row">
+
+          <!-- Main Inputs -->
+          <div class="col-sm-8">
+
+              <!-- 1st Row Input -->
+              <div class="row">
+
+                  <div class="form-group">
+                      <input type="text" class="form-control form-control-sm w-25 txtDocId d-none" value="0" />
+                      <input type="text" class="form-control form-control-sm w-25 txtCheckDate d-none" value="0" />
+                  </div>
+
+
+                  <!-- Transaction Type -->
+                  <div class="col-sm-4">
+                      <div class="form-group">
+                          <label class="label-control small">{{'voucher_type' |translate}}</label>
+                          <div class="d-flex">
+                              <input type="number" class="form-control form-control-sm w-25 txtVoucherType" value="2" disabled />
+                              <!-- TO DO different language inputs Yehia -->
+                              <input type="text" id="start" class="form-control form-control-sm txtVoucherTypeNamel1" value="{{'voucher_journalentry' |translate}}" disabled />
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Is Posted -->
+                  <div class="col-sm-2">
+                      <div class="form-group">
+                          <label class="label-control small">{{'voucher_postingentry' |translate}}</label>
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkDocIsPosted" disabled id="chkDocIsPosted">
+                              <label class="custom-control-label small" for="chkDocIsPosted">{{'voucher_posted' |translate}}</label>
+                          </div>
+                      </div>
+                  </div>
+
+              </div> <!-- End of 1st Row of Main Inputs -->
+              <!-- 2nd Row Input -->
+              <div class="row">
+                  <div class="col-sm-12">
+                      <div class="form-group">
+                          <label class="label-control small">{{'voucher_note' |translate}}</label>
+                          <textarea class="form-control form-control-sm txtDocNote" onblur="funFoucus('dtpDocDate')"></textarea>
+                      </div>
+                  </div>
+              </div>
+              <!-- 3rd Row Input -->
+              <div class="bg-light border p-3 rounded">
+                  <div class="row">
+                      <div class="form-group checkInput col-sm-3">
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input bg-info chkIsDocRepeated" id="customCheck2">
+                              <label class="custom-control-label small" for="customCheck2">{{'voucher_preventry' |translate}}</label>
+                          </div>
+                      </div>
+                      <div class="form-group checkInput  col-sm-3">
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkIsDocOpps" id="customCheck3">
+                              <label class="custom-control-label small" for="customCheck3">{{'voucher_gloppsvoucherid' |translate}}</label>
+                          </div>
+                      </div>
+                      <div class="form-group checkInput  col-sm-3">
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkIsDocWait" id="customCheck4">
+                              <label class="custom-control-label small" for="customCheck4">{{'voucher_incomplete' |translate}}</label>
+                          </div>
+                      </div>
+                      <div class="form-group checkInput  col-sm-3">
+                          <div class="custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkIsDocCancelled" id="customCheck5">
+                              <label class="custom-control-label small" for="customCheck5">{{'voucher_canceled' |translate}}</label>
+                          </div>
+                      </div>
+                  </div>
+
+              </div> <!-- End of 3rd Row -->
+
+          </div> <!-- End of Main Inputs -->
+          <!-- Left Controls [Doc No, Ref, ..] -->
+          <div class="col-sm-4 mt-3">
+
+              <!-- Doc No -->
+              <div class="row controlRow">
+                  <div class="col-sm-4">
+                      <label class="small float-right pt-2">{{'voucher_no' |translate}}</label>
+                  </div>
+                  <div class="col-sm-8">
+                      <input type="text" class="form-control form-control-sm txtDocNo" disabled />
+                  </div>
+              </div>
+
+              <!-- Doc Date -->
+              <div class="row controlRow">
+                  <div class="col-sm-4">
+                      <label class="small float-right pt-2">{{'voucher_date' |translate}}</label>
+                  </div>
+                  <div class="col-sm-8">
+                      <input type="date" class="form-control form-control-sm dtpDocDate" />
+                  </div>
+              </div>
+
+              <!-- Ref Doc No -->
+              <div class="row controlRow">
+                  <div class="col-sm-4">
+                      <label class="small float-right pt-2">{{'voucher_refrenceno' |translate}}</label>
+                  </div>
+                  <div class="col-sm-8">
+                      <input type="text" class="form-control form-control-sm txtDocRefNo" />
+                  </div>
+              </div>
+
+              <!-- Ref Doc Date -->
+              <div class="row controlRow">
+                  <div class="col-sm-4">
+                      <label class="small float-right pt-2">{{'voucher_refrencedate' |translate}}</label>
+                  </div>
+                  <div class="col-sm-8">
+                      <input type="date" class="form-control form-control-sm dtpDocRefDate" onblur="funFoucus('txtAccountCode')" />
+                  </div>
+              </div>
+
+              <!-- Source -->
+              <div class="row controlRow">
+                  <div class="col-sm-4">
+                      <label class="small float-right pt-2">{{'voucher_transactionsource' |translate}}</label>
+                  </div>
+                  <div class="col-sm-8 d-flex">
+                      <input type="number" class="form-control form-control-sm w-25 txtTransactionSource" value="1" disabled />                    
+                      <!-- TO DO different language inputs Yehia -->
+                      <input type="text" class="form-control form-control-sm w-75 txtTransactionSourceNamel1" value="{{'voucher_accounts' |translate}}" disabled />                    
+                  </div>
+                  
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Details Main -->
+  <div class="bg-white border rounded p-3 mt-3 divGlVoucher">
+      <!-- Details -->
+      <table class="table table-sm table-responsive-sm">
+          <thead>
+              <tr class="tblHead">
+                  <th class=""></th>
+                  <th class="" width="7%">
+                      <div>{{'voucher_accountno' |translate}}</div>
+                  </th>
+                  <th class="" width="15%">
+                      <div>{{'voucher_accountdesc' |translate}}</div>
+                  </th>
+                  <th class="" width="5%">
+                      <div>{{'voucher_currency' |translate}}</div>
+                      <div>{{'voucher_exchangerate' |translate}}</div>
+                  </th>
+                  <th class="">
+                      <div>{{'voucher_rptdebitbase' |translate}}</div>
+                      <div>{{'voucher_debitbase' |translate}}</div>
+                  </th>
+                  <th class="">
+                      <div>{{'voucher_rptcreditbase' |translate}}</div>
+                      <div>{{'voucher_creditbase' |translate}}</div>
+                  </th>
+                  <th class="" width="20%">
+                      <div class="d-flex">
+
+                          <div class="col-sm-3">
+                              <div>{{'voucher_costcenter' |translate}}</div>
+                          </div>
+                          <div class="col-sm-9">
+                              <div>{{'voucher_costcentername' |translate}}</div>
+                          </div>
+
+                      </div>
+
+                  </th>
+                  <th class="">
+                      <div>{{'voucher_note' |translate}}</div>
+                  </th>
+                  <th></th>
+              </tr>
+          </thead>
+
+          <tbody class="tblBody">
+              <tr class="trBaseRow tblRow" data-id="0">
+                  <td class="">
+                      <button class="btn btn-light btn-sm border btnAddRow" type="submit">
+                          <i class="fa fa-plus-circle"></i>
+                      </button>
+                  </td>
+
+                  <td class="">
+                      <input class="form-control form-control-sm text-center fullHeightInput d-none txtAccountId" type="text" required />
+                      <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required />
+                      <input class="form-control form-control-sm text-center fullHeightInput txtAccountCode" onblur="funFoucus('txtDebitCurrency')" type="text" title="{{'voucher_choseaccounttitle' |translate}}" required />
+                  </td>
+                  <td class="">
+                      <textarea class="form-control form-control-sm text-center fullHeightInput txtAccountName" type="text" required readonly></textarea>
+                  </td>
+                  <td class="">
+                      <input class="form-control form-control-sm text-center   txtAccountCurrency d-none" type="text" required disabled />
+                      <input class="form-control form-control-sm text-center   txtAccountCurrencyName" type="text" required disabled />
+                      <input class="form-control form-control-sm text-center  txtAccountCurrencyFactor" type="text" required disabled />
+                  </td>
+                  <td class="">
+                      <input class="form-control form-control-sm text-center font-weight-bold txtDebitCurrency" value="0" type="text" min=0 required />
+                      <input class="form-control form-control-sm text-center font-weight-bold txtDebitBase" type="text" value="0" min=0 required disabled />
+                  </td>
+                  <td class="">
+                      <input class="form-control form-control-sm text-center font-weight-bold txtCreditCurrency" value="0" type="text" min=0 required />
+                      <input class="form-control form-control-sm text-center font-weight-bold txtCreditBase" value="0" type="text" min=0 required disabled />
+                  </td>
+                  <td class="">
+
+                      <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                              <input class="form-control form-control-sm text-center fullHeightInput d-none txtCostCenterId" type="text" required />
+                              <input class="form-control form-control-sm text-center fullHeightInput txtCostCenterCode" onblur="funFoucus('txtNote')" title="{{'voucher_chosecostcentertitle' |translate}}" type="text" required />
+                          </div>
+                          <div class="col-sm-8 p-0">
+                              <input class="form-control form-control-sm text-center fullHeightInput txtCostCenterName" type="text" required readonly />
+                          </div>
+                      </div>
+
+                  </td>
+
+
+                  <td class="">
+                      <textarea class="form-control form-control-sm text-center txtNote" style="height:50px" required></textarea>
+                  </td>
+                  <td><button class="btn btn-light btn-sm btnGLVoucherDtlDelete"><i class="fa fa-trash"></i></button></td>
+              </tr>
+          </tbody>
+
+      </table>
+
+      <!-- Details Footer -->
+      <table class="table table-sm tblFooter border-0">
+          <tbody class="">
+              <tr class="d-flex">
+                  <td class="col-sm-5">
+                      <label class="small float-right mx-1 pt-2">{{'voucher_total' |translate}}</label>
+                  </td>
+                  <td class="col-sm-2">
+                      <input class="form-control form-control-sm text-center disabled font-weight-bold txtTotalDebit " disabled type="number" min=0 required />
+                  </td>
+                  <td class="col-sm-2">
+                      <input class="form-control form-control-sm text-center disabled font-weight-bold   txtTotalCredit" disabled type="number" min=0 required />
+                  </td>
+                  <td class="col-sm-3">
+                      <div class="d-flex">
+                          <label class="small mx-1 pt-2">{{'voucher_diff' |translate}}</label>
+                          <input class="form-control form-control-sm text-center disabled txtDiff font-weight-bold" disabled type="text" required />
+                      </div>
+
+                  </td>
+              </tr>
+          </tbody>
+
+      </table>
+  </div>
+</div>
+
+
+
+<!-- <div class="container-fluid page">
+  <div class="d-flex page__box p-3 mt-2">{{'demographic_info'|translate}}</div>
+  <div class="page__content shadow p-3 position-relative">
+    <div class="page__content-data position-absolute text-center">
+      <form #myForm="ngForm" (submit)="demoGraphicCreateUpdate(myForm)">
+        <div class="form group" *ngIf="isDetailsEmpty">
+          <span  class="text-danger" >
+            {{'required_details'|translate}}
+          </span>
+        </div>
+      <br/>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-md-3">
+                <input #demographicID type="number" class="form-control" placeholder="{{'id'|translate}}" [ngModel]="glVoucherIdModel" [ngModelOptions]="{standalone: true}"/>
+              </div>
+              <div class="col-md-1">
+                <input type="button" id="btnSearch" value="{{'search'|translate}}" (click)="demoGraphicGetById(demographicID.value)" class="btn btn-primary" />
+              </div>
+              <div class="col-md-1">
+                <input type="button" id="btnNew" value="{{'new'|translate}}" (click)="utilityService.reloadComponent()" class="btn btn-primary" />
+              </div>
+              <div class="col-md-1">
+                <input type="button" id="btnDelete" value="{{'delete'|translate}}" (click)="demoGraphicDelete(demographicID.value)" class="btn btn-danger" />
+              </div>
+            </div>
+          
+            <hr />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="demographictypeDescAr" 
+                   #demographictypeDescAr="ngModel"
+                   placeholder="{{'demographic_description_ar'|translate}}" [(ngModel)]="glVoucher.typeDescAr" required />
+                   <span  class="text-danger" *ngIf="demographictypeDescAr.invalid && (demographictypeDescAr.touched ||demographictypeDescAr.dirty)">
+                    {{'required_field'|translate}}
+                  </span>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="demographictypeDescEn" placeholder="{{'demographic_description_en'|translate}}" [(ngModel)]="glVoucher.typeDescEn" />
+          </div>
+      
+          <div class="form-group">
+            <input type="date" class="form-control" name="demographictypeDate" 
+            #demographictypeDate="ngModel"
+            [(ngModel)]="glVoucher.demTypeDate"  required />
+            <span  class="text-danger" *ngIf="demographictypeDate.invalid && (demographictypeDate.touched ||demographictypeDate.dirty)">
+              {{'required_field'|translate}}
+            </span>
+          </div>
+      
+          <app-table-details [item] = "glVoucher"
+          [details] = "glVoucher.demographicTypeDtltbl" 
+          [itemDetailNew] = "newGlVoucherDetail"
+          [columns] ="glVoucherColumns"
+          [rows] ="glVoucherRows"
+          ></app-table-details>
+
+          <input type="submit" value="{{'save-all'|translate}}" class="btn btn-primary"/>
+          <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="{{'show-data'|translate}}">
+                      
+        </form>    
+      
+    </div>
+
+  </div>
+</div> -->
+
+
+
+
+    <!-----------------------------------------Modal------------------------------------------>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" >
+        <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content modal-inside-scroll">
+            <div class="modal-header">
+              <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup()" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6" (keyup)="modalSearchKeyUp()">
+              </p>
+              <div class="row">
+                <div class="form-group col-md-4">
+                  <label>{{'from'|translate}}</label>
+                  <input type="date" placeholder="From" [(ngModel)]="dateFromFilterModel" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                  <label>{{'to'|translate}}</label>
+                  <input type="date" placeholder="To" [(ngModel)]="dateToFilterModel" class="form-control"> 
+                </div>
+                <div class="form-group col-md-2">
+                  <label>&nbsp;</label>
+                  <input type="button" value="{{'search_dates'|translate}}" class="btn btn-primary" (click)="filterDemoGraphicListByDate()"/>
+                </div>
+              </div>         
+                          
+            <table class="table">
+              <thead>
+                <th>
+                  {{'voucher_glvoucherno'|translate}}
+                </th>
+                <th>
+                  {{'date'|translate}}
+                </th>
+                <th>
+                  {{'voucher_glvoucherref'|translate}}
+                </th>
+                <th>
+                  {{'voucher_glvoucherrefdate'|translate}}
+                </th>
+                <th>
+                  {{'voucher_transactionsource'|translate}}
+                </th>
+                <th>
+                  {{'voucher_statement'|translate}}
+                </th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let glv of glVoucherList | glvoucherfilter:textFilterModel:dateFromFilterModel:dateToFilterModel:isDateFilter">
+                  <td>{{glv.demTypeId}}</td>
+                  <td>{{glv.demTypeDate | date :'yyyy-MM-dd'}}</td> 
+                  <td>{{glv.typeDescAr}}</td>
+                  <td>{{glv.typeDescEn}}</td> 
+                  <td>{{glv.typeDescEn}}</td> 
+                  <td>{{glv.typeDescEn}}</td>                   
+                  <td><input type="button" value="{{'select'|translate}}" class="btn btn-link" (click)="demoGraphicGetById(glv.demTypeId);closePopup()" /></td>            
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" 
+                      (click)="closePopup()">
+                      {{'close'|translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>

@@ -23,6 +23,8 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TableDetailsComponent } from './shared/table-details/table-details.component';
+import { GlVoucherComponent } from './glvoucher/glvoucher.component';
+import { GlVoucherFilterPipe } from './pipes/glvoucherfilter.pipe';
 
 export function HttpLoaderFactory(http:HttpClient){
   return new TranslateHttpLoader(http,'./assets/i18n/','.json');
@@ -38,7 +40,9 @@ export function HttpLoaderFactory(http:HttpClient){
       SidebarComponent,
       HomeComponent,
       DashboardComponent,
-      TableDetailsComponent
+      TableDetailsComponent,
+      GlVoucherComponent,
+      GlVoucherFilterPipe
    ],
   imports: [
     BrowserModule,

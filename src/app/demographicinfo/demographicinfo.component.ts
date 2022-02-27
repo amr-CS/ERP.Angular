@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { empty } from 'rxjs';
-import { Router } from '@angular/router';
 import { DemographicInfo, DemographicInfoDetails } from '../interfaces/demographicInfo.interface';
 import { DemoGraphicService } from '../services/demographic.service';
 import { NgForm, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { RowCommon } from '../interfaces/rowcommon.interface';
+import { UtilityService } from '../services/utility.service';
 
 
 
@@ -15,8 +15,7 @@ import { RowCommon } from '../interfaces/rowcommon.interface';
   styleUrls: ['./demographicinfo.component.css']
 })
 export class DemographicinfoComponent  {
-  service: DemoGraphicService;
-  router: Router;
+
   
 
   textFilterModel:string;
@@ -24,7 +23,6 @@ export class DemographicinfoComponent  {
   dateToFilterModel:Date;
   
   demTypeIdModel:string;
-  datePipe:DatePipe;
   public demographicColumns : Array<string>;
   public demographicRows : Array<RowCommon>;
 
@@ -34,16 +32,15 @@ export class DemographicinfoComponent  {
   public newDemoGraphicDetail: DemographicInfoDetails ={ choicesAr: '', choicesEn: '', weightValue: '', demTypeDtlId: 0, demTypeId: 0 };
   
 
-  constructor(service: DemoGraphicService, router: Router,datePipe:DatePipe){
-    this.service = service;
-    this.router = router;
+  constructor(private service: DemoGraphicService, public datePipe:DatePipe, public utilityService: UtilityService){
+  
     this.demoGraphicGetAll();
-    this.textFilterModel = '';
-    this.demTypeIdModel = '';
-    this.datePipe = datePipe;
+    this.textFilterModel = '';    
     this.dateFromFilterModel = new Date();
     this.dateToFilterModel = new Date();
 
+
+    this.demTypeIdModel = '';
     // Supported Columns & Rows for dynamic table
     this.demographicColumns = ['answer_description_ar','answer_description_en','weight'];
     this.demographicRows = [
@@ -81,7 +78,7 @@ export class DemographicinfoComponent  {
       if (confirm('are you sure to delete DemoGraphic ' + id)) {
         this.service.demoGraphicDelete(Number(id)).subscribe(result => {
           isSuccess = result;
-          this.reloadComponent();
+          this.utilityService.reloadComponent();
         }, error => alert('Not Found'));
       }
     }
@@ -97,20 +94,10 @@ export class DemographicinfoComponent  {
       this.service.demoGraphicCreateUpdate(this.demographic).
         subscribe(result => {
           alert('Success');
-          this.reloadComponent();
+          this.utilityService.reloadComponent();
         }, error => console.error(error));
     }    
   }
-
-  reloadComponent() {
-    let currentUrl = this.router.url;
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.router.onSameUrlNavigation = 'reload';
-    this.router.navigate([currentUrl]);
-  }
-
-
-
   
 
 
