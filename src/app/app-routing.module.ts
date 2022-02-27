@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'demographicinfo', component: DemographicinfoComponent }*/
  
-  { path: 'glvoucher', component: GlVoucherComponent },
+  
 
   
   { path: '', component: LoginComponent},
@@ -25,7 +25,7 @@ const routes: Routes = [
              { path: 'demographicinfo', component: DemographicinfoComponent},
              { path: 'home', component: HomeComponent},
              { path: 'dashboard', component: DashboardComponent},
-             
+             { path: 'glvoucher', component: GlVoucherComponent }
           ]
 }
 ];
