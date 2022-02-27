@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
-import { AuthService } from './services/auth.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-Area',
+  templateUrl: './Area.component.html',
+  styleUrls: ['./Area.component.css']
 })
-export class AppComponent implements OnInit{
-  title = 'DemoGraphicInfoAngular';
+export class AreaComponent {
+
+ title = 'DemoGraphicInfoAngular';
   public pageDirection :any ;
   helper = new JwtHelperService();
-  token:any;
-  constructor(private translateService:TranslateService,private authService:AuthService) {  
+  constructor(private translateService:TranslateService) {  
     this.pageDirection ="rtl";   
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) =>
     {
@@ -27,19 +26,11 @@ export class AppComponent implements OnInit{
       }
     });
   }
-  ngOnInit(): void {
-    console.log(localStorage.getItem('token'))
-       this.token =localStorage.getItem('token') 
-      if(this.token){
-      this.authService.decodedToken=this.helper.decodeToken(this.token)
-      }
-    }
-
+  
    _opened: boolean = true;
 
    funtogglesidebar() {
     this._opened = !this._opened;
   }
-
 
 }

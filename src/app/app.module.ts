@@ -23,6 +23,9 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TableDetailsComponent } from './shared/table-details/table-details.component';
+import { LoginComponent } from './login/login.component';
+import { AreaComponent } from './Area/Area.component';
+import { AuthGuard } from './_guard/auth.guard';
 
 export function HttpLoaderFactory(http:HttpClient){
   return new TranslateHttpLoader(http,'./assets/i18n/','.json');
@@ -30,7 +33,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 
 @NgModule({
-  declarations: [				
+  declarations: [						
     AppComponent,
     DemographicinfoComponent,
     DemographicfilterPipe,
@@ -38,7 +41,9 @@ export function HttpLoaderFactory(http:HttpClient){
       SidebarComponent,
       HomeComponent,
       DashboardComponent,
-      TableDetailsComponent
+      TableDetailsComponent,
+      LoginComponent,
+      AreaComponent
    ],
   imports: [
     BrowserModule,
@@ -53,7 +58,6 @@ export function HttpLoaderFactory(http:HttpClient){
     MatMenuModule,
     MatIconModule,
     MatListModule,
-
     TranslateModule.forRoot({
       defaultLanguage:'ar-AR',
       loader:{
@@ -63,7 +67,10 @@ export function HttpLoaderFactory(http:HttpClient){
       }
     })
   ],
-  providers: [DatePipe],
+  providers: [DatePipe,
+    AuthGuard,
+  
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

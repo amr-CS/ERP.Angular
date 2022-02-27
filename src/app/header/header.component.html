@@ -42,12 +42,13 @@
             class="user mt-2 d-flex align-items-center">
             <img src="./assets/user.jpg" alt="" class="user-image mr-1 p-2" />
 
-            {{'user_name'|translate}}
+           <!--{{'user_name'|translate}}-->
+           {{authService.decodedToken?.unique_name}}
             <mat-icon class="user-image-icon ml-1"
               >keyboard_arrow_down</mat-icon>
           </button>
           <mat-menu #menu="matMenu">
-            <button mat-menu-item>
+            <button mat-menu-item (click)="logout()">
               <mat-icon>exit_to_app</mat-icon>
               {{'log_out' | translate}}
             </button>
