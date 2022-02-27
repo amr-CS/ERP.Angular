@@ -1,5 +1,7 @@
 import { Component, OnInit ,Output,EventEmitter} from '@angular/core';
+import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +11,10 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
  @Output() togglesidebare:EventEmitter<any>=new EventEmitter();
 
+
+
   lang:string;
-  constructor(private translateService:TranslateService) {
+  constructor(private translateService:TranslateService,public authService:AuthService) {
     this.lang = 'ar-AR';
   }
 
@@ -24,5 +28,8 @@ export class HeaderComponent implements OnInit {
   changeLang(lang:string){    
     this.translateService.use(lang);    
   }
-
+  logout(){
+    this.authService.logout();
+  }
+  
 }

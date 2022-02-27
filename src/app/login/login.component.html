@@ -1,0 +1,92 @@
+<div class="divBody">
+<div class="divContainer">
+
+    <!-- System Content -->
+    <div class="divSystemContent" >
+
+        <div class="text-center">
+          
+                <img src="../../assets/WhiteCloud_Word.gif" class="imgSystem mx-auto" width="200" />
+        </div>
+        <div class="foot" >
+       
+          <div > &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+            © جميع الحقوق محفوظة - شركة السحابة البيضاء   </div>
+         </div>
+    </div>
+
+    <!-- Login -->
+    <div class="divLoginContent">
+        
+
+
+        <div class="">
+            <!-- Login -->
+            <div class="divLogin">
+
+                <!--<div class="divLoginLabel">
+                    @log.inResource.lblLogin
+                </div>-->
+
+
+                <div class="divLoginNote">
+                    <img src="../../assets/Whitecloud_Dark.PNG" width="200" />
+                </div>
+                <hr />
+
+                <form #loginForm="ngForm" (ngSubmit)="login()">
+                    <div class="form-group mt-4">
+                        <label for="txtUserName" style="float:right;">إسم المستخدم</label>
+                        <input type="text" class="form-control mt-2" id="txtUserName" 
+                        [(ngModel)]="model.username"
+                        name="username"
+                        required placeholder="إسم المستخدم">
+                    </div>
+
+                    <div class="form-group pt-2">
+                        <label for="txtUserPassword" style="float:right">كلمة المرور</label>
+                        <input type="password" class="form-control mt-2" id="txtUserPassword"
+                        [(ngModel)]="model.password"
+                        name="password"
+                        required placeholder="كلمة المرور">
+                    </div>
+                    <div class="form-group pt-2" style="float:right">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="chkRememberMe">
+                            <label class="custom-control-label" for="chkRememberMe">تذكرني</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <button type="submit"  id="btnLogin" class="btn btn-primary w-100 btn-block btnForm" >تسجيل الدخول</button>
+                    </div>
+
+                    
+
+                </form>
+
+                <hr />
+                <div class="divLoginForgot text-center">
+                    <a href="#" id="btnForgetPassword">نسيت الرقم السري</a>
+                </div>
+
+                <div class="alert alert-danger text-center my-3 mx-2 divResult" style="display:none"></div>
+
+
+                <div class="divLoginFooter small">
+                    <a href="#">مؤسسة السحابة البيضاء لتقنية نظم المعلومات</a>
+                </div>
+            </div> <!-- End of Login -->
+         
+           
+        </div> <!-- End of Main Container -->
+    </div> <!-- End of Login Box -->
+
+
+
+
+</div> <!-- End of Page Content -->
+
+
+
+</div>
