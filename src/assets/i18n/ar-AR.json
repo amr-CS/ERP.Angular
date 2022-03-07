@@ -32,8 +32,9 @@
     "from":"من",
     "to":"الى",
     "select":"اختار",
+    "update_status":"تغيير حالة الابديت",
 
-    "gl_voucher":"قيد اليومية",
+    "voucher_journal":"قيد اليومية",
     "voucher_type":"نوع القيد",
     "voucher_journalentry":"قيد اليومية",
     "voucher_postingentry":"ترحيل القيد",
@@ -47,6 +48,7 @@
     "voucher_date":"التاريخ",
     "voucher_refrenceno":"رقم المرجع",
     "voucher_refrencedate":"تاريخ المرجع",
+    "voucher_refdate":"تاريخ الرقم المرجعي للقيد",
     "voucher_transactionsource":"المصدر",
     "voucher_accounts":"حسابات",
     "voucher_accountno":"رقم الحساب",
@@ -59,13 +61,19 @@
     "voucher_creditbase":"دائن-عملة الاساس",
     "voucher_costcenter":"مركز التكلفة",
     "voucher_costcentername":"اسم المركز",
-    "voucher_choseaccounttitle":"إضغط F9 لإختيار الحساب",
-    "voucher_chosecostcentertitle":"إضغط F9 لإختيار مركز التكلفة",
+    "voucher_choseaccounttitle":"لاختيار الحساب انقر مزودج",
+    "voucher_chosecostcentertitle":"لاختيار مركز التكلفة انقر مزودج",
     "voucher_total":"الإجمالي",
     "voucher_diff":"الفرق",
     "voucher_glvoucherno":"رقم القيد",
     "voucher_glvoucherref":"الرقم المرجعي للقيد",
     "voucher_glvoucherrefdate":"تاريخ الرقم المرجعي للقيد",
-    "voucher_statement":"البيان"
+    "voucher_statement":"البيان",
+    
+    "account_accountdirectory":"دليل الحسابات",
+    "costcenter_costcenter":"مركز التكلفة"
         
+
+
+    
 }

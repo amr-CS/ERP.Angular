@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { FormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,11 +22,13 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TableDetailsComponent } from './shared/table-details/table-details.component';
-import { GlVoucherComponent } from './glvoucher/glvoucher.component';
-import { GlVoucherFilterPipe } from './pipes/glvoucherfilter.pipe';
+import { VoucherJournalComponent } from './voucherjournal/voucherjournal.component';
+import { VoucherJournalFilterPipe } from './pipes/voucherjournalfilter.pipe';
 import { LoginComponent } from './login/login.component';
 import { AreaComponent } from './Area/Area.component';
 import { AuthGuard } from './_guard/auth.guard';
+import { AccountfilterPipe } from './pipes/accountfilter.pipe';
+import { CostcenterfilterPipe } from './pipes/costcenterfilter.pipe';
 
 
 export function HttpLoaderFactory(http:HttpClient){
@@ -45,10 +46,12 @@ export function HttpLoaderFactory(http:HttpClient){
       HomeComponent,
       DashboardComponent,
       TableDetailsComponent,
-      GlVoucherComponent,
-      GlVoucherFilterPipe,
+      VoucherJournalComponent,
+      VoucherJournalFilterPipe,
       LoginComponent,
-      AreaComponent
+      AreaComponent,
+      AccountfilterPipe,
+      CostcenterfilterPipe     
 
    ],
   imports: [

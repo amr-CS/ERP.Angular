@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AreaComponent } from './Area/Area.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DemographicinfoComponent } from './demographicinfo/demographicinfo.component';
-import { GlVoucherComponent } from './glvoucher/glvoucher.component';
+import { VoucherJournalComponent } from './voucherjournal/voucherjournal.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guard/auth.guard';
@@ -25,7 +25,7 @@ const routes: Routes = [
              { path: 'demographicinfo', component: DemographicinfoComponent},
              { path: 'home', component: HomeComponent},
              { path: 'dashboard', component: DashboardComponent},
-             { path: 'glvoucher', component: GlVoucherComponent }
+             { path: 'voucherjournal', component: VoucherJournalComponent }
           ]
 }
 ];

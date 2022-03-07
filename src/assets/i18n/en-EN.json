@@ -32,8 +32,9 @@
     "from":"From",
     "to":"To",
     "select":"Select" ,
-    
-    "gl_voucher":"GL Voucher",
+    "update_status":"Update Status Toggle",
+        
+    "voucher_journal":"Journal Voucher",
     "voucher_type":"Voucher Type",
     "voucher_journalentry":"Journal Entry",
     "voucher_postingentry":"Posting Entry",
@@ -47,6 +48,7 @@
     "voucher_date":"Date",
     "voucher_refrenceno":"Refrence Number",
     "voucher_refrencedate":"Refrence Date",
+    "voucher_refdate":"Voucher Ref Date",
     "voucher_transactionsource":"Transaction Source",
     "voucher_accounts":"Accounts",
     "voucher_accountno":"Account Number",
@@ -59,12 +61,15 @@
     "voucher_creditbase":"Credit Base",
     "voucher_costcenter":"Cost Center",
     "voucher_costcentername":"Cost Center Name",
-    "voucher_choseaccounttitle":"To Choose Account Press F9",
-    "voucher_chosecostcentertitle":"To Choose CostCenter Press F9",    
+    "voucher_choseaccounttitle":"To Choose Account Double Click",
+    "voucher_chosecostcentertitle":"To Choose CostCenter Double Click",    
     "voucher_total":"Total",
     "voucher_diff":"Difference",
     "voucher_glvoucherno":"Voucher No",
     "voucher_glvoucherref":"Voucher Ref",
     "voucher_glvoucherrefdate":"Voucher Ref Date",
-    "voucher_statement":"Statement"          
+    "voucher_statement":"Statement",
+    
+    "account_accountdirectory":"Account Directory",
+    "costcenter_costcenter":"Cost Center"
 }
