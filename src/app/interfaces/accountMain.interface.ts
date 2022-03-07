@@ -5,7 +5,7 @@
     children?: FoodNodeFlat[];
    }*/
   
-  export interface Account {
+  export interface AccountMain {
     id: any,
     nameL1: string,
     nameL2: any,
@@ -30,5 +30,5 @@
     lastUpdatedBy: any,
     lastUpdatedOn: any,
     accountCostCenter: []
-    children?: Account[];
+    children?: AccountMain[];
    }

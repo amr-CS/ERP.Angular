@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { Constants } from './constants';
-import { Account } from '../interfaces/Account.interface';
+import { AccountMain } from '../interfaces/accountMain.interface';
 
 
 @Injectable({
@@ -13,11 +13,11 @@ export class TreeService {
 constructor(private http:HttpClient) { }
 
 accountGetAll() {
-  return this.http.get<Account[]>(Constants.ApiUrlMain + 'account')
+  return this.http.get<AccountMain[]>(Constants.ApiUrlMain + 'account')
 }
 
 accountGetById(id:any) {
-  return this.http.get<Account[]>(Constants.ApiUrlMain + 'account/GetById/' + id)
+  return this.http.get<AccountMain[]>(Constants.ApiUrlMain + 'account/GetById/' + id)
 }
 AccountTree(id:any) {
   return this.http.get<any[]>(Constants.ApiUrlMain + 'account/GetAccountTree?parentId='+id)

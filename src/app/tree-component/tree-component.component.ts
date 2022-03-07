@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { TreeService } from '../services/tree.service';
-import { Account } from '../interfaces/Account.interface';
+import { AccountMain } from '../interfaces/accountMain.interface';
 import { newArray } from '@angular/compiler/src/util';
 
 
-let TREE_DATA: Account[] 
+let TREE_DATA: AccountMain[] 
 
 
 
@@ -29,7 +29,7 @@ export class TreeComponentComponent implements OnInit {
   message!: string;
 
   
-private _transformer = (node: Account, level: number) => {
+private _transformer = (node: AccountMain, level: number) => {
  return {
  expandable: !!node.children && node.children.length > 0,
  name: node.nameL1,

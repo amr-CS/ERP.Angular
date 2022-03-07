@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Account } from '../interfaces/Account.interface';
+import { AccountMain } from '../interfaces/accountMain.interface';
 import { TreeService } from '../services/tree.service';
 
 @Component({
