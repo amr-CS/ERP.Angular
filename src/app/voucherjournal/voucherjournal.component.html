@@ -127,7 +127,7 @@
                   <div class="col-sm-8">
                       <!-- <input type="date" class="form-control form-control-sm dtpDocDate" name="dtp.date" [(ngModel)]="voucherJournal.date"/> -->
                       <input #date ="ngModel" type="date" class="form-control form-control-sm dtpDocDate" required ngClass="invalid" name="dtp.date"  [ngModel] ="voucherJournal.date | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.date = $event" [disabled]="isUpdate"
-                      [ngClass]="{'is-invalid': date.invalid && (date.touched || date.dirty)}"/>
+                      [ngClass]="{'is-invalid': (date.invalid || !isCurrentFinancialYear) && (date.touched || date.dirty)}" (change)="checkForcurrentSelectedDateYear()"/>
                   </div>
               </div>
 
@@ -223,8 +223,9 @@
                   <td>
                       <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none txtAccountId" type="text" required />
                       <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
-                      <input #accountNumber = "ngModel" class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}" required  name="{{'txtAccountNo' + i}}" readonly [(ngModel)]="vj.accountNo" (dblclick)="AccountOpenPopup(i)" [disabled]="isUpdate"
+                      <input #accountNumber = "ngModel" class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}" required  name="{{'txtAccountNo' + i}}" [(ngModel)]="vj.accountNo" (dblclick)="AccountOpenPopup(i)" [disabled]="isUpdate" (change)="addAccountItemByAccountNo(accountNumber.value,i)"
                       [ngClass]="{'is-invalid': accountNumber.invalid && (accountNumber.touched || accountNumber.dirty)}"/>
+                      <!-- (blur)="setFocus(table,$event.target,4) -->
                     <!-- onblur="funFoucus('txtDebitCurrency')" -->
                   </td>
                   <td>
@@ -248,7 +249,8 @@
                   <td class="d-flex">
                         <div class="col-sm-4 p-0">
                             <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none txtCostCenterId" type="text" required /> -->
-                            <input class="form-control form-control-sm text-center col-sm-4 p-0 fullHeightInput"  title="{{'voucher_chosecostcentertitle' |translate}}" type="text"  readonly name="{{'txtCostCenterId' + i}}" [(ngModel)]="vj.costCenterId" (dblclick)="CostCenterOpenPopup(vj.accountId,i)" [disabled]="isUpdate"/>
+                            <!-- <input class="form-control form-control-sm text-center col-sm-4 p-0 fullHeightInput"  title="{{'voucher_chosecostcentertitle' |translate}}" type="text"  readonly name="{{'txtCostCenterId' + i}}" [(ngModel)]="vj.costCenterId" (dblclick)="CostCenterOpenPopup(vj.accountId,i)" [disabled]="isUpdate"/> -->
+                            <input *ngIf="vj.costCenter" class="form-control form-control-sm text-center col-sm-4 p-0 fullHeightInput"  title="{{'voucher_chosecostcentertitle' |translate}}" type="text"  readonly name="{{'txtCostCenterCode' + i}}" [(ngModel)]="vj.costCenter.code" (dblclick)="CostCenterOpenPopup(vj.accountId,i)" [disabled]="isUpdate"/>
                           <!-- onblur="funFoucus('txtNote')" -->
                         </div>
                         <div class="col-sm-8 p-0">
@@ -277,8 +279,10 @@
                 <td>
                     <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none" type="text" required name="txtNewAccountId" [(ngModel)]="newVoucherJournalDetail.accountId"/> -->
                     <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
-                    <input class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"  name="txtNewAccountNo" readonly [(ngModel)]="newVoucherJournalDetail.accountNo" (dblclick)="AccountOpenPopup()" [disabled]="isUpdate"
-                    (click)="addItemDetail()" (blur)="setFocus(table,$event.target)"/>
+                    <input #newAccountNo class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"  name="txtNewAccountNo" [(ngModel)]="newVoucherJournalDetail.accountNo" (dblclick)="AccountOpenPopup()" [disabled]="isUpdate"
+                      (change)="addAccountItemByAccountNo(newAccountNo.value);"/>
+                      <!-- (blur)="setFocus(table,$event.target,4)" -->
+                     <!-- (click)="addItemDetail()" -->
                     <!-- onblur="funFoucus('txtDebitCurrency')" -->
                 </td>
                 <td>
@@ -452,7 +456,9 @@
                         
           <table class="table">            
             <tbody>          
-              <tr *ngFor="let acc of accountList | accountfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountItem(acc.id || 0);AccountClosePopup();setFocus(table,$event.target,4);">     
+              <tr *ngFor="let acc of accountList | accountfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountItemById(acc.id || 0);AccountClosePopup();
+              ">     
+                <!-- setFocus(table,$event.target,4); -->
                 <td>{{acc.accountNo}} </td>
                 <td> {{acc.nameL1}}  </td>                                                     
               </tr>     
