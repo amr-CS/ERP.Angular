@@ -19,11 +19,11 @@
 
   <!-- Head -->
   <div class="bg-white border rounded p-3">
-    <div class="form group" *ngIf="isDetailsEmpty">
+    <!-- <div class="form group" *ngIf="isDetailsEmpty"> -->
       <!-- <span  class="text-danger">
         {{'required_details'|translate}}
       </span> -->
-    </div>
+    <!-- </div> -->
       <div class="row">
 
           <!-- Main Inputs -->
@@ -173,7 +173,7 @@
   <!-- Details Main -->
   <div class="bg-white border rounded p-3 mt-3 divGlVoucher">
       <!-- Details -->
-      <table #table class="table table-sm table-responsive-sm">
+      <table #table name="table" class="table table-sm table-responsive-sm">
           <thead>
               <tr>
                   <th></th>
@@ -281,9 +281,8 @@
                     <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
                     <input #newAccountNo class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"  name="txtNewAccountNo" [(ngModel)]="newVoucherJournalDetail.accountNo" (dblclick)="AccountOpenPopup()" [disabled]="isUpdate"
                       (change)="addAccountItemByAccountNo(newAccountNo.value);"/>
-                      <!-- (blur)="setFocus(table,$event.target,4)" -->
-                     <!-- (click)="addItemDetail()" -->
-                    <!-- onblur="funFoucus('txtDebitCurrency')" -->
+                      <!-- (blur)="setFocus(table,$event.target,4)" -->                    
+                      <!-- onblur="funFoucus('txtDebitCurrency')" -->
                 </td>
                 <td>
                     <textarea *ngIf="newVoucherJournalDetail.account" class="form-control form-control-sm text-center fullHeightInput" type="text" readonly name="txtNewAccountName" [(ngModel)]="newVoucherJournalDetail.account.nameL1"></textarea>

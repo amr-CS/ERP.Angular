@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit,ElementRef, ViewChild  } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { VoucherJournal, VoucherJournalDetails } from '../interfaces/voucherjournal.interface';
 import { RowCommon } from '../interfaces/rowcommon.interface';
@@ -21,6 +21,8 @@ import { FinancialYearService } from '../services/financialyear.service';
   styleUrls: ['./voucherjournal.component.css']
 })
 export class VoucherJournalComponent implements OnInit {
+  @ViewChild('table') detailsTable!: ElementRef;
+
   textFilterModel:string;
   dateFromFilterModel:Date;
   dateToFilterModel:Date;
@@ -305,30 +307,8 @@ export class VoucherJournalComponent implements OnInit {
   }
 
   setFocusAccountNo(t:any,index:number){
-    // if(inputElemet.name == 'txtNewAccountNo' && index)
-    // {
-    //   var footerElement = t.childNodes[2].children[0].childNodes[index].childNodes[0];       
-    //   footerElement.focus();
-    
-    // }
-
-    // var tbodyRows = t.childNodes[1].children.length;
-    // console.log(t.childNodes[1]);  
-    // console.log(tbodyRows - 1);
-    // console.log(t.childNodes[1].children[tbodyRows -1]);  
-    // console.dir(t.childNodes[1].children[tbodyRows-1].childNodes[index].childNodes[0]);
-    // t.childNodes[1].children[tbodyRows-1].childNodes[index].childNodes[0].focus()
-    
-    // // adjust focus only if we have data on the new inserted row
-    // if(tbodyRows > 0 && (this.oldDemoGraphicDetail.choicesAr || this.oldDemoGraphicDetail.choicesEn
-    //   || this.oldDemoGraphicDetail.weightValue))
-    // {
-      //childeNodes of 1 refer to the table body
-      //t.childNodes[1].children[tbodyRows].childNodes[index].focus(); 
-    // }
-        
-    
-
+    var tbodyRows = t.childNodes[1].children.length;    
+    t.childNodes[1].children[tbodyRows-1].childNodes[index].childNodes[0].focus()       
   }
   
   setFocus(t?:any,inputElemet?:any,index?:number) {    
@@ -486,6 +466,10 @@ addAccountItemById(id:number){
     else {      
       this.addNewAccount(result);
       this.addItemDetail();
+
+      //Focus on debit of index 4
+      var t = this.detailsTable.nativeElement;          
+      setTimeout(() => {this.setFocusAccountNo(t,4);}, 0);
             
     }    
   this.accountIndex = -1;
@@ -505,6 +489,11 @@ addAccountItemByAccountNo(accountNo:string, i?:number){
         else {
           this.addNewAccount(result);                   
           this.addItemDetail();
+
+          //Focus on debit of index 4
+          var t = this.detailsTable.nativeElement;          
+          setTimeout(() => {this.setFocusAccountNo(t,4);}, 0);
+          
       }
     }
     else if(i !== undefined)
