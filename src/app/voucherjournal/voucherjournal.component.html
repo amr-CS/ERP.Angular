@@ -281,8 +281,7 @@
                     <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
                     <input #newAccountNo class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"  name="txtNewAccountNo" [(ngModel)]="newVoucherJournalDetail.accountNo" (dblclick)="AccountOpenPopup()" [disabled]="isUpdate"
                       (change)="addAccountItemByAccountNo(newAccountNo.value);"/>
-                      <!-- (blur)="setFocus(table,$event.target,4)" -->                    
-                      <!-- onblur="funFoucus('txtDebitCurrency')" -->
+                      
                 </td>
                 <td>
                     <textarea *ngIf="newVoucherJournalDetail.account" class="form-control form-control-sm text-center fullHeightInput" type="text" readonly name="txtNewAccountName" [(ngModel)]="newVoucherJournalDetail.account.nameL1"></textarea>

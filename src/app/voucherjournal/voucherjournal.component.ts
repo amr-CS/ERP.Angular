@@ -178,7 +178,6 @@ export class VoucherJournalComponent implements OnInit {
           this.voucherJournal = result;         
           this.voucherJournal.date = this.datePipe.transform(this.voucherJournal.date,'yyyy-MM-dd') || '';
           this.voucherJournal.referenceDate = this.datePipe.transform(this.voucherJournal.referenceDate,'yyyy-MM-dd') || '';
-          console.log(result);
           // to remove null console errors
           this.voucherJournal.journalVoucherDetails.forEach(e => {
             if(e.account == null){
@@ -200,22 +199,20 @@ export class VoucherJournalComponent implements OnInit {
 
   }
 
-  voucherJournalDelete(id: number) {
-
-    
+  voucherJournalDelete(id: number) {    
     var isSuccess = false;
     if (id) {
       this.alertify.confirm('are you sure to delete journal Voucher ' + id,()=>{
         this.service.voucherJournalDelete(id).subscribe(result => {
           isSuccess = result;
           this.utilityService.reloadComponent();
+          this.alertify.success('تم الحذف');
         }, error => alert('Not Found'));
         
       });
       
     }
     return isSuccess;
-
   }
 
   // flag to determine the ability to update or disable all controls
@@ -224,6 +221,18 @@ export class VoucherJournalComponent implements OnInit {
     this.isUpdate = !this.isUpdate;
   }
 
+
+  successCreateUpdate(result:any){
+    this.alertify.success('نجاح');
+    this.voucherJournal = result;
+    this.voucherJournal.journalVoucherDetails.forEach(element => {
+      element.costCenter = element.costCenter ? element.costCenter :{};
+      element.costCenterId = element.costCenterId ? element.costCenterId :undefined;
+    });
+    this.voucherJournalGetAll();
+
+    this.isUpdate = true;      
+  }
   voucherJournalCreateUpdate(myForm:NgForm) {
     // force the UI validation to appear
     myForm.form.markAllAsTouched();
@@ -235,30 +244,13 @@ export class VoucherJournalComponent implements OnInit {
       if(this.voucherJournal.id == 0){         
         this.service.voucherJournalCreate(this.voucherJournal).
           subscribe(result => {
-            this.alertify.success('نجاح');
-            this.voucherJournal = result;
-            this.voucherJournal.journalVoucherDetails.forEach(element => {
-              element.costCenter = element.costCenter ? element.costCenter :{};
-              element.costCenterId = element.costCenterId ? element.costCenterId :undefined;
-            });
-            this.voucherJournalGetAll();
-
-            this.isUpdate = true;      
+            this.successCreateUpdate(result);
         },  error => console.error(error));
       }
       else{             
         this.service.voucherJournalUpdate(this.voucherJournal).
         subscribe(result => {
-          this.alertify.success('نجاح');
-          this.voucherJournal = result;
-          this.voucherJournal.journalVoucherDetails.forEach(element => {
-            element.costCenter = element.costCenter ? element.costCenter :{};
-            element.costCenterId = element.costCenterId ? element.costCenterId :undefined;
-          });
-          this.voucherJournalGetAll();     
-          
-          this.isUpdate = true;
-          
+          this.successCreateUpdate(result);          
       },  error => console.error(error));
       }
 
