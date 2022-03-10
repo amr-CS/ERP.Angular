@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnChanges, OnInit,ElementRef, ViewChild  } from '@angular/core';
+import { Component, OnInit,ElementRef, ViewChild  } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { VoucherJournal, VoucherJournalDetails } from '../interfaces/voucherjournal.interface';
 import { RowCommon } from '../interfaces/rowcommon.interface';
@@ -14,6 +14,7 @@ import { AccountService } from '../services/account.service';
 import { CostCenter } from '../interfaces/costcenter.interface';
 import { CostCenterService } from '../services/costcenter.service';
 import { FinancialYearService } from '../services/financialyear.service';
+import { Constants } from '../services/constants';
 
 @Component({
   selector: 'app-voucherjournal',
@@ -113,6 +114,10 @@ export class VoucherJournalComponent implements OnInit {
 
     this.voucherJournalRows = ['accountNo', 'debit', 'credit','costCenterId','notes'];
     
+    for (let index = 0; index < Constants.inputsCount; index++) {      
+      this.addItemDetail();
+    }
+  
    }
 
   ngOnInit(): void {
@@ -162,7 +167,6 @@ export class VoucherJournalComponent implements OnInit {
     this.totalCredit = creditSum;
     this.totalDifference = Math.abs(debtSum - creditSum);
   }
-
   
   voucherJournalGetAll() {
     this.service.voucherJournalGetAll().subscribe(result => {
@@ -222,6 +226,18 @@ export class VoucherJournalComponent implements OnInit {
   }
 
 
+  voucherJournalDetailsAdjustment(){
+    var detailsCopy = this.voucherJournal.journalVoucherDetails;
+    detailsCopy = [];
+    this.voucherJournal.journalVoucherDetails.forEach(element => {
+      debugger;
+      if(element.accountNo && element.debit !=undefined && element.credit != undefined){
+        detailsCopy.push(element);
+      }      
+    });
+    this.voucherJournal.journalVoucherDetails = detailsCopy;    
+  }
+
   successCreateUpdate(result:any){
     this.alertify.success('نجاح');
     this.voucherJournal = result;
@@ -240,7 +256,8 @@ export class VoucherJournalComponent implements OnInit {
       this.undefineObjectProperties();
       this.voucherJournal.date = this.datePipe.transform(this.voucherJournal.date, 'yyyy-MM-dd') || '';
       this.voucherJournal.referenceDate = this.datePipe.transform(this.voucherJournal.referenceDate, 'yyyy-MM-dd') || '';
-      
+      this.voucherJournalDetailsAdjustment();
+
       if(this.voucherJournal.id == 0){         
         this.service.voucherJournalCreate(this.voucherJournal).
           subscribe(result => {
@@ -272,12 +289,25 @@ export class VoucherJournalComponent implements OnInit {
     this.voucherJournal.journalVoucherDetails.splice(index, 1);
   }
 
-  addItemDetail() {         
+  trackByIndex(index: number, obj: any): any {
+    return index;
+  }
+
+  addItemDetail(i?:number) {         
     this.newVoucherJournalDetail.journalVoucherId = this.voucherJournal.id;
     if (this.voucherJournal.journalVoucherDetails === null) {
       this.voucherJournal.journalVoucherDetails = [];
     }
-    this.voucherJournal.journalVoucherDetails.push(this.newVoucherJournalDetail);
+    
+    if(i == undefined)
+    {     
+      this.voucherJournal.journalVoucherDetails.push(this.newVoucherJournalDetail);
+    }
+    else{      
+      this.voucherJournal.journalVoucherDetails.splice(i + 1, 0, this.newVoucherJournalDetail);     
+    }
+    
+    
     this.itemDetailOld = this.newVoucherJournalDetail;   
     this.newVoucherJournalDetail = {
       id: 0,
@@ -362,17 +392,22 @@ export class VoucherJournalComponent implements OnInit {
     }  
   }
 
+
+
+  isAccountNoRequired(accountNumber : any , debit:any, credit:any){      
+  return(accountNumber.value =='' && (accountNumber.dirty))  
+  || (accountNumber.value =='' && ((debit.invalid || debit.dirty) || (credit.invalid || credit.dirty)));
+}
+
 // UI Valiadtion When Submit
 isDetailsEmpty = false;
 Validate(myForm:NgForm) {
   this.isDetailsEmpty = false;
-
   if(!myForm.valid){
     this.alertify.error('يجب ملء الحقول الالزامية');    
       return false;
   }
 
-   
   if(!this.isCurrentFinancialYear){    
       this.checkForcurrentSelectedDateYear();
       return false;
@@ -382,6 +417,18 @@ Validate(myForm:NgForm) {
   {     
     this.isDetailsEmpty = true;
     this.alertify.error('على الاقل ادخل بيانات واحدة فى التفاصيل !');
+    return false;
+  }
+
+  var isOneDetailValid = false; 
+  this.voucherJournal.journalVoucherDetails.forEach(element => {
+    if (element.accountNo)
+        isOneDetailValid = true;        
+  });
+
+  if(!isOneDetailValid)
+  {         
+    this.alertify.error('على الاقل ادخل رقم حساب واحد فى التفاصيل !');
     return false;
   }
   
@@ -409,8 +456,11 @@ addOldAccount(i:number, result:any){
       var tempJournalVoucherDetailsCurrency = this.voucherJournal.journalVoucherDetails[i].currency;
       if(tempJournalVoucherDetailsCurrency){
         tempJournalVoucherDetailsCurrency.nameL1 = result.currency?.nameL1;
-        tempJournalVoucherDetailsCurrency.nameL2 = result.currency?.nameL2;
+        tempJournalVoucherDetailsCurrency.nameL2 = result.currency?.nameL2;        
      }
+
+     this.voucherJournal.journalVoucherDetails[i].debitDefaultCurrency = (this.voucherJournal.journalVoucherDetails[i].debit || 0) * (this.voucherJournal.journalVoucherDetails[i].currencyExchange || 0);
+     this.voucherJournal.journalVoucherDetails[i].creditDefaultCurrency = (this.voucherJournal.journalVoucherDetails[i].credit || 0) * (this.voucherJournal.journalVoucherDetails[i].currencyExchange || 0);
    
     if(result.accountCostCenter.length > 0){
       this.voucherJournal.journalVoucherDetails[i].costCenterId = result.accountCostCenter[0].id;
@@ -472,7 +522,7 @@ addAccountItemById(id:number){
 addAccountItemByAccountNo(accountNo:string, i?:number){  
  
   this.accountService.accountGetByAccountNo(accountNo).subscribe(result=>{  
-      if(result){
+      if(result){        
         if(i !== undefined)    
         {     
           this.addOldAccount(i,result);        

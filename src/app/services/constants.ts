@@ -5,4 +5,6 @@ export class Constants {
   static ApiUrl: string = "http://localhost:57380"; 
   static ApiUrlLogin: string = "http://localhost:57380/api/user/authenticate";
   
+
+  static inputsCount = 5;
 }

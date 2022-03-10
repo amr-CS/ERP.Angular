@@ -216,25 +216,32 @@
           </thead>
 
           <tbody>
-              <tr *ngFor="let vj of this.voucherJournal.journalVoucherDetails; let i = index">
+              <tr *ngFor="let vj of this.voucherJournal.journalVoucherDetails; let i = index;trackBy:trackByIndex;" > 
                   <td>
+                    <button type="button" class="btn btn-light btn-sm border btnAddRow" (click)="addItemDetail(i)" [disabled]="isUpdate">
+                      <i class="fa fa-plus-circle"></i>
+                  </button>
                   </td>
-
                   <td>
                       <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none txtAccountId" type="text" required />
                       <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
-                      <input #accountNumber = "ngModel" class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}" required  name="{{'txtAccountNo' + i}}" [(ngModel)]="vj.accountNo" (dblclick)="AccountOpenPopup(i)" [disabled]="isUpdate" (change)="addAccountItemByAccountNo(accountNumber.value,i)"
-                      [ngClass]="{'is-invalid': accountNumber.invalid && (accountNumber.touched || accountNumber.dirty)}"/>
+                      <input #accountNumberRow  #accountNumber = "ngModel" class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"   name="{{'txtAccountNo' + i}}" [(ngModel)]="vj.accountNo" 
+                      (dblclick)="AccountOpenPopup(i)" [disabled]="isUpdate" (change)="addAccountItemByAccountNo(accountNumber.value,i)"                      
+                      [required]="isAccountNoRequired(accountNumber,debit,credit)"
+                      [ngClass]="{'is-invalid': (accountNumber.value =='' && (accountNumber.dirty))  
+                                              || (accountNumber.value =='' && ((debit.invalid || debit.dirty) || (credit.invalid || credit.dirty)))}"/>
+                      <!-- [required]="accountNumberRow.classList.contains('is-invalid')" -->
+                      <!-- [ngClass]="{'is-invalid': accountNumber.invalid && (accountNumber.touched || accountNumber.dirty)}" -->
                       <!-- (blur)="setFocus(table,$event.target,4) -->
                     <!-- onblur="funFoucus('txtDebitCurrency')" -->
                   </td>
                   <td>
-                    <textarea *ngIf="vj.account" class="form-control form-control-sm text-center fullHeightInput" type="text" required readonly name="{{'txtAccountName' + i}}" [(ngModel)]="vj.account.nameL1" [disabled]="isUpdate"></textarea>
+                    <textarea *ngIf="vj.account" class="form-control form-control-sm text-center fullHeightInput" type="text"  readonly name="{{'txtAccountName' + i}}" [(ngModel)]="vj.account.nameL1" [disabled]="isUpdate"></textarea>
                   </td>
                   <td>
                       <!-- <input class="form-control form-control-sm text-center   txtAccountCurrency d-none" type="text" required disabled /> -->
                       <input *ngIf="vj.currency" class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyName' + i}}" [(ngModel)]="vj.currency.nameL1"/>
-                    <input class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyExchange' + i}}" [(ngModel)]="vj.currencyExchange"/>
+                    <input class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyExchange' + i}}" [(ngModel)]="vj.currencyExchange" />
                   </td>
                   <td>
                     <input #debit="ngModel" class="form-control form-control-sm text-center font-weight-bold" (change)="totalDebitCreditCalculate();" value="0" type="number" min=0 required name="{{'txtDebitCurrency' + i}}" [(ngModel)]="vj.debit" (ngModelChange)="vj.debitDefaultCurrency = (vj.debit || 0) * (vj.currencyExchange || 0)" [disabled]="isUpdate"
