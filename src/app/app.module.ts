@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +22,8 @@ import { MatListModule } from '@angular/material/list';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TableDetailsComponent } from './shared/table-details/table-details.component';
+import { VoucherJournalComponent } from './voucherjournal/voucherjournal.component';
+import { VoucherJournalFilterPipe } from './pipes/voucherjournalfilter.pipe';
 import { LoginComponent } from './login/login.component';
 import { AreaComponent } from './Area/Area.component';
 import { AuthGuard } from './_guard/auth.guard';
@@ -68,7 +69,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {OverlayModule} from '@angular/cdk/overlay';
 import { TableDynamicArrayDataExampleComponent } from './TableDynamicArrayDataExample/TableDynamicArrayDataExample.component';
-
+import { AccountfilterPipe } from './pipes/accountfilter.pipe';
+import { CostcenterfilterPipe } from './pipes/costcenterfilter.pipe';
 
 
 export function HttpLoaderFactory(http:HttpClient){
@@ -78,7 +80,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [									
+  declarations: [										
     AppComponent,
     DemographicinfoComponent,
     DemographicfilterPipe,
@@ -87,11 +89,15 @@ export function HttpLoaderFactory(http:HttpClient){
       HomeComponent,
       DashboardComponent,
       TableDetailsComponent,
+      VoucherJournalComponent,
+      VoucherJournalFilterPipe,
       LoginComponent,
       AreaComponent,
       ChartOfAccountComponent,
       TreeComponentComponent,
-      TableDynamicArrayDataExampleComponent
+      TableDynamicArrayDataExampleComponent,
+      AccountfilterPipe,
+      CostcenterfilterPipe,
    ],
   imports: [
     BrowserModule,

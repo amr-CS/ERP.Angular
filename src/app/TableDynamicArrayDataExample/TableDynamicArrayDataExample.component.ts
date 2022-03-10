@@ -5,6 +5,9 @@ import {MatSort} from '@angular/material/sort';
 import {MatTable, MatTableDataSource, _MatTableDataSource} from '@angular/material/table';
 import { AlertifyService } from '../services/alertify.service';
 import { TreeService } from '../services/tree.service';
+import { AccountMain } from '../interfaces/accountMain.interface';
+import { NgForm } from '@angular/forms';
+
 
 
 @Component({
@@ -21,11 +24,26 @@ export class TableDynamicArrayDataExampleComponent implements OnChanges  {
   sort!: MatSort;
   @Input() parentData: any;
 
+  
   @Input()
   buttonTrigger!: boolean;
   buttonToggle: boolean = false;
 id:number=0
-  
+
+
+  public Account={
+  accountNo:null,
+  nameL1:'',
+
+  };
+
+  AccountCreateUpdate(myForm:NgForm) {
+    let AccountMain=[...this.dataSource.filteredData];
+   // this.tree.CreateAccount(this.dataSource.filteredData).subscribe(()=>{
+
+    //})
+    console.log(this.dataSource.filteredData)
+  }
   ngOnChanges(changes: SimpleChanges) {
     
     this.tree.AccountTree(this.parentData).subscribe(result => {
@@ -56,9 +74,11 @@ id:number=0
     }
   }
   addData() {
-    let ELEMENT_DATA=this.dataSource.filteredData
-    const randomElementIndex = Math.floor(Math.random() * ELEMENT_DATA.length);
-    this.dataSource.filteredData = [...this.dataSource.filteredData, ELEMENT_DATA[randomElementIndex]];
+   //let ELEMENT_DATA=this.dataSource.filteredData
+    /*const randomElementIndex = Math.floor(Math.random() * ELEMENT_DATA.length);
+    console.log(ELEMENT_DATA[randomElementIndex])*/
+    let d={accountNo:null,nameL1:null} 
+    this.dataSource.filteredData = [...this.dataSource.filteredData, d];
     this.dataSource=new MatTableDataSource(this.dataSource.filteredData);
   }
   

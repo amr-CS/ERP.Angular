@@ -30,5 +30,14 @@ DeleteAccount(id:any) {
 
   return this.http.delete(Constants.ApiUrlMain + 'account/'+id)
 }
+CreateAccount(accountMain: AccountMain) {
+
+  return this.http.post<any>(Constants.ApiUrlMain + 'account/AddEditBulk/',JSON.stringify(accountMain), {
+    'headers': { 'content-type': 'application/json' }
+  }
+  )
+}
+
+
 
 }

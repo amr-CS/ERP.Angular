@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Constants } from './constants';
 
-import { DemographicInfo, DemographicInfoDetails } from '../interfaces/demographicInfo.interface';
+import { DemographicInfo} from '../interfaces/demographicInfo.interface';
 
 @Injectable({
   providedIn: 'root'

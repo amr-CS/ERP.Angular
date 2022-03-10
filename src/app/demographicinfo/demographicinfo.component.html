@@ -5,7 +5,7 @@
     <div class="page__content-data position-absolute text-center">
       <form #myForm="ngForm" (submit)="demoGraphicCreateUpdate(myForm)">
         <div class="form group" *ngIf="isDetailsEmpty">
-          <span  class="text-danger" >
+          <span  class="text-danger">
             {{'required_details'|translate}}
           </span>
         </div>
@@ -19,7 +19,7 @@
                 <input type="button" id="btnSearch" value="{{'search'|translate}}" (click)="demoGraphicGetById(demographicID.value)" class="btn btn-primary" />
               </div>
               <div class="col-md-1">
-                <input type="button" id="btnNew" value="{{'new'|translate}}" (click)="reloadComponent()" class="btn btn-primary" />
+                <input type="button" id="btnNew" value="{{'new'|translate}}" (click)="utilityService.reloadComponent()" class="btn btn-primary" />
               </div>
               <div class="col-md-1">
                 <input type="button" id="btnDelete" value="{{'delete'|translate}}" (click)="demoGraphicDelete(demographicID.value)" class="btn btn-danger" />
