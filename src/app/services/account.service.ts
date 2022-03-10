@@ -18,5 +18,9 @@ export class AccountService {
     return this.http.get<any>(Constants.ApiUrl + '/api/Account/' + id);
   }
 
+  accountGetByAccountNo(accountNo: string) {
+    return this.http.get<any>(Constants.ApiUrl + '/api/Account/GetByAccountNo?accountNo=' + accountNo);
+  }
+
 
 }
