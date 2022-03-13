@@ -471,6 +471,10 @@ addOldAccount(i:number, result:any){
           tempJournalVoucherDetailsCostCenter.code = result.accountCostCenter[0].costCenter.code;
        }
      }
+     else{
+      this.voucherJournal.journalVoucherDetails[i].costCenterId = undefined;
+      this.voucherJournal.journalVoucherDetails[i].costCenter = {};
+     }
 }
 
 addNewAccount(result:any){
@@ -524,8 +528,9 @@ addAccountItemByAccountNo(accountNo:string, i?:number){
   this.accountService.accountGetByAccountNo(accountNo).subscribe(result=>{  
       if(result){        
         if(i !== undefined)    
-        {     
-          this.addOldAccount(i,result);        
+        {              
+          this.addOldAccount(i,result);
+          
         }
     
         else {
