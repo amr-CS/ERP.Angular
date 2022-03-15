@@ -3,11 +3,11 @@
   <div class="page__content shadow p-3 ">
     <div class="row">
       
-  <div class="divTreeContainer col-md-4">
-    <app-tree-component #myButton (passId)="reload($event)"></app-tree-component>
+  <div class="divTreeContainer col-md-3">
+    <app-tree-component #myButton (passId)="reload($event)"  ></app-tree-component>
   </div>
-  <div  id="divContainer" class="col-md-8">
-    <app-TableDynamicArrayDataExample  #myButton1 [parentData]=data ></app-TableDynamicArrayDataExample>
+  <div  id="divContainer" class="col-md-9 divContainer" >
+    <app-TableDynamicArrayDataExample  #myButton1 [parentData]=data [accountFromParent]="account" ></app-TableDynamicArrayDataExample>
   </div> <!-- End of Data Container -->
   </div>
  

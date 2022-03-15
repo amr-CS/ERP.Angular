@@ -198,6 +198,7 @@ export class VoucherJournalComponent implements OnInit {
           }); 
           this.totalDebitCreditCalculate();        
         }
+        console.log(this.voucherJournal.journalVoucherDetails)
       }, error => console.error(error));
     }
 
@@ -265,7 +266,8 @@ export class VoucherJournalComponent implements OnInit {
             this.successCreateUpdate(result);
         },  error => console.error(error));
       }
-      else{             
+      else{          
+           
         this.service.voucherJournalUpdate(this.voucherJournal).
         subscribe(result => {
           this.successCreateUpdate(result);          

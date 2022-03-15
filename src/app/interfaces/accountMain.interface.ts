@@ -4,9 +4,17 @@
     parentId: any;
     children?: FoodNodeFlat[];
    }*/
+
+import { NameCommon } from "./namecommon.interface";
+
   
-  export interface AccountMain {
+
+   export interface AccountMain {
+    accountDetail: AccountDetail[];
+  }
+  export interface AccountDetail{
     id: any,
+    code:any,
     nameL1: string,
     nameL2: any,
     accountNo: any,
@@ -15,10 +23,14 @@
     accountLevel: any,
     isCumulative: any,
     accountTypeId: any,
+    accountTypeName:any,
     currencyId: any,
+    currencyName:any,
     accountReportId: any,
+    accountReportName:any,
     accountCategoryId: any,
     securityGradeId: any,
+    securityGradeName:any,
     isCostCenter: any,
     currencyFactorId: any,
     accountIsDebit: any,
@@ -29,6 +41,7 @@
     createdOn: any,
     lastUpdatedBy: any,
     lastUpdatedOn: any,
-    accountCostCenter: []
-    children?: AccountMain[];
+   // accountCostCenter: []
+  // currency?:NameCommon;
+   children?: AccountDetail[];
    }

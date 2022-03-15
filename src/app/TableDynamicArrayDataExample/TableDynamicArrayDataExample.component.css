@@ -1,9 +1,25 @@
-table {
-  width: 100%;
+body {
+  font-family: Cairo;
 }
 
-.mat-form-field {
-  font-size: 14px;
-  width: 100%;
+.table th, .table td {
+  font-size: 12px;
+  text-align: center;
 }
 
+.table th {
+  margin: auto;
+  border: none !important;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.table th, .table td {
+  padding: 0rem !important;
+
+}
+
+.form-control {
+
+   border-radius: 0rem !important; 
+}

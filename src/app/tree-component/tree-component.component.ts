@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { TreeService } from '../services/tree.service';
-import { AccountMain } from '../interfaces/accountMain.interface';
+import { AccountDetail } from '../interfaces/accountMain.interface';
 import { newArray } from '@angular/compiler/src/util';
 
 
-let TREE_DATA: AccountMain[] 
+let TREE_DATA: AccountDetail[] 
 
 
 
@@ -25,14 +25,16 @@ interface AccountNode {
 })
 export class TreeComponentComponent implements OnInit {
 @Output() passId = new EventEmitter<any>();
+@Output() passAccount = new EventEmitter<any>();
+
   @Input()
   message!: string;
 
   
-private _transformer = (node: AccountMain, level: number) => {
+private _transformer = (node: AccountDetail, level: number) => {
  return {
  expandable: !!node.children && node.children.length > 0,
- name: node.nameL1,
+ name:    node.accountNo + node.nameL1,
  id: node.id,
  level: level,
  };
@@ -44,13 +46,9 @@ treeFlattener = new MatTreeFlattener(
  this._transformer, node => node.level, node => node.expandable, node => node.children);
 dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 constructor(private tree:TreeService) {
-
   this.tree.accountGetAll().subscribe((result) => {
-  
   TREE_DATA=result
   this.dataSource.data =this.treeConstruct(TREE_DATA);
-
-
    }, error => console.error(error));
  }
 hasChild = (_: number, node: AccountNode) => node.expandable;
@@ -59,8 +57,6 @@ ngOnInit() {
  
 
  }
-
-
  treeConstruct(treeData:any) {
   let constructedTree: never[] = [];
   for (let i of treeData) {
@@ -104,6 +100,11 @@ clickHandler(event: any) {
   if (event && event.target && event.target.childNodes[0]) {
     /*  alert(event.target.childNodes[0].ariaLabel)*/
     this.passId.emit(event.target.childNodes[0].ariaLabel)
+
+   
+
+
+    
   }
 }
 

@@ -71,6 +71,9 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import { TableDynamicArrayDataExampleComponent } from './TableDynamicArrayDataExample/TableDynamicArrayDataExample.component';
 import { AccountfilterPipe } from './pipes/accountfilter.pipe';
 import { CostcenterfilterPipe } from './pipes/costcenterfilter.pipe';
+import { CurrencyfilterPipe } from './pipes/currencyfilter.pipe';
+import { SecurityGradePipe } from './pipes/securityGrade.pipe';
+
 
 
 export function HttpLoaderFactory(http:HttpClient){
@@ -98,6 +101,8 @@ export function HttpLoaderFactory(http:HttpClient){
       TableDynamicArrayDataExampleComponent,
       AccountfilterPipe,
       CostcenterfilterPipe,
+      CurrencyfilterPipe,
+      SecurityGradePipe
    ],
   imports: [
     BrowserModule,

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AccountMain } from '../interfaces/accountMain.interface';
+import { AccountDetail, AccountMain } from '../interfaces/accountMain.interface';
 import { TreeService } from '../services/tree.service';
 
 @Component({
@@ -14,6 +14,10 @@ export class ChartOfAccountComponent implements OnChanges {
  
   //test
   data:any = 0
+  account={
+    id:0,
+    nameL1:'',
+  }
 
 
   name!: string;
@@ -32,7 +36,13 @@ export class ChartOfAccountComponent implements OnChanges {
   @ViewChild('myButton1') myButton1: any;
   reload(id:any){
     this.data = id;
+    this.tree.GetAccount(id).subscribe((result)=>{
+      console.log(result)
+    this.account=result
+    })
+    
 }
+
 
 
 }
