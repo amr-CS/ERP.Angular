@@ -15,6 +15,11 @@ export class VoucherJournalService {
     return this.http.get<VoucherJournal[]>(Constants.ApiUrl + '/api/JournalVoucher');
   }
 
+  voucherJournalGetByTransactionTypeId(transactionTypeId:number) {
+    return this.http.get<VoucherJournal[]>(Constants.ApiUrl + '/api/JournalVoucher/GetByJournalTypeId/'
+    + transactionTypeId);
+  }
+
 
   voucherJournalGetById(id: number) {
     return this.http.get<VoucherJournal>(Constants.ApiUrl +'/api/JournalVoucher/' + id);

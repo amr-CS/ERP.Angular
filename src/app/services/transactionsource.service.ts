@@ -13,4 +13,8 @@ export class TransactionSourceService {
   transactionSourceGetById(id: number) {
     return this.http.get<NameCommon>(Constants.ApiUrl +'/api/TransactionSource/' + id);
   }
+  
+  transactionSourceGetAll() {
+    return this.http.get<[NameCommon]>(Constants.ApiUrl +'/api/TransactionSource/');
+  }
 }

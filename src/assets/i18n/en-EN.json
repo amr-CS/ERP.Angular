@@ -70,6 +70,34 @@
     "voucher_glvoucherrefdate":"Voucher Ref Date",
     "voucher_statement":"Statement",
     
+    
     "account_accountdirectory":"Account Directory",
-    "costcenter_costcenter":"Cost Center"
+    "costcenter_costcenter":"Cost Center",
+    
+    "voucher_receipt":"Voucher Receipt",
+    "voucher_receivedfrom":"Received From",
+    "voucher_categorycode":"Category Code",
+    "voucher_customerno":"CustomerNo",
+    "voucher_customer":"Customer",
+    "voucher_monetary":"Monetary",
+    "voucher_check":"Check",
+    "voucher_creditcard":"Credit Card",
+    "voucher_paymenttype":"Payment Type",
+    "voucher_amount":"Amount",
+    "voucher_sumcashandcheques":"Sum Of Cash And Cheques",
+    "voucher_amountbyaccountcurrency":"Amount With Account Currency",
+    "voucher_amountbase":"Amount With Base Currency",
+    "voucher_cashboxno":"Cash Box No",
+    "voucher_cashdesk":"Cash Desk",
+    "voucher_bank":"Bank Name",
+    "voucher_bankBranches":"Bank Branches",
+    "voucher_drawnonabank":"Drawn on a Bank",
+    "voucher_chosebanktitle":"To Choose Bank Double Click",
+    "voucher_choseboxtitle":"To Choose Box Double Click",
+    "voucher_branchcode":"Branch Code",
+    "voucher_creditcardtype":"Credit Card Type",
+    "voucher_chosepaymenttypetitle":"To Choose Payment Type Double Click",
+    "voucher_cashreceipt":"Cash Receipt",
+    "voucher_glvouchercategoryid":"Voucher Category"
+    
 }

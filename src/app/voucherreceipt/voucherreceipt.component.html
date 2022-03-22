@@ -1,0 +1,1747 @@
+<div class="container-fluid">
+  <form #myForm="ngForm" (submit)="voucherReceiptCreateUpdate(myForm)">
+    <!-- Title -->
+    <div class="bg-light border rounded p-3 mb-3">{{'voucher_cashreceipt' |translate}}</div>
+    <!-- Utlity -->
+    <div class="divUtilityBar d-flex ">
+      <input type="button" class="btn btn-primary float-right" (click)="openPopup()" value="{{'search'|translate}}">
+      <input type="submit" value="{{'save-all'|translate}}" class="btn btn-primary" [disabled]="isUpdate" />
+      <div class="col-md-1">
+        <input type="button" id="btnNew" value="{{'new'|translate}}" (click)="utilityService.reloadComponent()"
+          class="btn btn-primary" />
+      </div>
+      <div class="col-md-1">
+        <input type="button" id="btnDelete" value="{{'delete'|translate}}"
+          (click)="voucherReceiptDelete(voucherReceipt.id)" class="btn btn-danger" [disabled]="isUpdate" />
+      </div>
+      <div class="col-md-2">
+        <input type="button" id="btnIsUpdate" value="{{'update_status'|translate}}"
+          (click)="voucherReceiptIsUpdateableToggle()" class="btn btn-primary" />
+      </div>
+    </div>
+
+    <!-- Head -->
+    <div class="bg-white border rounded p-3">
+      <div class="row">
+
+        <!-- Main Inputs -->
+        <div class="col-sm-12">
+
+          <!-- 1st Row Input -->
+          <div class="row">
+
+            <!-- Right Controls [Doc No, Ref, ..] -->
+            <div class="col-sm-4 mt-3">
+
+              <!-- Doc No -->
+              <div class="row mt-3">
+                <div class="col-sm-2">
+                  <label class="small float-right pt-2">{{'voucher_receivedfrom' |translate}}</label>
+                </div>
+                <div class="col-sm-6">
+                  <input  type="text" class="form-control form-control-sm txtPerson" name="txtPerson"
+                    [(ngModel)]="voucherReceipt.person" [disabled]="isUpdate" required
+                    #TxtPerson="ngModel" [ngClass]="{'is-invalid': (TxtPerson.invalid) && (TxtPerson.touched || TxtPerson.dirty)}"/>
+                </div>
+              </div>
+
+              <!-- Doc Date -->
+              <div class="row mt-2">
+                <div class="col-sm-2">
+                  <label class="small float-right pt-2">{{'voucher_categorycode' |translate}}</label>
+                </div>
+                <div class="col-sm-6 d-flex">
+                  <input #sourceTypeId="ngModel" type="number" class="form-control form-control-sm w-25 txtCategoryId"
+                    name="txtCategoryId" [(ngModel)]="voucherReceipt.sourceTypeId" [disabled]="isUpdate"
+                    (dblclick)="TransactionSourceOpenPopup()" (change)="transactionSourceGetById(sourceTypeId.value)" 
+                    required [ngClass]="{'is-invalid': (sourceTypeId.invalid) && (sourceTypeId.touched || sourceTypeId.dirty)}"/>
+                  <input type="text" class="form-control form-control-sm w-75 txtCategoryName" name="txtCategoryName"
+                    [(ngModel)]="voucherReceipt.sourceTypeName" value="" disabled />
+                </div>
+              </div>
+              <!-- Source -->
+              <div class="row mt-2">
+                <div class="col-sm-2 ">
+                  <label class="small float-right pt-2">{{'voucher_customerno' |translate}}</label>
+                </div>
+                <div class="col-sm-6 d-flex">
+                  <input #customerCode="ngModel" type="number" class="form-control form-control-sm w-25 txtCSId" name="txtCSId"
+                    [(ngModel)]="voucherReceipt.customerVendorCode" [disabled]="isUpdate"
+                    (dblclick)="isCustomer = true;CustomerOpenPopup()"
+                    (change)="isCustomer=true;customerGetByCode(customerCode.value)" required
+                    [ngClass]="{'is-invalid': (customerCode.invalid) && (customerCode.touched || customerCode.dirty)}"/>
+                  <input type="text" class="form-control form-control-sm w-75 txtCSName" name="txtCSName" value=""
+                    [(ngModel)]="voucherReceipt.customerVendorName" disabled />
+                </div>
+              </div>
+              <!-- Ref Doc Date -->
+              <!-- Source -->
+              <div class="row mt-2">
+                <div class="col-sm-2">
+                  <label class="small float-right pt-2">{{'voucher_salesman' |translate}} </label>
+                </div>
+                <div class="col-sm-6 d-flex">
+                  <input #salesCode="ngModel" type="number" class="form-control form-control-sm w-25 txtSalesId" name="txtSalesId"
+                    [(ngModel)]="voucherReceipt.salesCode" [disabled]="isUpdate"
+                    (dblclick)="isCustomer = false;CustomerOpenPopup()"
+                    (change)="isCustomer=false;customerGetByCode(salesCode.value)" required
+                    [ngClass]="{'is-invalid': (salesCode.invalid) && (salesCode.touched || salesCode.dirty)}"/>
+                  <input type="text" class="form-control form-control-sm w-75 txtSalesName" name="txtSalesName" value=""
+                    [(ngModel)]="voucherReceipt.salesName" disabled />
+                  <!-- onblur="funFoucus('txtDocNote')" -->
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4 mt-3 ">
+
+              <div class="divCashBox PayTypeId mt-2">
+                <div class="row m-1">
+                  <div class="form-check m-2 custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input chkIsCash" name="chkIsCash" checked
+                      id="chkIsCash" [(ngModel)]="voucherReceipt.isCash" value="1" 
+                      [disabled]="isUpdate ||(!voucherReceipt.isCheck && !voucherReceipt.isCreditCard)">
+                    <label class="custom-control-label small" for="chkIsCash">{{'voucher_monetary' |translate}}</label>
+                  </div>
+                  <div class="form-check m-2  custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input chkIsCheck" name="chkIsCheck" id="chkIsCheck"
+                      [(ngModel)]="voucherReceipt.isCheck" value="2" 
+                      [disabled]="isUpdate ||(!voucherReceipt.isCash && !voucherReceipt.isCreditCard)">
+                    <label class="custom-control-label small" for="chkIsCheck">{{'voucher_check' |translate}}</label>
+                  </div>
+                  <div class="form-check m-2 custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input chkIsMasterCard" name="chkIsMasterCard"
+                      id="chkIsMasterCard" [(ngModel)]="voucherReceipt.isCreditCard" value="3" 
+                      [disabled]="isUpdate ||(!voucherReceipt.isCheck && !voucherReceipt.isCash)">
+                    <label class="custom-control-label small" for="chkIsMasterCard">{{'voucher_creditcard'
+                      |translate}}</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="divChkStat mt-2">
+                <div class="row m-1">
+                  <div class="form-check m-2 custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input chkIsDocWait" name="chkIsIncomplete"
+                      [(ngModel)]="voucherReceipt.isIncomplete" [disabled]="isUpdate">
+                    <label class="custom-control-label small" for="IsComplete">{{'voucher_incomplete'
+                      |translate}}</label>
+                  </div>
+                  <div class="form-check m-2  custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input chkIsDocCancelled" name="chkIsCancelled"
+                      [(ngModel)]="voucherReceipt.isCancelled" [disabled]="isUpdate">
+                    <label class="custom-control-label small" for="IsCancelled">{{'voucher_canceled'
+                      |translate}}</label>
+                  </div>
+                  <div class="form-check m-2 custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input chkDocIsPosted" disabled name="chkIsPosted"
+                      [(ngModel)]="voucherReceipt.isPosted">
+                    <label class="custom-control-label small" for="IsPosted">{{'voucher_posted' |translate}}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="">
+                <div>
+                  <label>{{'voucher_note' |translate}}</label>
+                </div>
+                <div>
+                  <input type="text" class="form-control txtDocNote" name="txtNotes" [(ngModel)]="voucherReceipt.notes"
+                    [disabled]="isUpdate" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Left Controls [Doc No, Ref, ..] -->
+            <div class="col-sm-4 mt-3">
+
+              <!-- Doc No -->
+              <div class="row controlRow">
+                <div class="col-sm-4">
+                  <label class="small float-right pt-2">{{'voucher_no' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm txtDocNo" disabled name="txtDocumentNumber"
+                    [(ngModel)]="voucherReceipt.documentNumber" />
+                </div>
+              </div>
+
+              <!-- Doc Date -->
+              <div class="row controlRow">
+                <div class="col-sm-4">
+                  <label class="small float-right pt-2">{{'voucher_date' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+
+                  <input #date="ngModel" type="date" class="form-control form-control-sm dtpDocDate" required
+                    ngClass="invalid" name="dtp.date" [ngModel]="voucherReceipt.date | date:'yyyy-MM-dd'"
+                    (ngModelChange)="voucherReceipt.date = $event" [disabled]="isUpdate"
+                    [ngClass]="{'is-invalid': (date.invalid || !isCurrentFinancialYear) && (date.touched || date.dirty)}"
+                    (change)="checkForcurrentSelectedDateYear()" />
+                </div>
+              </div>
+
+              <!-- Ref Doc No -->
+              <div class="row controlRow">
+                <div class="col-sm-4">
+                  <label class="small float-right pt-2">{{'voucher_refrenceno' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm txtDocRefNo" name="txtReferenceNumber"
+                    [(ngModel)]="voucherReceipt.referenceNumber" [disabled]="isUpdate" />
+                </div>
+              </div>
+
+              <!-- Ref Doc Date -->
+              <div class="row controlRow">
+                <div class="col-sm-4">
+                  <label class="small float-right pt-2">{{'voucher_refrencedate' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                  <input type="date" class="form-control form-control-sm dtpDocRefDate" name="dtpReferenceDate"
+                    [ngModel]="voucherReceipt.referenceDate | date:'yyyy-MM-dd'"
+                    (ngModelChange)="voucherReceipt.referenceDate = $event" [disabled]="isUpdate" />
+                  <!-- onblur="funFoucus('txtAccountCode')" -->
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div> <!-- End of Main Inputs -->
+
+      </div>
+    </div>
+    <div class=" mb-3">
+      <div class="bg-white border rounded p-3">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" id="divCash" *ngIf="voucherReceipt.isCash">
+            <a (click)="selectedTab = 'home'" class="nav-link" id="home-tab" data-toggle="tab" role="tab"
+              aria-controls="home" aria-selected="true">{{'voucher_monetary' |translate}}</a>
+          </li>
+
+          <li class="nav-item" id="divCheck" *ngIf="voucherReceipt.isCheck">
+            <a (click)="selectedTab = 'profile'" class="nav-link" id="profile-tab" disabled data-toggle="tab" role="tab"
+              aria-controls="profile" aria-selected="false">{{'voucher_check' |translate}}</a>
+          </li>
+          <li class="nav-item" id="divMaster" *ngIf="voucherReceipt.isCreditCard">
+            <a (click)="selectedTab = 'contact'" class="nav-link" id="contact-tab" data-toggle="tab" role="tab"
+              aria-controls="contact" aria-selected="false">{{'voucher_creditcard' |translate}}</a>
+          </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-content" id="myTabContent">
+            <div *ngIf="selectedTab === 'home' && voucherReceipt.isCash" class="tab-pane active" id="home"
+              role="tabpanel" aria-labelledby="home-tab">
+              <div class="container-fluid ">
+                <table class="table table-bordered table-hover">
+                  <!--CashDesk-->
+                  <tr>
+                    <th></th>
+                    <th>
+                      <div class="d-flex">
+                        <div class="col-sm-3">
+                          <div>{{'voucher_cashboxno' |translate}}</div>
+                        </div>
+                        <div class="col-sm-9">
+                          <div>{{'voucher_cashdesk' |translate}}</div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div>{{'voucher_currency' |translate}}</div>
+                      <div>{{'voucher_amount' |translate}}</div>
+                    </th>
+                    <th>
+
+                      <div> {{'voucher_exchangerate' |translate}}</div>
+                      <div>{{'voucher_amountbyaccountcurrency' |translate}}</div>
+                    </th>
+                    <th>
+                      <div> {{'voucher_exchangerate' |translate}}</div>
+                      <div>{{'voucher_amountbase' |translate}}</div>
+                    </th>
+                    <th>{{'voucher_note' |translate}}</th>
+                    <th>
+
+                      <div class="d-flex">
+
+                        <div class="col-sm-3">
+                          <div>{{'voucher_costcenter' |translate}}</div>
+                        </div>
+                        <div class="col-sm-9">
+                          <div>{{'voucher_costcentername' |translate}}</div>
+                        </div>
+                      </div>
+                    </th>
+                    <th></th>
+                  </tr>
+                  <!--CashDesk-->
+                  <tbody class="tblCashDeskBody">
+                    <tr *ngFor="let vj of this.voucherReceipt.receiptVoucherCash; let i = index;trackBy:trackByIndex;"
+                      class="trBaseRow tblCashDeskRow" data-id="0">
+                      <td class="">
+                        <button class="btn btn-light btn-sm border btnCashDeskAddRow" type="button"
+                          [disabled]="isUpdate" (click)="addItemCashDetail(i)">
+                          <i class="fa fa-plus-circle"></i>
+                        </button>
+                      </td>
+                      <td class="">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #CashBoxCode="ngModel" *ngIf="vj.box" class="form-control form-control-sm text-center "
+                              name="{{'txtCashCode' + i}}" title="{{'voucher_choseboxtitle' |translate}}" type="number"
+                              [(ngModel)]="vj.box.code" (dblclick)="BoxOpenPopup(i)" (change)="boxGetByCode(CashBoxCode.value,i)" 
+                              [disabled]="isUpdate"  [required]="voucherReceipt.isCash"
+                              [ngClass]="{'is-invalid': (CashBoxCode.invalid) && (CashBoxCode.touched || CashBoxCode.dirty)}"/>
+                            <!-- onblur="funFoucus('txtCashCurrencyId')" -->
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.box" class="form-control form-control-sm text-center "
+                              name="{{'txtCashName' + i}}" type="text" disabled="" [(ngModel)]="vj.box.nameL1" />
+                          </div>
+                        </div>
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #TxtCashAccountNo ="ngModel" *ngIf="vj.account" type="text" class=" form-control form-control-sm text-center"
+                              name="{{'txtCashAccountNo' + i}}" disabled [(ngModel)]="vj.account.code" 
+                              [required]="voucherReceipt.isCash" 
+                              [ngClass]="{'is-invalid': (TxtCashAccountNo.invalid) && (TxtCashAccountNo.touched || TxtCashAccountNo.dirty)}"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.account" class="form-control form-control-sm text-center font-weight-bold"
+                              name="{{'txtCashAccountName' + i}}" disabled type="text" min=0
+                              [(ngModel)]="vj.account.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="" width="10%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #CashCurrencyCode="ngModel" *ngIf="vj.currency" type="number" [(ngModel)]="vj.currency.code"
+                              class=" form-control form-control-sm text-center " name="{{'txtCashCurrencyCode' + i}}"
+                              (dblclick)="CurrencyOpenPopup(i,'cash')" (change)="currencyGetByCode(CashCurrencyCode.value,i,'cash')"
+                              [disabled]="isUpdate" [required]="voucherReceipt.isCash"
+                              [ngClass]="{'is-invalid': (CashCurrencyCode.invalid) && (CashCurrencyCode.touched || CashCurrencyCode.dirty)}"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.currency" [(ngModel)]="vj.currency.nameL1"
+                              class="form-control form-control-sm text-center font-weight-bold"
+                              name="{{'txtCashAccountCurrencyName' + i}}" disabled type="text" min=0 />
+                          </div>
+                        </div>
+
+                        <input #txtCashDtlPayDebit="ngModel" [(ngModel)]="vj.amountDefaultCurrency"
+                          class="form-control form-control-sm text-center font-weight-bold"
+                          name="{{'txtCashDtlPayDebit' + i}}" type="text" min=0  (change)="calculateTotalCash()"
+                          (ngModelChange)="vj.amount = vj.amountDefaultCurrency 
+                          * (vj.currencyEquivalent || 1)" [disabled]="isUpdate" [required]="voucherReceipt.isCash"
+                          [ngClass]="{'is-invalid': (txtCashDtlPayDebit.invalid) && (txtCashDtlPayDebit.touched || txtCashDtlPayDebit.dirty)}"/>
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold "
+                          name="{{'txtCashPayCurrencyValue' + i}}" value="0" type="text" min=0 disabled
+                          [(ngModel)]="vj.currencyEquivalent" />
+                        <input class="form-control form-control-sm text-center font-weight-bold " type="text"
+                          name="{{'txtCashdebit' + i}}" value="0" min=0 disabled [(ngModel)]="vj.amount" />
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold "
+                          name="{{'txtCashBaseCurrencyValue' + i}}" value="1" type="number" min=0 disabled />
+                        <input class="form-control form-control-sm text-center font-weight-bold " type="text"
+                          name="{{'txtCashBasedebit' + i}}" value="0" min=0 disabled
+                          [(ngModel)]="vj.amountDefaultCurrency"/>
+                      </td>
+                      <td class="">
+                        <textarea class="form-control form-control-sm text-center txtNote" name="{{'txtCashNote' + i}}"
+                          style="height:50px" [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
+                      </td>
+                      <td class="">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="vj.costCenter &&  vj.box"
+                              class="form-control form-control-sm text-center fullHeightInput"
+                              name="{{'txtCashCostCenterCode' + i}}"
+                              title="{{'voucher_chosecostcentertitle' |translate}}" type="text" readonly
+                              [(ngModel)]="vj.costCenter.code" (dblclick)="CostCenterOpenPopup(vj.box.accountId || 0,i,'cash')"
+                              [disabled]="isUpdate"/>
+                              <!-- onblur="funFoucus('txtAccountCode')" -->
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.costCenter"
+                              class="form-control form-control-sm text-center fullHeightInput"
+                              name="{{'txtCashCostCenterName' + i}}" type="text" disabled
+                              [(ngModel)]="vj.costCenter.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <button class="btn btn-light btn-sm btnCashDelete" (click)="removeItemCashDetail(i)"
+                          [disabled]="isUpdate"><i class="fa fa-trash"></i> </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="trBaseRow tblCashDeskRow">
+                      <td class="">
+                        <button class="btn btn-light btn-sm border btnCashDeskAddRow" type="button"
+                          [disabled]="isUpdate" (click)="addItemCashDetail()">
+                          <i class="fa fa-plus-circle"></i>
+                        </button>
+                      </td>
+                      <td class="">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #NewCashBoxCode *ngIf="newVoucherReceiptCashDetail.box"
+                              class="form-control form-control-sm text-center " name="txtNewCashCode"
+                              title="{{'voucher_choseboxtitle' |translate}}" type="number"
+                              [(ngModel)]="newVoucherReceiptCashDetail.box.code" 
+                              (dblclick)="BoxOpenPopup()" (change)="boxGetByCode(NewCashBoxCode.value)" [disabled]="isUpdate"/>
+                            <!-- onblur="funFoucus('txtCashCurrencyId')" -->
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCashDetail.box"
+                              class="form-control form-control-sm text-center " name="txtNewCashName" type="text"
+                              disabled [(ngModel)]="newVoucherReceiptCashDetail.box.nameL1" />
+                          </div>
+                        </div>
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="newVoucherReceiptCashDetail.account" type="text"
+                              class=" form-control form-control-sm text-center" name="txtNewCashAccountNo" disabled
+                              [(ngModel)]="newVoucherReceiptCashDetail.account.code" />
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCashDetail.account"
+                              class="form-control form-control-sm text-center font-weight-bold"
+                              name="txtNewCashAccountName" disabled type="text" min=0
+                              [(ngModel)]="newVoucherReceiptCashDetail.account.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="" width="10%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #NewCashCurrencyCode *ngIf="newVoucherReceiptCashDetail.currency" type="number"
+                              [(ngModel)]="newVoucherReceiptCashDetail.currency.code"
+                              class=" form-control form-control-sm text-center " name="txtNewCashCurrencyCode"
+                              (dblclick)="CurrencyOpenPopup(undefined,'cash')" (change)="currencyGetByCode(NewCashCurrencyCode.value,undefined,'cash')"
+                              [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCashDetail.currency"
+                              [(ngModel)]="newVoucherReceiptCashDetail.currency.nameL1"
+                              class="form-control form-control-sm text-center font-weight-bold"
+                              name="txtNewCashAccountCurrencyName" disabled type="text" min=0/>
+                          </div>
+                        </div>
+
+                        <input [(ngModel)]="newVoucherReceiptCashDetail.amountDefaultCurrency"
+                          class="form-control form-control-sm text-center font-weight-bold" name="txtNewCashDtlPayDebit"
+                          type="number" min=0 (change)="addItemCashDetail()"
+                          (ngModelChange)="newVoucherReceiptCashDetail.amount = newVoucherReceiptCashDetail.amountDefaultCurrency 
+                          * (newVoucherReceiptCashDetail.currencyEquivalent || 1)" [disabled]="isUpdate"/>
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold "
+                          name="txtNewCashPayCurrencyValue" value="0" type="text" min=0 disabled
+                          [(ngModel)]="newVoucherReceiptCashDetail.currencyEquivalent" />
+                        <input class="form-control form-control-sm text-center font-weight-bold " type="text"
+                          name="txtNewCashdebit" value="0" min=0 
+                          [(ngModel)]="newVoucherReceiptCashDetail.amount" disabled=""/>
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold "
+                          name="txtNewCashBaseCurrencyValue" value="1" type="text" min=0 disabled />
+                        <input class="form-control form-control-sm text-center font-weight-bold " type="text"
+                          name="txtNewCashBasedebit" value="0" min=0 disabled
+                          [(ngModel)]="newVoucherReceiptCashDetail.amountDefaultCurrency" />
+                      </td>
+                      <td class="">
+                        <textarea class="form-control form-control-sm text-center txtNote" name="txtNewCashNote"
+                          style="height:50px" [(ngModel)]="newVoucherReceiptCashDetail.notes" (change)="addItemCashDetail()"
+                          [disabled]="isUpdate"></textarea>
+                      </td>
+                      <td class="">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="newVoucherReceiptCashDetail.costCenter"
+                              class="form-control form-control-sm text-center fullHeightInput"
+                              name="txtNewCashCostCenterCode" 
+                              title="{{'voucher_chosecostcentertitle' |translate}}" type="text"
+                              [(ngModel)]="newVoucherReceiptCashDetail.costCenter.code" (dblclick)="CostCenterOpenPopup(0)"  readonly
+                              [disabled]="isUpdate"/>
+                              <!-- onblur="funFoucus('txtAccountCode')" -->
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCashDetail.costCenter"
+                              class="form-control form-control-sm text-center fullHeightInput"
+                              name="txtNewCashCostCenterName" type="text" disabled
+                              [(ngModel)]="newVoucherReceiptCashDetail.costCenter.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <!-- Details Footer -->
+                <table class="table table-sm  border-0">
+                  <tbody class="">
+                    <tr class="d-flex mr-4">
+                      <td class="col-sm-3"></td>
+                      <td class="col-sm-2"></td>
+
+                      <td class="col-sm-2"></td>
+                      <td class="col-sm-3">
+                        <label class="small float-right mx-1 pt-2">{{'voucher_total' |translate}}</label>
+                      </td>
+                      <td class="col-sm-2">
+                        <input [(ngModel)]="totalCash" name="totalCash"
+                          class="form-control form-control-sm text-center disabled font-weight-bold txtCashTotal"
+                          value="0" disabled type="number" min=0 />
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+            <div *ngIf="selectedTab === 'profile' && voucherReceipt.isCheck" class="tab-pane active" id="profile"
+              role="tabpanel" aria-labelledby="profile-tab">
+              <div class="container-fluid ">
+                <table class="table table-bordered table-hover ">
+                  <!--Check    -->
+                  <tr>
+                    <th></th>
+                    <th>
+                      <div> {{'voucher_drawnonabank' |translate}}</div>
+                    </th>
+                    <th>
+                      <div class="d-flex">
+                        <div class="col-sm-4">
+                          <div> {{'voucher_branchcode' |translate}}</div>
+                        </div>
+                        <div class="col-sm-8">
+                          <div>{{'voucher_bank' |translate}}</div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="d-flex">
+
+                        <div class="col-sm-4">
+                          <div>{{'voucher_refrenceno' |translate}}</div>
+                        </div>
+                        <div class="col-sm-8">
+                          <div>
+                            {{'voucher_refrencedate' |translate}}
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>{{'voucher_amount' |translate}}</th>
+                    <th>
+                      <div>{{'voucher_exchangerate' |translate}} </div>
+                      <div>{{'voucher_amountbase' |translate}}</div>
+                    </th>
+                    <th>{{'voucher_note' |translate}}</th>
+                    <th>
+                      <div class="d-flex">
+                        <div class="col-sm-3">
+                          <div>{{'voucher_costcenter' |translate}}</div>
+                        </div>
+                        <div class="col-sm-9">
+                          <div>{{'voucher_costcentername' |translate}}</div>
+                        </div>
+                      </div>
+                    </th>
+                    <th></th>
+                  </tr>
+                  <tbody class="tblCheckBody">
+                    <!------  Check ----->
+                    <tr
+                      *ngFor="let vj of this.voucherReceipt.receiptVoucherCheque; let i = index;trackBy:trackByIndex;"
+                      class="trBaseRow tblCheckRow" data-id="0">
+                      <td class="">
+                        <button class="btn btn-light btn-sm border btnCheckAddRow" type="button" [disabled]="isUpdate"
+                          (click)="addItemChequeDetail(i)">
+                          <i class="fa fa-plus-circle"></i>
+                        </button>
+                      </td>
+                      <td width="10%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #ChequeBankCode="ngModel" *ngIf="vj.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCheckBankCode' + i}}" title="{{'voucher_chosebanktitle' |translate}}"
+                              type="text" [required]="voucherReceipt.isCheck" [(ngModel)]="vj.bankAccount.code" (dblclick)="BankOpenPopup(i,'cheque')" (change)="bankGetByCode(ChequeBankCode.value,i,'cheque')"
+                              [disabled]="isUpdate" 
+                              [ngClass]="{'is-invalid': (ChequeBankCode.invalid) && (ChequeBankCode.touched || ChequeBankCode.dirty)}"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCheckBankName' + i}}" type="text" disabled
+                              [(ngModel)]="vj.bankAccount.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td width="15%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #bankBranchCode="ngModel" *ngIf="vj.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCheckBankBranchCode' + i}}" title="{{'voucher_chosebanktitle' |translate}}"
+                              type="text" [required]="voucherReceipt.isCheck" [(ngModel)]="vj.bankBranch.code" (dblclick)="BankBranchOpenPopup(vj.bankAccount, i ,'cheque')" readonly
+                              [disabled]="isUpdate"
+                              [ngClass]="{'is-invalid': (bankBranchCode.invalid) && (bankBranchCode.touched || bankBranchCode.dirty)}"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCheckBankBranchName' + i}}" type="text"  disabled
+                              [(ngModel)]="vj.bankBranch.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="" width="25%">
+                        <div class="d-flex">
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="{{'txtCheckNo' + i}}" type="text" min=0 [(ngModel)]="vj.referenceNumber" [disabled]="isUpdate"/>
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="{{'txtCheckDate' + i}}" type="date" [(ngModel)]="vj.referenceDate" [disabled]="isUpdate"/>
+                        </div>
+                      </td>
+                      <td class="" width="15%">
+                        <input type="number" class=" form-control fullHeightInput form-control-sm text-center "
+                          name="{{'txtCheckDebit' + i}}" [(ngModel)]="vj.amountDefaultCurrency" (change)="calculateTotalCheque()"
+                          (ngModelChange)="vj.amount = vj.amountDefaultCurrency * (vj.currencyEquivalent || 1)" [disabled]="isUpdate"/>
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold " value="1" type="text"
+                          min=0 disabled name="{{'txtCheckCurrencyValue' + i}}" />
+                        <input #AmountDefaultCheck="ngModel" class="form-control form-control-sm text-center font-weight-bold " disabled type="text"
+                          value="0" min=0 [required]="voucherReceipt.isCheck" name="{{'txtCheckBaseDebit' + i}}"
+                          [(ngModel)]="vj.amountDefaultCurrency" 
+                          [ngClass]="{'is-invalid': (AmountDefaultCheck.invalid) && (AmountDefaultCheck.touched || AmountDefaultCheck.dirty)}"/>
+                      </td>
+                      <td class="">
+                        <textarea class="form-control form-control-sm text-center " style="height:50px" 
+                          name="{{'txtCheckNote' + i}}" [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
+                      </td>
+                      <td class="">
+
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="vj.costCenter && vj.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              title="{{'voucher_chosecostcentertitle' |translate}}" type="text" 
+                              name="{{'txtCheckCostCenterCode' + i}}" [(ngModel)]="vj.costCenter.code"
+                              (dblclick)="CostCenterOpenPopup(vj.bankAccount.accountId || 0,i,'cheque')" readonly
+                              [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.costCenter"
+                              class="form-control form-control-sm text-center fullHeightInput " type="text" 
+                              disabled name="{{'txtCheckCostCenterName' + i}}" [(ngModel)]="vj.costCenter.nameL1" />
+                          </div>
+                        </div>
+
+                      </td>
+                      <td><button class="btn btn-light btn-sm btnCashDelete" type="button" (click)="removeItemChequeDetail(i)"
+                          [disabled]="isUpdate"><i class="fa fa-trash"></i> </button> </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="trBaseRow tblCheckRow" data-id="0">
+                      <td class="">
+                        <button class="btn btn-light btn-sm border btnCheckAddRow" type="button" [disabled]="isUpdate"
+                          (click)="addItemChequeDetail()">
+                          <i class="fa fa-plus-circle"></i>
+                        </button>
+                      </td>
+                      <td width="10%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #NewChequeBankCode *ngIf="newVoucherReceiptChequeDetail.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCheckBankCode" title="{{'voucher_chosebanktitle' |translate}}" type="text"
+                              [(ngModel)]="newVoucherReceiptChequeDetail.bankAccount.code"
+                              (dblclick)="BankOpenPopup(undefined,'cheque')" (change)="bankGetByCode(NewChequeBankCode.value,undefined,'cheque')" 
+                              [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptChequeDetail.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCheckBankName" type="text" disabled
+                              [(ngModel)]="newVoucherReceiptChequeDetail.bankAccount.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td width="15%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="newVoucherReceiptChequeDetail.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCheckBankBranchCode" title="{{'voucher_chosebanktitle' |translate}}"
+                              type="text" [(ngModel)]="newVoucherReceiptChequeDetail.bankBranch.code" readonly [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptChequeDetail.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCheckBankBranchName" type="text" disabled
+                              [(ngModel)]="newVoucherReceiptChequeDetail.bankBranch.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="" width="25%">
+                        <div class="d-flex">
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="txtNewCheckNo" type="text" min=0
+                            [(ngModel)]="newVoucherReceiptChequeDetail.referenceNumber"  (change)="addItemChequeDetail()"
+                            [disabled]="isUpdate"/>
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="txtNewCheckDate" type="date"
+                            [(ngModel)]="newVoucherReceiptChequeDetail.referenceDate" (change)="addItemChequeDetail()" 
+                            [disabled]="isUpdate"/>
+                        </div>
+                      </td>
+                      <td class="" width="15%">
+                        <input type="text" class=" form-control fullHeightInput form-control-sm text-center "
+                          name="txtNewCheckDebit" [(ngModel)]="newVoucherReceiptChequeDetail.amountDefaultCurrency" (change)="addItemChequeDetail()"
+                          (ngModelChange)="newVoucherReceiptChequeDetail.amount = newVoucherReceiptChequeDetail.amountDefaultCurrency 
+                          * (newVoucherReceiptChequeDetail.currencyEquivalent || 1)" [disabled]="isUpdate">
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold " value="1" type="text"
+                          min=0 disabled name="txtNewCheckCurrencyValue" />
+                        <input class="form-control form-control-sm text-center font-weight-bold " disabled type="text"
+                          value="0" min=0 name="txtNewCheckBaseDebit"
+                          [(ngModel)]="newVoucherReceiptChequeDetail.amountDefaultCurrency" />
+                      </td>
+                      <td class="">
+                        <textarea class="form-control form-control-sm text-center " style="height:50px" 
+                          name="txtNewCheckNote" [(ngModel)]="newVoucherReceiptChequeDetail.notes"
+                          (change)="addItemChequeDetail()"  [disabled]="isUpdate"></textarea>
+                      </td>
+                      <td class="">
+
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="newVoucherReceiptChequeDetail.costCenter"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              title="{{'voucher_chosecostcentertitle' |translate}}" type="text" 
+                              name="txtNewCheckCostCenterCode"
+                              [(ngModel)]="newVoucherReceiptChequeDetail.costCenter.code" (dblclick)="CostCenterOpenPopup(0)" readonly
+                              [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptChequeDetail.costCenter"
+                              class="form-control form-control-sm text-center fullHeightInput " type="text" 
+                              disabled name="txtNewCheckCostCenterName"
+                              [(ngModel)]="newVoucherReceiptChequeDetail.costCenter.nameL1" />
+                          </div>
+                        </div>
+
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <!-- Details Footer -->
+                <table class="table table-sm  border-0">
+                  <tbody class="">
+                    <tr class="d-flex mr-4">
+                      <td class="col-sm-3"></td>
+                      <td class="col-sm-2"></td>
+
+                      <td class="col-sm-2"></td>
+                      <td class="col-sm-3">
+                        <label class="small float-right mx-1 pt-2">{{'voucher_total' |translate}}</label>
+                      </td>
+                      <td class="col-sm-2">
+                        <input [(ngModel)]="totalCheck"
+                          class="form-control form-control-sm text-center disabled font-weight-bold txtCheckTotal"
+                          value="0" name="txttotalCheck" disabled type="number" min=0 />
+                      </td>
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+            </div>
+            <div *ngIf="selectedTab === 'contact' && voucherReceipt.isCreditCard" class="tab-pane active" id="contact"
+              role="tabpanel" aria-labelledby="contact-tab">
+              <div class="container-fluid">
+                <table class="table table-bordered table-hover ">
+                  <!--Credit    -->
+                  <tr>
+                    <th></th>
+                    <th>
+                      <div> {{'voucher_drawnonabank' |translate}}</div>
+                    </th>
+                    <th>
+                      <div class="d-flex">
+                        <div class="col-sm-4">
+                          <div> {{'voucher_branchcode' |translate}}</div>
+                        </div>
+                        <div class="col-sm-8">
+                          <div>{{'voucher_bank' |translate}}</div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="d-flex">
+
+                        <div class="col-sm-4">
+                          <div>{{'voucher_refrenceno' |translate}}</div>
+                        </div>
+                        <div class="col-sm-8">
+                          <div>
+                            {{'voucher_refrencedate' |translate}}
+                          </div>
+                        </div>
+                      </div>
+                    </th>
+                    <th>{{'voucher_amount' |translate}}</th>
+                    <th>
+                      <div>{{'voucher_exchangerate' |translate}} </div>
+                      <div>{{'voucher_amountbase' |translate}}</div>
+                    </th>
+                    <th>{{'voucher_note' |translate}}</th>
+                    <th>
+                      <div class="d-flex">
+                        <div class="col-sm-3">
+                          <div> </div>
+                        </div>
+                        <div class="col-sm-9">
+                          <div>{{'voucher_creditcardtype' |translate}}</div>
+                        </div>
+                      </div>
+                    </th>
+                    <th></th>
+                  </tr>
+                  <tbody class="tblMasterBody">
+                    <!------  Credit ----->
+                    <tr
+                      *ngFor="let vj of this.voucherReceipt.receiptVoucherCreditCard; let i = index;trackBy:trackByIndex;"
+                      class="trBaseRow tblMasterRow" data-id="0">
+                      <td class="">
+                        <button class="btn btn-light btn-sm border btnCreditAddRow" type="button" [disabled]="isUpdate"
+                          (click)="addItemCreditCardDetail(i)">
+                          <i class="fa fa-plus-circle"></i>
+                        </button>
+                      </td>
+
+                      <td width="10%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #CreditCardCode="ngModel" *ngIf="vj.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCreditCardBankCode' + i}}" title="{{'voucher_chosebanktitle' |translate}}"
+                              type="text" [required]="voucherReceipt.isCreditCard" [(ngModel)]="vj.bankAccount.code" (dblclick)="BankOpenPopup(i,'creditcard')" (change)="bankGetByCode(CreditCardCode.value,i,'creditcard')"
+                              [disabled]="isUpdate"
+                              [ngClass]="{'is-invalid': (CreditCardCode.invalid) && (CreditCardCode.touched || CreditCardCode.dirty)}"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCreditCardBankName' + i}}" type="text" disabled
+                              [(ngModel)]="vj.bankAccount.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td width="15%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #CreditCardBankBranchCode="ngModel" *ngIf="vj.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCreditCardBankBranchCode' + i}}" title="{{'voucher_chosebanktitle' |translate}}"
+                              type="text" [required]="voucherReceipt.isCreditCard" [(ngModel)]="vj.bankBranch.code" (dblclick)="BankBranchOpenPopup(vj.bankAccount, i ,'creditcard')" readonly
+                              [disabled]="isUpdate"
+                              [ngClass]="{'is-invalid': (CreditCardBankBranchCode.invalid) && (CreditCardBankBranchCode.touched || CreditCardBankBranchCode.dirty)}"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="{{'txtCreditCardBankBranchName' + i}}" type="text" disabled
+                              [(ngModel)]="vj.bankBranch.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="" width="25%">
+                        <div class="d-flex">
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="{{'txtCreditCardNo' + i}}" type="text" min=0 [(ngModel)]="vj.referenceNumber" [disabled]="isUpdate"/>
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="{{'txtCreditCardDate' + i}}" type="date" [(ngModel)]="vj.referenceDate" [disabled]="isUpdate" />
+                        </div>
+                      </td>
+                      <td class="" width="15%">
+                        <input type="number" class=" form-control fullHeightInput form-control-sm text-center "
+                          name="{{'txtCreditCardDebit' + i}}" [(ngModel)]="vj.amountDefaultCurrency" (change)="calculateTotalCreditCard()"
+                          (ngModelChange)="vj.amount = vj.amountDefaultCurrency * (vj.currencyEquivalent || 1)" [disabled]="isUpdate"/>
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold " value="1" type="text"
+                          min=0 disabled name="{{'txtCreditCardCurrencyValue' + i}}" />
+                        <input #AmountDefaultCredit="ngModel" class="form-control form-control-sm text-center font-weight-bold " disabled type="text"
+                          value="0" min=0 [required]="voucherReceipt.isCreditCard" name="{{'txtCreditCardBaseDebit' + i}}"
+                          [(ngModel)]="vj.amountDefaultCurrency" 
+                          [ngClass]="{'is-invalid': (AmountDefaultCredit.invalid) && (AmountDefaultCredit.touched || AmountDefaultCredit.dirty)}"/>
+                      </td>
+                      <td class="">
+                        <textarea class="form-control form-control-sm text-center " style="height:50px" 
+                          name="{{'txtCheckNote' + i}}" [(ngModel)]="vj.notes"></textarea>
+                      </td>
+
+                      <td class="">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="vj.creditCardType" class="form-control form-control-sm text-center fullHeightInput  txtEPaymentTypeCode"
+                              name="{{'txtCreditEPaymentTypeCode' + i}}" title="{{'voucher_chosepaymenttypetitle' |translate}}" type="number"  
+                              [(ngModel)]="vj.creditCardType.code" readonly (dblclick)="EPaymentOpenPopup(i)" [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="vj.creditCardType" class="form-control form-control-sm text-center fullHeightInput  txtEPaymentTypeName"
+                              name="{{'txtCreditEPaymentTypeName' + i}}" type="text"  disabled 
+                              [(ngModel)]="vj.creditCardType.nameL1"/>
+                          </div>
+                        </div>
+
+                      </td>
+                      <td><button class="btn btn-light btn-sm btnCashDelete" type="button" (click)="removeItemCreditCardDetail(i)"
+                          [disabled]="isUpdate"><i class="fa fa-trash"></i> </button> </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr class="trBaseRow tblCreditRow" data-id="0">
+                      <td class="">
+                        <button class="btn btn-light btn-sm border btnCreditAddRow" type="button" [disabled]="isUpdate"
+                          (click)="addItemCreditCardDetail()">
+                          <i class="fa fa-plus-circle"></i>
+                        </button>
+                      </td>
+                      <td width="10%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input #NewCreditCardBankCode *ngIf="newVoucherReceiptCreditCardDetail.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCreditBankCode" title="{{'voucher_chosebanktitle' |translate}}" type="text"
+                              [(ngModel)]="newVoucherReceiptCreditCardDetail.bankAccount.code" 
+                              (dblclick)="BankOpenPopup(undefined,'creditcard')" (change)="bankGetByCode(NewCreditCardBankCode.value,undefined,'creditcard')"
+                              [disabled]="isUpdate"/>                              
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCreditCardDetail.bankAccount"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCreditBankName" type="text" disabled
+                              [(ngModel)]="newVoucherReceiptCreditCardDetail.bankAccount.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td width="15%">
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="newVoucherReceiptCreditCardDetail.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCreditBankBranchCode" title="{{'voucher_chosebanktitle' |translate}}"
+                              type="text" [(ngModel)]="newVoucherReceiptCreditCardDetail.bankBranch.code" readonly
+                              [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCreditCardDetail.bankBranch"
+                              class="form-control form-control-sm text-center fullHeightInput "
+                              name="txtNewCreditBankBranchName" type="text" disabled
+                              [(ngModel)]="newVoucherReceiptCreditCardDetail.bankBranch.nameL1" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="" width="25%">
+                        <div class="d-flex">
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="txtNewCreditNo" type="text" min=0
+                            [(ngModel)]="newVoucherReceiptCreditCardDetail.referenceNumber"  (change)="addItemCreditCardDetail()"
+                            [disabled]="isUpdate"/>
+                          <input class="form-control form-control-sm text-center fullHeightInput font-weight-bold "
+                            name="txtNewCreditDate" type="date"
+                            [(ngModel)]="newVoucherReceiptCreditCardDetail.referenceDate" (change)="addItemCreditCardDetail()"
+                            [disabled]="isUpdate"/>
+                        </div>
+                      </td>
+                      <td class="" width="15%">
+                        <input type="text" class=" form-control fullHeightInput form-control-sm text-center "
+                          name="txtNewCreditDebit" [(ngModel)]="newVoucherReceiptCreditCardDetail.amountDefaultCurrency" (change)="addItemCreditCardDetail()"
+                          (ngModelChange)="newVoucherReceiptCreditCardDetail.amount = newVoucherReceiptCreditCardDetail.amountDefaultCurrency 
+                          * (newVoucherReceiptCreditCardDetail.currencyEquivalent || 1)" [disabled]="isUpdate"> 
+
+                      </td>
+                      <td class="">
+                        <input class="form-control form-control-sm text-center font-weight-bold " value="1" type="text"
+                          min=0 disabled name="txtNewCreditCurrencyValue" />
+                        <input class="form-control form-control-sm text-center font-weight-bold " disabled type="text"
+                          value="0" min=0 name="txtNewCreditBaseDebit"
+                          [(ngModel)]="newVoucherReceiptCreditCardDetail.amountDefaultCurrency" />
+                      </td>
+                      <td class="">
+                        <textarea class="form-control form-control-sm text-center " style="height:50px" 
+                          name="txtNewCreditNote" [(ngModel)]="newVoucherReceiptCreditCardDetail.notes"
+                          (change)="addItemCreditCardDetail()" [disabled]="isUpdate"></textarea>
+                      </td>
+                      <td class="">
+
+                        <div class="d-flex">
+                          <div class="col-sm-4 p-0">
+                            <input *ngIf="newVoucherReceiptCreditCardDetail.creditCardType" class="form-control form-control-sm text-center fullHeightInput  txtEPaymentTypeCode"
+                              name="txtNewCreditEPaymentTypeCode" title="{{'voucher_chosepaymenttypetitle' |translate}}" type="number"  
+                              [(ngModel)]="newVoucherReceiptCreditCardDetail.creditCardType.code" readonly (dblclick)="EPaymentOpenPopup()"
+                              [disabled]="isUpdate"/>
+                          </div>
+                          <div class="col-sm-8 p-0">
+                            <input *ngIf="newVoucherReceiptCreditCardDetail.creditCardType" class="form-control form-control-sm text-center fullHeightInput  txtEPaymentTypeName"
+                              name="txtNewCreditEPaymentTypeName" type="text"  disabled 
+                              [(ngModel)]="newVoucherReceiptCreditCardDetail.creditCardType.nameL1"/>
+                          </div>
+                        </div>
+
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+                <!-- Details Footer -->
+                <table class="table table-sm  border-0">
+                  <tbody class="">
+                    <tr class="d-flex mr-4">
+                      <td class="col-sm-3"></td>
+                      <td class="col-sm-2"></td>
+
+                      <td class="col-sm-2"></td>
+                      <td class="col-sm-3">
+                        <label class="small float-right mx-1 pt-2">{{'voucher_total' |translate}}</label>
+                      </td>
+                      <td class="col-sm-2">
+                        <input [(ngModel)]="totalCreditCard" name="txttotalCreditCard"
+                          class="form-control form-control-sm text-center disabled font-weight-bold txtMasterTotal"
+                          value="0" disabled type="number" min=0 />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+
+      <!-- Details Main -->
+      <div class="bg-white border rounded p-3 mt-3 divGlVoucher">
+        <!-- Details -->
+        <table #table name="table" class="table table-sm table-responsive-sm">
+          <thead>
+            <tr>
+              <th></th>
+              <th width="7%">
+                <div>{{'voucher_accountno' |translate}}</div>
+              </th>
+              <th width="15%">
+                <div>{{'voucher_accountdesc' |translate}}</div>
+              </th>
+              <th width="5%">
+                <div>{{'voucher_currency' |translate}}</div>
+                <div>{{'voucher_amount' |translate}}</div>
+              </th>
+              <th class="">
+                <div>{{'voucher_exchangerate' |translate}}</div>
+                <div>{{'voucher_amountbyaccountcurrency' |translate}}</div>
+              </th>
+              <th class="">
+                <div>{{'voucher_exchangerate' |translate}}</div>
+                <div>{{'voucher_amountbase' |translate}}</div>
+              </th>
+              <th width="20%">
+                <div class="d-flex">
+
+                  <div class="col-sm-3">
+                    <div>{{'voucher_costcenter' |translate}}</div>
+                  </div>
+                  <div class="col-sm-9">
+                    <div>{{'voucher_costcentername' |translate}}</div>
+                  </div>
+
+                </div>
+
+              </th>
+              <th class="">
+                <div>{{'voucher_note' |translate}}</div>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let vj of this.voucherReceipt.journalVoucherDetails; let i = index;trackBy:trackByIndex;">
+              <td>
+                <button type="button" class="btn btn-light btn-sm border btnAddRow" (click)="addItemDetail(i)"
+                  [disabled]="isUpdate">
+                  <i class="fa fa-plus-circle"></i>
+                </button>
+              </td>
+              <td>
+                <input #accountNumberRow #accountNumber="ngModel"
+                  class="form-control form-control-sm text-center fullHeightInput" type="text"
+                  title="{{'voucher_choseaccounttitle' |translate}}" name="{{'txtAccountNo' + i}}"
+                  [(ngModel)]="vj.accountNo" (dblclick)="AccountOpenPopup(i)" [disabled]="isUpdate"
+                  (change)="addAccountItemByAccountNo(accountNumber.value,i)" 
+                  [required]="isAccountNoRequired(accountNumber,debitDefaultCurrency)"
+                  [ngClass]="{'is-invalid': (accountNumber.value =='' && (accountNumber.dirty))  
+                                                || (accountNumber.value =='' && ((debitDefaultCurrency.invalid || debitDefaultCurrency.dirty)))}"/>
+
+                <!-- [required]="isAccountNoRequired(accountNumber,debit,credit)"
+                        [ngClass]="{'is-invalid': (accountNumber.value =='' && (accountNumber.dirty))  
+                                                || (accountNumber.value =='' && ((debit.invalid || debit.dirty) || (credit.invalid || credit.dirty)))}" -->
+
+
+              </td>
+              <td>
+                <textarea *ngIf="vj.account" class="form-control form-control-sm text-center fullHeightInput"
+                  type="text" readonly name="{{'txtAccountName' + i}}" [(ngModel)]="vj.account.nameL1"
+                  [disabled]="isUpdate"></textarea>
+              </td>
+              <td class="" width="15%">
+                <div class="d-flex">
+                  <div class="col-sm-4 p-0">
+                    <!-- <input type="text"
+                      class=" form-control form-control-sm text-center txtAccountCurrencyId txtDTLAccountCurrencyId"
+                      name="{{'txtAccountCurrencyId' + i}}" [(ngModel)]="vj.currencyId" (dblclick)="CurrencyOpenPopup(i)"/> -->
+                    <input #debitCurrency="ngModel" *ngIf="vj.currency" type="number"
+                      class=" form-control form-control-sm text-center txtAccountCurrencyCode txtDTLAccountCurrencyCode"
+                      name="{{'txtAccountCurrencyCode' + i}}" [(ngModel)]="vj.currency.code"
+                      (dblclick)="CurrencyOpenPopup(i)" (change)="currencyGetByCode(debitCurrency.value,i)" 
+                      [disabled]="isUpdate" [required]="accountNumber.value !='' "
+                      [ngClass]="{'is-invalid': debitCurrency.invalid}"/>
+                      <!-- [ngClass]="{'is-invalid': debitCurrency.invalid}" -->
+                      <!-- [required]="accountNumber.value !='' " -->
+                  </div>
+                  <div class="col-sm-8 p-0">
+                    <input *ngIf="vj.currency"
+                      class="form-control form-control-sm text-center font-weight-bold txtAccountCurrencyName txtDTLAccountCurrencyName"
+                      name="{{'txtAccountCurrencyName' + i}}" [(ngModel)]="vj.currency.nameL1" disabled type="text"
+                      min=0 required />
+                  </div>
+                </div>
+                <input #debitDefaultCurrency="ngModel" class="form-control form-control-sm text-center font-weight-bold txtPayDebit" type="number" min=0
+                  required name="{{'txtPayDebit' + i}}" [(ngModel)]="vj.debitDefaultCurrency" (change)="totalDebitCalculate()"
+                  (ngModelChange)="vj.debit = (vj.debitDefaultCurrency || 0) * (vj.currencyExchange || 1)" 
+                  [ngClass]="{'is-invalid': (debitDefaultCurrency.invalid) && (debitDefaultCurrency.touched || debitDefaultCurrency.dirty)}"/>
+
+              </td>
+              <td>
+                <input
+                  class="form-control form-control-sm text-center font-weight-bold txtBaseCurrencyValue txtDTLBaseCurrencyValue"
+                  value="1" type="number" min=0 name="{{'txtDebitCurrency' + i}}" [(ngModel)]="vj.currencyExchange"
+                  disabled />
+                <input class="form-control form-control-sm text-center font-weight-bold txtDebit txtDebitBase" value="0"
+                  type="number" min=0 required disabled name="{{'txtDebit' + i}}" [(ngModel)]="vj.debit" />
+              </td>
+              <td>
+                <input
+                  class="form-control form-control-sm text-center font-weight-bold txtPayCurrencyValue txtDTLPayCurrencyValue"
+                  value="1" type="number" name="{{'txtDebitDefaultCurrency' + i}}" disabled />
+                <input class="form-control form-control-sm text-center font-weight-bold txtDebit" type="number"
+                  value="0" min=0 required name="{{'txtDebitDefault' + i}}" [(ngModel)]="vj.debitDefaultCurrency"
+                  disabled />
+              </td>
+
+              <td class="d-flex">
+                <div class="col-sm-4 p-0">
+                  <input *ngIf="vj.costCenter"
+                    class="form-control form-control-sm text-center col-sm-4 p-0 fullHeightInput"
+                    title="{{'voucher_chosecostcentertitle' |translate}}" type="text" readonly
+                    name="{{'txtCostCenterCode' + i}}" [(ngModel)]="vj.costCenter.code"
+                    (dblclick)="CostCenterOpenPopup(vj.accountId,i)" [disabled]="isUpdate" />
+                  <!-- onblur="funFoucus('txtNote')" -->
+                </div>
+                <div class="col-sm-8 p-0">
+                  <input *ngIf="vj.costCenter"
+                    class="form-control form-control-sm text-center col-sm-8 p-0 fullHeightInput" type="text" readonly
+                    name="{{'txtCostCenterName' + i}}" [(ngModel)]="vj.costCenter.nameL1" />
+                </div>
+              </td>
+              <td>
+                <textarea class="form-control form-control-sm text-center txtNote" style="height:50px"
+                  name="{{'txtNotes' + i}} " [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
+              </td>
+              <td>
+                <button type="button" class="btn btn-light btn-sm btnGLVoucherDtlDelete" (click)="removeItemDetail(i)"
+                  [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+
+
+          <tfoot>
+            <tr>
+              <td>
+                <button type="button" class="btn btn-light btn-sm border btnAddRow" (click)="addItemDetail()"
+                  [disabled]="isUpdate">
+                  <i class="fa fa-plus-circle"></i>
+                </button>
+              </td>
+
+              <td>
+
+                <input #newAccountNo class="form-control form-control-sm text-center fullHeightInput" type="text"
+                  title="{{'voucher_choseaccounttitle' |translate}}" name="txtNewAccountNo"
+                  [(ngModel)]="newVoucherReceiptDetail.accountNo" (dblclick)="AccountOpenPopup()" [disabled]="isUpdate"
+                  (change)="addAccountItemByAccountNo(newAccountNo.value);" />
+
+              </td>
+              <td>
+                <textarea *ngIf="newVoucherReceiptDetail.account"
+                  class="form-control form-control-sm text-center fullHeightInput" type="text" readonly
+                  name="txtNewAccountName" [(ngModel)]="newVoucherReceiptDetail.account.nameL1"></textarea>
+              </td>
+
+              <td class="" width="15%">
+                <div class="d-flex">
+                  <div class="col-sm-4 p-0">
+                    <!-- <input  type="text"
+                      class=" form-control form-control-sm text-center txtAccountCurrencyId txtDTLAccountCurrencyId"
+                      name="txtAccountCurrencyId" [(ngModel)]="newVoucherReceiptDetail.currencyId" (dblclick)="CurrencyOpenPopup()"/> -->
+                    <input #NewCurrencyDebit *ngIf="newVoucherReceiptDetail.currency" type="number"
+                      class=" form-control form-control-sm text-center txtAccountCurrencyId txtDTLAccountCurrencyId"
+                      name="txtNewAccountCurrencyCode" [(ngModel)]="newVoucherReceiptDetail.currency.code"
+                      (dblclick)="CurrencyOpenPopup()" (change)="currencyGetByCode(NewCurrencyDebit.value)">
+                  </div>
+                  <div class="col-sm-8 p-0">
+                    <input *ngIf="newVoucherReceiptDetail.currency"
+                      class="form-control form-control-sm text-center font-weight-bold txtAccountCurrencyName txtDTLAccountCurrencyName"
+                      name="txtNewAccountCurrencyName" [(ngModel)]="newVoucherReceiptDetail.currency.nameL1" disabled
+                      type="text" min=0 />
+                  </div>
+                </div>
+                <input class="form-control form-control-sm text-center font-weight-bold txtPayDebit" type="text" min=0
+                  name="txtPayDebit" [(ngModel)]="newVoucherReceiptDetail.debit" (change)="addItemDetail()"
+                  (ngModelChange)="newVoucherReceiptDetail.debitDefaultCurrency = (newVoucherReceiptDetail.debit || 0) * (newVoucherReceiptDetail.currencyExchange || 1)" />
+
+              </td>
+
+              <td>
+                <input
+                  class="form-control form-control-sm text-center font-weight-bold txtBaseCurrencyValue txtDTLBaseCurrencyValue"
+                  value="1" type="number" min=0 name="txtDebitCurrency"
+                  [(ngModel)]="newVoucherReceiptDetail.currencyExchange" disabled />
+                <input class="form-control form-control-sm text-center font-weight-bold txtDebit txtDebitBase" value="0"
+                  type="number" min=0 disabled name="txtDebit"
+                  [(ngModel)]="newVoucherReceiptDetail.debitDefaultCurrency" />
+              </td>
+              <td>
+                <input
+                  class="form-control form-control-sm text-center font-weight-bold txtPayCurrencyValue txtDTLPayCurrencyValue"
+                  value="1" type="number" name="txtDebitDefaultCurrency" disabled />
+                <input class="form-control form-control-sm text-center font-weight-bold txtDebit" type="number"
+                  value="0" min=0 name="txtDebitDefault" [(ngModel)]="newVoucherReceiptDetail.debit"
+                  disabled />
+              </td>
+
+              <td>
+                <div class="d-flex">
+                  <div class="col-sm-4 p-0">
+                    <input class="form-control form-control-sm text-center fullHeightInput" type="text" readonly
+                      name="txtNewCostCenterId" [(ngModel)]="newVoucherReceiptDetail.costCenterId"
+                      (dblclick)="CostCenterOpenPopup(newVoucherReceiptDetail.accountId)" [disabled]="isUpdate" />
+                  </div>
+                  <div class="col-sm-8 p-0">
+                    <input *ngIf="newVoucherReceiptDetail.costCenter"
+                      class="form-control form-control-sm text-center fullHeightInput" type="text" readonly
+                      name="txtNewCostCenterName" [(ngModel)]="newVoucherReceiptDetail.costCenter.nameL1" />
+                  </div>
+                </div>
+              </td>
+
+
+              <td>
+                <textarea class="form-control form-control-sm text-center txtNote" style="height:50px"
+                  name="txtNewNotes" [(ngModel)]="newVoucherReceiptDetail.notes" [disabled]="isUpdate"
+                  (change)="addItemDetail()"></textarea>
+              </td>
+
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Details Footer -->
+
+        <table class="table table-sm tblFooter border-0">
+          <tbody class="">
+            <tr class="d-flex mr-4">
+              <td class="col-sm-3">
+                <label class="small float-right mx-1 pt-2">{{'voucher_total' |translate}}</label>
+              </td>
+              <td class="col-sm-2">
+                <input class="form-control form-control-sm text-center disabled font-weight-bold txtTotalDebit" disabled
+                  type="number" name="txtTotalDebitReceipt" min=0  [(ngModel)]="totalDebitReceipt" />
+              </td>
+
+              <td class="col-sm-2">
+                <div class="d-flex">
+                  <label class="small float-right mx-1 pt-2">{{'voucher_diff' |translate}}</label>
+                  <input class="form-control form-control-sm text-center disabled  font-weight-bold" disabled
+                    type="text" name="txtTotalDifferenceReceipt" [(ngModel)]="totalDifferenceReceipt" />
+                </div>
+
+              </td>
+              <td class="col-sm-3">
+                <label class="small float-right mx-1 pt-2">{{'voucher_sumcashandcheques' |translate}}</label>
+              </td>
+              <td class="col-sm-2">
+                <input class="form-control form-control-sm text-center disabled font-weight-bold txtTotalCredit"
+                  disabled type="number" name="txtTotalReceipt" min=0 [(ngModel)]="totalReceipt" />
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+
+
+
+
+
+
+
+<!-----------------------------------------Modal All------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6" (keyup)="modalSearchKeyUp()">
+        </p>
+        <div class="row">
+          <div class="form-group col-md-3">
+            <label>{{'from'|translate}}</label>
+            <input type="date" placeholder="From" [(ngModel)]="dateFromFilterModel" class="form-control"
+              (change)="onChangeDate()">
+          </div>
+          <div class="form-group col-md-3">
+            <label>{{'to'|translate}}</label>
+            <input type="date" placeholder="To" [(ngModel)]="dateToFilterModel" class="form-control"
+              (change)="onChangeDate()">
+          </div>
+          <div class="form-group col-md-3">
+            <label>{{'voucher_refdate'|translate}}</label>
+            <input type="date" placeholder="To" [(ngModel)]="dateReferenceFilterModel" class="form-control"
+              (change)="onChangeDateRef()">
+          </div>
+          <div class="form-group col-md-2">
+            <label>&nbsp;</label>
+            <input type="button" value="{{'search_dates'|translate}}" class="btn btn-primary"
+              (click)="filterListByDate()" />
+          </div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <th>
+              {{'voucher_glvoucherno'|translate}}
+            </th>
+            <th>
+              {{'date'|translate}}
+            </th>
+            <th>
+              {{'voucher_glvoucherref'|translate}}
+            </th>
+            <th>
+              {{'voucher_glvoucherrefdate'|translate}}
+            </th>
+            <th>
+              {{'voucher_transactionsource'|translate}}
+            </th>
+            <th>
+              {{'voucher_statement'|translate}}
+            </th>
+          </thead>
+          <tbody>
+            <tr class='clickable-row' (dblclick)="voucherReceiptGetById(vj.id);closePopup()"
+              *ngFor="let vj of voucherReceiptList | voucherjournalfilter:textFilterModel:dateFromFilterModel:dateToFilterModel:dateReferenceFilterModel:isDateFilter:isDateRefFilter">
+              <td>{{vj.id}}</td>
+              <td>{{vj.date | date :'yyyy-MM-dd'}}</td>
+              <td>{{vj.referenceNumber}}</td>
+              <td>{{vj.referenceDate}}</td>
+              <td>
+                <div *ngIf="vj.sourceTypeId">{{sourceTypeName}}</div>
+              </td>
+              <!-- <td>{{'voucher_accounts' |translate}}</td> -->
+              <td>{{vj.notes}}</td>
+             
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="closePopup()">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-----------------------------------------Modal Account------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAccountStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'account_accountdirectory'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="AccountClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let acc of accountList | accountfilter:textFilterModel, let i =index" class='clickable-row'
+              (dblclick)="addAccountItemById(acc.id || 0);AccountClosePopup();
+                ">
+              <!-- setFocus(table,$event.target,4); -->
+              <td>{{acc.accountNo}} </td>
+              <td> {{acc.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="AccountClosePopup()">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-----------------------------------------Modal Cost Center------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCostCenterStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'costcenter_costcenter'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CostCenterClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let cost of costCenterList | costcenterfilter:textFilterModel, let i =index"
+              class='clickable-row'
+              (dblclick)="addCostCenterItem(cost,secondarySource);CostCenterClosePopup();">
+              <td>{{cost.code}} </td>
+              <td> {{cost.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="CostCenterClosePopup()">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-----------------------------------------Modal Transaction Source------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayTransactionSourceStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'voucher_glvouchercategoryid'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          (click)="TransactionSourceClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of transactionSourceList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addTransactionSourceItem(item);TransactionSourceClosePopup();">
+              <td>{{item.id}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="TransactionSourceClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-----------------------------------------Modal Customers------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCustomerStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 *ngIf="!isCustomer" class="modal-title" style="color: black;">{{'voucher_salesman'|translate}}</h4>
+        <h4 *ngIf="isCustomer" class="modal-title" style="color: black;">{{'voucher_customer'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CustomerClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of customersList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addCustomerItem(item);CustomerClosePopup();">
+              <td> {{item.code}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="CustomerClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-----------------------------------------Modal Currencies------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCurrencyStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'voucher_salesman'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CurrencyClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of currencyList | currencyfilter:textFilterModel , let i =index" class='clickable-row'
+              (dblclick)="addCurrencyItem(item,secondarySource);CurrencyClosePopup();">
+              <td>{{item.code}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="CurrencyClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------Modal Boxes------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayBoxStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'voucher_salesman'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="BoxClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of boxList | namecommonfilter:textFilterModel , let i =index" class='clickable-row'
+              (dblclick)="addBoxItem(item);BoxClosePopup();">
+              <td>{{item.code}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="BoxClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------Modal Banks------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayBankStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'voucher_bank'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="BankClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of bankList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addBankItem(item,secondarySource);BankClosePopup();">
+              <td>{{item.code}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="BankClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-----------------------------------------Modal Banks Branches------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayBankBranchStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'voucher_bankBranches'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="BankBranchClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of bankBranchList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addBankBranchItem(item,secondarySource);BankBranchClosePopup();">
+              <td>{{item.code}} </td>
+              <td>{{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="BankBranchClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-----------------------------------------Modal EPayment------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayEPaymentStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">{{'voucher_paymenttype'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="EPaymentClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of ePaymentList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addEPaymentItem(item);EPaymentClosePopup();">
+              <td>{{item.code}} </td>
+              <td>{{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="EPaymentClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

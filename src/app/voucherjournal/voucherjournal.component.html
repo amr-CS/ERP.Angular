@@ -268,7 +268,7 @@
                     <textarea class="form-control form-control-sm text-center txtNote" style="height:50px" name="{{'txtNotes' + i}} " [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
                   </td>
                   <td>
-                    <button class="btn btn-light btn-sm btnGLVoucherDtlDelete" (click)="removeItemDetail(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                    <button type="button" class="btn btn-light btn-sm btnGLVoucherDtlDelete" (click)="removeItemDetail(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
                     </button>
                   </td>
               </tr>

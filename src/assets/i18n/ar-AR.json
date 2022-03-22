@@ -69,10 +69,36 @@
     "voucher_glvoucherref":"الرقم المرجعي للقيد",
     "voucher_glvoucherrefdate":"تاريخ الرقم المرجعي للقيد",
     "voucher_statement":"البيان",
-    
-    "account_accountdirectory":"دليل الحسابات",
-    "costcenter_costcenter":"مركز التكلفة"
         
+    "account_accountdirectory":"دليل الحسابات",
+    "costcenter_costcenter":"مركز التكلفة",
+
+    "voucher_receipt":"سند القبض",
+    "voucher_receivedfrom":"استلمت من",
+    "voucher_categorycode":"رمز الفئة",
+    "voucher_customerno":"رقم العميل",
+    "voucher_customer":"العميل",
+    "voucher_salesman":"المندوب",
+    "voucher_monetary":"نقدى",
+    "voucher_check":"شيك",
+    "voucher_creditcard":"بطاقة الائتمان",
+    "voucher_paymenttype":"نوع الدفع",
+    "voucher_amount":"المبلغ",
+    "voucher_sumcashandcheques":"مجموع النقدية و الشيكات",
+    "voucher_amountbyaccountcurrency":"المبلغ بعملة الأساس",
+    "voucher_amountbase":"المبلغ بعملة الاصل",
+    "voucher_cashboxno":"رقم الصندوق",
+    "voucher_cashdesk":"إسم الصندوق",
+    "voucher_bank":"اسم البنك",
+    "voucher_bankBranches":"فروع البنوك",
+    "voucher_drawnonabank":"مسحوب على بنك",
+    "voucher_chosebanktitle":"لاختيار البنك انقر مزودج",
+    "voucher_choseboxtitle":"لاختيار الصندوق انقر مزودج",
+    "voucher_branchcode":"رمز الفرع",
+    "voucher_creditcardtype":"نوع بطاقة الائتمان",
+    "voucher_chosepaymenttypetitle":"لاختيار نوع الدفع انقر مزودج",
+    "voucher_cashreceipt":"سند قبض",
+    "voucher_glvouchercategoryid":"فئة القيد"
 
 
     

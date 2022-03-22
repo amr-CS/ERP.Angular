@@ -29,6 +29,9 @@ import { AreaComponent } from './Area/Area.component';
 import { AuthGuard } from './_guard/auth.guard';
 import { AccountfilterPipe } from './pipes/accountfilter.pipe';
 import { CostcenterfilterPipe } from './pipes/costcenterfilter.pipe';
+import { VoucherReceiptComponent } from './voucherreceipt/voucherreceipt.component';
+import { NameCommonfilterPipe } from './pipes/namecommonfilter.pipe';
+import { CurrencyfilterPipe } from './pipes/currencyfilter.pipe';
 
 
 export function HttpLoaderFactory(http:HttpClient){
@@ -51,7 +54,10 @@ export function HttpLoaderFactory(http:HttpClient){
       LoginComponent,
       AreaComponent,
       AccountfilterPipe,
-      CostcenterfilterPipe     
+      CostcenterfilterPipe,
+      VoucherReceiptComponent,
+      NameCommonfilterPipe,
+      CurrencyfilterPipe     
 
    ],
   imports: [

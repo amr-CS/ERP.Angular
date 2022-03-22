@@ -39,13 +39,13 @@ export class VoucherJournalComponent implements OnInit {
   // public voucherJournalColumns : Array<string>;
  public voucherJournalRows : Array<string>;
 
-  public voucherJournal: VoucherJournal = {    
+  public voucherJournal: VoucherJournal = {
     id: 0,
     date: new Date().toLocaleDateString(),
     referenceNumber: '',
     referenceDate: new Date().toLocaleDateString(),
     journalTypeId: 2,
-    sourceTypeId:1,
+    sourceTypeId: 1,
     isPosted: false,
     isIncomplete: false,
     isCancelled: false,
@@ -53,7 +53,13 @@ export class VoucherJournalComponent implements OnInit {
     isReversed: false,
     isDeleted: false,
     notes: '',
-    journalVoucherDetails: []
+    journalVoucherDetails: [],
+    isCash: false,
+    isCheck: false,
+    isCreditCard: false,
+    receiptVoucherCash: [],
+    receiptVoucherCheque: [],
+    receiptVoucherCreditCard: []
   };
   public voucherJournalList: VoucherJournal[] = [];
   public nameCommon : NameCommon = {};
@@ -104,7 +110,7 @@ export class VoucherJournalComponent implements OnInit {
     this.transactionSourceGet();
     this.transactionTypeGet();
     this.accountGetAll();
-    this.voucherJournalGetAll();
+    this.voucherJournalGetByTransactionTypeId();
     this.getCurrentFinancialYear();
 
     this.textFilterModel = '';
@@ -168,8 +174,8 @@ export class VoucherJournalComponent implements OnInit {
     this.totalDifference = Math.abs(debtSum - creditSum);
   }
   
-  voucherJournalGetAll() {
-    this.service.voucherJournalGetAll().subscribe(result => {
+  voucherJournalGetByTransactionTypeId() {
+    this.service.voucherJournalGetByTransactionTypeId(2).subscribe(result => {
       this.voucherJournalList = result;
     }, error => console.error(error));
   }
@@ -245,7 +251,7 @@ export class VoucherJournalComponent implements OnInit {
       element.costCenter = element.costCenter ? element.costCenter :{};
       element.costCenterId = element.costCenterId ? element.costCenterId :undefined;
     });
-    this.voucherJournalGetAll();
+    this.voucherJournalGetByTransactionTypeId();
 
     this.isUpdate = true;      
   }
@@ -275,12 +281,35 @@ export class VoucherJournalComponent implements OnInit {
   }
 
   //Undefined the object properties not needed to be mapped on Create and Update 
-  undefineObjectProperties(){
-    this.voucherJournal.journalVoucherDetails.forEach(e => {       
-      e.account = undefined;                  
-      e.currency = undefined;                
-      e.costCenter = undefined;          
-  }); 
+  undefineObjectProperties() {
+    this.voucherJournal.customerVendor = undefined;
+    this.voucherJournal.sourceType = undefined;
+    this.voucherJournal.sales = undefined;
+
+    this.voucherJournal.journalVoucherDetails.forEach(e => {
+      e.account = undefined;
+      e.currency = undefined;
+      e.costCenter = undefined;
+    });
+
+    this.voucherJournal.receiptVoucherCash.forEach(e => {
+      e.account = undefined;
+      e.currency = undefined;
+      e.costCenter = undefined;
+      e.box = undefined;
+    });
+
+    this.voucherJournal.receiptVoucherCheque.forEach(e => {
+      e.bankAccount = undefined;
+      e.bankBranch = undefined;
+      e.costCenter = undefined;
+    });
+
+    this.voucherJournal.receiptVoucherCreditCard.forEach(e => {
+      e.bankAccount = undefined;
+      e.bankBranch = undefined;
+      e.creditCardType = undefined;
+    });
   }
 
   
@@ -528,7 +557,8 @@ addAccountItemByAccountNo(accountNo:string, i?:number){
   this.accountService.accountGetByAccountNo(accountNo).subscribe(result=>{  
       if(result){        
         if(i !== undefined)    
-        {              
+        {     
+          this.voucherJournal.journalVoucherDetails[i].costCenter = {};
           this.addOldAccount(i,result);
           
         }
@@ -572,6 +602,7 @@ addCostCenterItem(id:number){
       if(tempJournalVoucherDetailsCostCenter){
         tempJournalVoucherDetailsCostCenter.nameL1 = result.nameL1;
         tempJournalVoucherDetailsCostCenter.nameL2 = result.nameL2;
+        tempJournalVoucherDetailsCostCenter.code = result.code;
       }              
 
     }
@@ -580,6 +611,7 @@ addCostCenterItem(id:number){
       if(this.newVoucherJournalDetail.costCenter){
         this.newVoucherJournalDetail.costCenter.nameL1 = result.nameL1;
         this.newVoucherJournalDetail.costCenter.nameL2 = result.nameL2;
+        this.newVoucherJournalDetail.costCenter.code = result.code;
       }      
   }
   
