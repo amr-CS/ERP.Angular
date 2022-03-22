@@ -1,5 +1,6 @@
 import { NameCommon } from "./namecommon.interface";
 
+
 export interface VoucherJournal {
   id: number;
   documentNumber?: number;
@@ -26,6 +27,7 @@ export interface VoucherJournal {
   isCheck: boolean;
   isCreditCard: boolean;
   isDeleted: boolean;
+  isSelected?:boolean;
   notes: string;
   sourceType?:NameCommon;
   customerVendor?:NameCommon;
@@ -100,8 +102,7 @@ export interface VoucherJournalCreditCardDetails {
   currencyEquivalent?: number;
   costCenterId?: number;  
   notes: string;
-  creditCardTypeId?: number;
-  
+  creditCardTypeId?: number;  
   creditCardType?: NameCommon;
   bankAccount?: NameCommon;
   bankBranch?: NameCommon;

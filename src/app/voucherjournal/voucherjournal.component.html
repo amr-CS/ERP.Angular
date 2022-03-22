@@ -1,43 +1,26 @@
-<div class="container-fluid">
-  <form #myForm="ngForm" (submit)="voucherJournalCreateUpdate(myForm)">
-  <!-- Title -->
-  <div class="bg-light border rounded p-3 mb-3">{{'voucher_journal' |translate}}</div>
-  <!-- Utlity -->
-  <div class="divUtilityBar d-flex ">
-    <input  type="button" class="btn btn-primary float-right" (click)="openPopup()" value="{{'search'|translate}}">
-    <input type="submit" value="{{'save-all'|translate}}" class="btn btn-primary" [disabled]="isUpdate"/>
-    <div class="col-md-1">
-      <input type="button" id="btnNew" value="{{'new'|translate}}" (click)="utilityService.reloadComponent()" class="btn btn-primary" />
-    </div>
-    <div class="col-md-1">
-      <input type="button" id="btnDelete" value="{{'delete'|translate}}" (click)="voucherJournalDelete(voucherJournal.id)" class="btn btn-danger" [disabled]="isUpdate"/>
-    </div>
-    <div class="col-md-2">
-      <input type="button" id="btnIsUpdate" value="{{'update_status'|translate}}" (click)="voucherJournalIsUpdateableToggle()" class="btn btn-primary" />
-    </div>
-  </div>
+ <app-utilities
+  (clickSave)="voucherJournalCreateUpdate(myForm)"
+ (clickPopup)="openPopup()"
+ (UpdateableToggle)="voucherJournalIsUpdateableToggle()"
+ (printReport)="printReportJV(voucherJournal.id)"
+ (getNext)="GetNextIndex()"
+ (getPrev)="GetPrevIndex()"
+ (getLast)="GetLast()"
+ (getFirst)="GetFirst()"
+ [IsUpdateFromParent]="isUpdate"
+  [name]="pageName"
+ ></app-utilities>
+ 
 
-  <!-- Head -->
-  <div class="bg-white border rounded p-3">
-    <!-- <div class="form group" *ngIf="isDetailsEmpty"> -->
-      <!-- <span  class="text-danger">
-        {{'required_details'|translate}}
-      </span> -->
+  <form #myForm="ngForm" (submit)="voucherJournalCreateUpdate(myForm)" class="page__content shadow p-3 page__content-data">
+ 
+
     <!-- </div> -->
       <div class="row">
-
           <!-- Main Inputs -->
           <div class="col-sm-8">
-
               <!-- 1st Row Input -->
               <div class="row">
-
-                  <!-- <div class="form-group">
-                      <input type="text" class="form-control form-control-sm w-25 txtDocId d-none" value="0" />
-                      <input type="text" class="form-control form-control-sm w-25 txtCheckDate d-none" value="0" />
-                  </div> -->
-
-
                   <!-- Transaction Type -->
                   <div class="col-sm-4">
                       <div class="form-group">
@@ -62,7 +45,20 @@
                           </div>
                       </div>
                   </div>
-
+       <!-- Source -->
+       <div class="row controlRow col-sm-6">
+        <div class="col-sm-4">
+            <label class="small float-right pt-2">{{'voucher_transactionsource' |translate}}</label>
+        </div>
+        <div class="col-sm-8 d-flex">
+            <input type="number" class="form-control form-control-sm w-25 txtTransactionSource" disabled name="txtSourceTypeId" [(ngModel)]="voucherJournal.sourceTypeId"/>                    
+            <!-- value="1" -->
+            <!-- TO DO different language inputs Yehia -->
+            <input type="text" class="form-control form-control-sm w-75 txtTransactionSourceNamel1" disabled name="txtSourceTypeName" [(ngModel)]="sourceTypeName"/>                    
+            <!--value="{{'voucher_accounts' |translate}}"-->
+        </div>
+        
+    </div>
               </div> <!-- End of 1st Row of Main Inputs -->
               <!-- 2nd Row Input -->
               <div class="row">
@@ -126,7 +122,7 @@
                   </div>
                   <div class="col-sm-8">
                       <!-- <input type="date" class="form-control form-control-sm dtpDocDate" name="dtp.date" [(ngModel)]="voucherJournal.date"/> -->
-                      <input #date ="ngModel" type="date" class="form-control form-control-sm dtpDocDate" required ngClass="invalid" name="dtp.date"  [ngModel] ="voucherJournal.date | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.date = $event" [disabled]="isUpdate"
+                      <input #date ="ngModel" type="date" class="form-control form-control-sm " required ngClass="invalid" name="dtp.date"  [ngModel] ="voucherJournal.date | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.date = $event" [disabled]="isUpdate"
                       [ngClass]="{'is-invalid': (date.invalid || !isCurrentFinancialYear) && (date.touched || date.dirty)}" (change)="checkForcurrentSelectedDateYear()"/>
                   </div>
               </div>
@@ -137,7 +133,7 @@
                       <label class="small float-right pt-2">{{'voucher_refrenceno' |translate}}</label>
                   </div>
                   <div class="col-sm-8">
-                      <input type="text" class="form-control form-control-sm txtDocRefNo" name="txtReferenceNumber" [(ngModel)]="voucherJournal.referenceNumber" [disabled]="isUpdate"/>
+                      <input type="text" class="form-control form-control-sm " name="txtReferenceNumber" [(ngModel)]="voucherJournal.referenceNumber" [disabled]="isUpdate"/>
                   </div>
               </div>
 
@@ -148,30 +144,18 @@
                   </div>
                   <div class="col-sm-8">
                       <!-- <input type="date" class="form-control form-control-sm dtpDocRefDate" name="dtpReferenceDate" [(ngModel)]="voucherJournal.referenceDate"/> -->
-                      <input type="date" class="form-control form-control-sm dtpDocRefDate" name="dtpReferenceDate" [ngModel] ="voucherJournal.referenceDate | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.referenceDate = $event" [disabled]="isUpdate"/>
+                      <input type="date" class="form-control form-control-sm " name="dtpReferenceDate" [ngModel] ="voucherJournal.referenceDate | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.referenceDate = $event" [disabled]="isUpdate"/>
                       <!-- onblur="funFoucus('txtAccountCode')" -->
                   </div>
               </div>
 
-              <!-- Source -->
-              <div class="row controlRow">
-                  <div class="col-sm-4">
-                      <label class="small float-right pt-2">{{'voucher_transactionsource' |translate}}</label>
-                  </div>
-                  <div class="col-sm-8 d-flex">
-                      <input type="number" class="form-control form-control-sm w-25 txtTransactionSource" disabled name="txtSourceTypeId" [(ngModel)]="voucherJournal.sourceTypeId"/>                    
-                      <!-- value="1" -->
-                      <!-- TO DO different language inputs Yehia -->
-                      <input type="text" class="form-control form-control-sm w-75 txtTransactionSourceNamel1" disabled name="txtSourceTypeName" [(ngModel)]="sourceTypeName"/>                    
-                      <!--value="{{'voucher_accounts' |translate}}"-->
-                  </div>
-                  
-              </div>
+       
           </div>
       </div>
-  </div>
   <!-- Details Main -->
-  <div class="bg-white border rounded p-3 mt-3 divGlVoucher">
+  <div class="bg-white border rounded p-3 mt-3 ">
+    <div class="bg-white" id="table-wrapper">
+      <div id="table-scroll">
       <!-- Details -->
       <table #table name="table" class="table table-sm table-responsive-sm">
           <thead>
@@ -215,10 +199,10 @@
               </tr>
           </thead>
 
-          <tbody>
-              <tr *ngFor="let vj of this.voucherJournal.journalVoucherDetails; let i = index;trackBy:trackByIndex;" > 
+          <tbody >
+              <tr *ngFor="let vj of this.voucherJournal.journalVoucherDetails; let i = index;trackBy:trackByIndex;" style="overflow-y: scroll;" > 
                   <td>
-                    <button type="button" class="btn btn-light btn-sm border btnAddRow" (click)="addItemDetail(i)" [disabled]="isUpdate">
+                    <button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput" (click)="addItemDetail(i)" [disabled]="isUpdate">
                       <i class="fa fa-plus-circle"></i>
                   </button>
                   </td>
@@ -265,69 +249,17 @@
                         </div>
                   </td>
                   <td>
-                    <textarea class="form-control form-control-sm text-center txtNote" style="height:50px" name="{{'txtNotes' + i}} " [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
+                    <textarea class="form-control form-control-sm text-center txtNote fullHeightInput"  name="{{'txtNotes' + i}} " [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
                   </td>
-                  <td>
-                    <button type="button" class="btn btn-light btn-sm btnGLVoucherDtlDelete" (click)="removeItemDetail(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                  <td>                  
+                    <button type="button" class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput" (click)="removeItemDetail(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
                     </button>
                   </td>
               </tr>
           </tbody>
-
-
-            <tfoot>
-              <tr>
-                <td>
-                    <button type="button" class="btn btn-light btn-sm border btnAddRow" (click)="addItemDetail()" [disabled]="isUpdate">
-                        <i class="fa fa-plus-circle"></i>
-                    </button>
-                </td>
-
-                <td>
-                    <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none" type="text" required name="txtNewAccountId" [(ngModel)]="newVoucherJournalDetail.accountId"/> -->
-                    <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
-                    <input #newAccountNo class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"  name="txtNewAccountNo" [(ngModel)]="newVoucherJournalDetail.accountNo" (dblclick)="AccountOpenPopup()" [disabled]="isUpdate"
-                      (change)="addAccountItemByAccountNo(newAccountNo.value);"/>
-                      
-                </td>
-                <td>
-                    <textarea *ngIf="newVoucherJournalDetail.account" class="form-control form-control-sm text-center fullHeightInput" type="text" readonly name="txtNewAccountName" [(ngModel)]="newVoucherJournalDetail.account.nameL1"></textarea>
-                </td>
-                <td>
-                  <!-- <input class="form-control form-control-sm text-center   txtAccountCurrency d-none" type="text" required disabled /> -->
-                    <input *ngIf="newVoucherJournalDetail.currency" class="form-control form-control-sm text-center" type="text" disabled name="txtNewCurrencyName" [(ngModel)]="newVoucherJournalDetail.currency.nameL1"/>
-                    <input class="form-control form-control-sm text-center" type="text" required disabled name="txtNewCurrencyExchange" [(ngModel)]="newVoucherJournalDetail.currencyExchange"/>
-                </td>
-                <td>
-                    <input class="form-control form-control-sm text-center font-weight-bold" value="0" type="number" min=0  name="txtNewDebitCurrency" [(ngModel)]="newVoucherJournalDetail.debit" (ngModelChange)="newVoucherJournalDetail.debitDefaultCurrency = (newVoucherJournalDetail.debit || 0) * (newVoucherJournalDetail.currencyExchange || 0)" [disabled]="isUpdate" 
-                    (change)="addItemDetail();totalDebitCreditCalculate();" (blur)="setFocus(table,$event.target)"/>
-                    <input class="form-control form-control-sm text-center font-weight-bold" type="number" value="0" min=0 disabled name="txtNewDebitBase" [(ngModel)]="newVoucherJournalDetail.debitDefaultCurrency"/>
-                </td>
-                <td>
-                    <input class="form-control form-control-sm text-center font-weight-bold" value="0" type="number" min=0 name="txtNewCreditCurrency" [(ngModel)]="newVoucherJournalDetail.credit" (ngModelChange)="newVoucherJournalDetail.creditDefaultCurrency = (newVoucherJournalDetail.credit || 0) * (newVoucherJournalDetail.currencyExchange || 0)" [disabled]="isUpdate"
-                    (change)="addItemDetail();totalDebitCreditCalculate();" (blur)="setFocus(table,$event.target)"/>
-                    <input class="form-control form-control-sm text-center font-weight-bold" value="0" type="number" min=0 disabled name="txtNewCreditBase" [(ngModel)]="newVoucherJournalDetail.creditDefaultCurrency"/>
-                </td>
-                <td>
-                    <div class="d-flex">
-                        <div class="col-sm-4 p-0">                           
-                            <input class="form-control form-control-sm text-center fullHeightInput"   type="text" readonly name="txtNewCostCenterId" [(ngModel)]="newVoucherJournalDetail.costCenterId" (dblclick)="CostCenterOpenPopup(newVoucherJournalDetail.accountId)"  [disabled]="isUpdate"/>                      
-                        </div>
-                        <div class="col-sm-8 p-0">
-                            <input *ngIf="newVoucherJournalDetail.costCenter" class="form-control form-control-sm text-center fullHeightInput" type="text" readonly name="txtNewCostCenterName" [(ngModel)]="newVoucherJournalDetail.costCenter.nameL1"/>
-                        </div>
-                    </div>
-                </td>
-
-
-                <td>
-                    <textarea class="form-control form-control-sm text-center txtNote" style="height:50px"  name="txtNewNotes" [(ngModel)]="newVoucherJournalDetail.notes" [disabled]="isUpdate" (change)="addItemDetail()"></textarea>                    
-                </td>
-        
-                
-            </tr>
-            </tfoot>
       </table>
+      </div>
+    </div>
 
       <!-- Details Footer -->
       <table class="table table-sm tblFooter border-0">
@@ -356,10 +288,6 @@
   </div>
 </form>
 
-</div>
-
-
-
 
 
 
@@ -367,7 +295,7 @@
 
     <!-----------------------------------------Modal All------------------------------------------>
     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" >
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content modal-inside-scroll">
             <div class="modal-header">
               <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
@@ -401,6 +329,10 @@
             <table class="table">
               <thead>
                 <th>
+                  <input type="checkbox" class="d-none"> 
+                <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"(change)="checkUncheckAll()" >
+                </th>
+                <th>
                   {{'voucher_glvoucherno'|translate}}
                 </th>
                 <th>
@@ -420,15 +352,21 @@
                 </th>
               </thead>
               <tbody>
-                <tr *ngFor="let vj of voucherJournalList | voucherjournalfilter:textFilterModel:dateFromFilterModel:dateToFilterModel:dateReferenceFilterModel:isDateFilter:isDateRefFilter">
-                  <td>{{vj.id}}</td>
+
+                <tr *ngFor="let vj of voucherJournalList | voucherjournalfilter:textFilterModel:dateFromFilterModel:dateToFilterModel:dateReferenceFilterModel:isDateFilter:isDateRefFilter"
+                (dblclick)="voucherJournalGetById(vj.id);closePopup()">
+                <td>
+                  <input  type="checkbox"     [(ngModel)]="vj.isSelected" name="list_name" value="{{vj.id}}"
+                  (change)="isAllSelected()" />
+              
+                </td>            
+                <td>{{vj.id}}</td>
                   <td>{{vj.date | date :'yyyy-MM-dd'}}</td> 
                   <td>{{vj.referenceNumber}}</td>
                   <td>{{vj.referenceDate}}</td>                 
                   <td><div *ngIf="vj.sourceTypeId">{{sourceTypeName}}</div></td>
                   <!-- <td>{{'voucher_accounts' |translate}}</td> -->
                   <td>{{vj.notes}}</td>                   
-                  <td><input type="button" value="{{'select'|translate}}" class="btn btn-link" (click)="voucherJournalGetById(vj.id);closePopup()" /></td>            
                 </tr>
               </tbody>
             </table>
@@ -438,6 +376,8 @@
                       (click)="closePopup()">
                       {{'close'|translate}}
               </button>
+              <button type="button" class="btn btn-primary" 
+              (click)="closePopup()">اختيار</button>
             </div>
           </div>
         </div>
@@ -475,6 +415,7 @@
                     (click)="AccountClosePopup()">
                     {{'close'|translate}}
             </button>
+           
           </div>
         </div>
       </div>

@@ -1,0 +1,225 @@
+
+
+
+
+<div class="">
+  <div class="d-flex bg-white border">
+
+    <div class="input-group">
+      <span class="input-group-text">الحساب</span>
+      <button type="button" class="btnMainLevel btn btn-success ml-2" id="btnMainLevel" (click)="GetParent(mainAccountId)"><i class="fa fa-arrow-right"></i></button>
+      <input type="text" class="form-control txtMainNo d-none" [(ngModel)]="mainAccountId">
+      <input type="text" class="form-control txtMainNo" #accountNumber  (change)="accountGetByAccountNo(accountNumber.value)" [(ngModel)]="mainAccountNo">
+      <input type="text" disabled class="form-control txtMainName" [(ngModel)]="mainAccountNameL1" />
+    </div>
+
+  </div>
+</div>
+<form #myForm="ngForm" >
+  
+ 
+    <table #table id="table" class="table table-hover tblAccount">
+      <!-- DataTable Header -->
+      <thead>
+          <tr>
+              <th></th>
+              <th></th>
+              <th width="15%">رقم الحساب</th>
+              <th width="15%">اسم الحساب </th>
+              <th width="13.5%">العملة </th>
+              <th width="13.5%">درجة السرية</th>
+              <th width="13.5%">نوع الحساب</th>
+              <th width="13.5%">تقرير الحساب</th>
+              <th width="3%">تجميعي </th>
+              <th width="3%">مركز التكلفة</th>
+              <th></th>
+          </tr>
+      </thead> <!-- End of DataTable Header -->
+      <!-- DataTable Body -->
+      <tbody class="tblAccountBody">
+     <tr *ngFor="let acc of this.accountMain.accountDetail; let i = index;trackBy:trackByIndex;">
+      <td><button type="button"class="btn btn-success btnLevel" (click)="GetChildsByParent(acc.id,acc.accountNo,acc.nameL1)">
+      <i class="fa fa-arrow-left" ></i>
+      </button>
+      </td>
+      <td><button class="btn btn-primary btnAccountAddRow " (click)="addItemDetail();">
+        <i class="fa fa-plus-circle"></i></button></td>
+      <td><input type="text" class="form-control" #nameL1="ngModel" [ngClass]="{'is-invalid': nameL1.invalid && (nameL1.touched || nameL1.dirty)}" [(ngModel)]="acc.accountNo" name="{{'accountNo' + i}}"  id="AccountNo" disabled>
+        <input type="text" class="form-control d-none"  [(ngModel)]="acc.parentId" name="parentId"   disabled>
+        <input type="text" class="form-control d-none"  [(ngModel)]="acc.isActive" name="{{'isActive' + i}}"   disabled>
+      </td>
+      <td><input type="text" autocomplete="off" [(ngModel)]="acc.nameL1" name="{{'nameL1' + i}}" class="form-control"  id="AccountNameL1"></td>
+      <td>
+        <input type="text" autocomplete="off" [(ngModel)]="acc.currencyId" class="form-control d-none" name="{{'currencyId' + i}}" >
+        <input type="text" autocomplete="off" name="{{'currencyName' + i}}" readonly [(ngModel)]="acc.currencyName" class="form-control" (dblclick)="CurrencyOpenPopup(i)" >
+     
+      </td>
+     <td>
+      <input type="text" autocomplete="off"  [(ngModel)]="acc.securityGradeId" class="form-control  d-none" name="{{'securityGradeId' + i}}" >
+      <input type="text" autocomplete="off" name="{{'securityGradeName' + i}}" readonly [(ngModel)]="acc.securityGradeName" class="form-control " (dblclick)="securityGradeOpenPopup(i)" >
+    </td>
+      <td>
+        <input type="text" autocomplete="off" [(ngModel)]="acc.accountTypeId" class="form-control   d-none" name="{{'accountTypeId' + i}}" id="AccountNameL1">
+        <input type="text" autocomplete="off" name="{{'accountTypeName' + i}}" readonly [(ngModel)]="acc.accountTypeName" class="form-control " (dblclick)="AccountTypeOpenPopup(i)" >
+     
+      </td>
+      <td>
+        <input type="text" autocomplete="off" [(ngModel)]="acc.accountReportId"  class="form-control d-none" name="{{'accountReportId' + i}}" >
+        <input type="text" autocomplete="off" name="{{'accountReportName' + i}}" readonly [(ngModel)]="acc.accountReportName" class="form-control " (dblclick)="AccountReportOpenPopup(i)" >
+  
+      </td>
+  <td>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" id="exampleCheck1" [checked]="acc.isCumulative" [(ngModel)]="acc.isCumulative"
+      [ngModelOptions]="{standalone: true}" >
+    </div>
+  </td>
+      <td>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" [checked]="acc.isCostCenter"   [(ngModel)]="acc.isCostCenter"
+          [ngModelOptions]="{standalone: true}" >
+        </div>
+    </td>
+      <td><button class="btn btn-danger  btnDelete"  title="حذف"  (click)="Delete(acc.id,i)"> <i class="fa fa-trash"></i> </button></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</form>
+
+
+
+  <!-----------------------------------------Modal currency------------------------------------------>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCurrencyStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">العملات</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CurrencyClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let currency of currencyList | currencyfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addCurrencyItem(currency.id || 0,currency);CurrencyClosePopup();">     
+              <td>{{currency.code}} </td>
+              <td> {{currency.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="CurrencyClosePopup()">
+                  {{'close'|translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-----------------------------------------Modal SecurityGrade------------------------------------------>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaysecurityGradeStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">درجة السرية</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="securityGradeClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let securityGrade of securityGradeList | securityGradefilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addSecurityGradeItem(securityGrade.id || 0,securityGrade);securityGradeClosePopup();">     
+              <td>{{securityGrade.code}} </td>
+              <td> {{securityGrade.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="securityGradeClosePopup()">
+                  {{'close'|translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+    <!-----------------------------------------Modal AccountType------------------------------------------>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAccountTypeStyle}" >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content modal-inside-scroll">
+          <div class="modal-header">
+            <h4 class="modal-title" style="color: black;">نوع الحساب</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="AccountTypeClosePopup()" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+            </p>            
+                        
+          <table class="table">            
+            <tbody>          
+              <tr *ngFor="let AccountType of AccountTypeList | securityGradefilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountTypeItem(AccountType.id || 0,AccountType);AccountTypeClosePopup();">     
+                <td>{{AccountType.code}} </td>
+                <td> {{AccountType.nameL1}}  </td>                                                     
+              </tr>     
+            </tbody>
+          </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" 
+                    (click)="AccountTypeClosePopup()">
+                    {{'close'|translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-----------------------------------------Modal AccountReport------------------------------------------>
+      <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAccountReportStyle}" >
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content modal-inside-scroll">
+            <div class="modal-header">
+              <h4 class="modal-title" style="color: black;">درجة السرية</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="AccountReportClosePopup()" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+              </p>            
+                          
+            <table class="table">            
+              <tbody>          
+                <tr *ngFor="let AccountReport of AccountReportList | securityGradefilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountReportItem(AccountReport.id || 0,AccountReport);AccountReportClosePopup();">     
+                  <td>{{AccountReport.code}} </td>
+                  <td> {{AccountReport.nameL1}}  </td>                                                     
+                </tr>     
+              </tbody>
+            </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" 
+                      (click)="AccountReportClosePopup()">
+                      {{'close'|translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>

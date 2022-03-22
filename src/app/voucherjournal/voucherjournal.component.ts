@@ -59,7 +59,10 @@ export class VoucherJournalComponent implements OnInit {
     isCreditCard: false,
     receiptVoucherCash: [],
     receiptVoucherCheque: [],
-    receiptVoucherCreditCard: []
+    receiptVoucherCreditCard: [],
+    isSelected:false,
+    
+
   };
   public voucherJournalList: VoucherJournal[] = [];
   public nameCommon : NameCommon = {};
@@ -174,11 +177,25 @@ export class VoucherJournalComponent implements OnInit {
     this.totalDifference = Math.abs(debtSum - creditSum);
   }
   
+
   voucherJournalGetByTransactionTypeId() {
     this.service.voucherJournalGetByTransactionTypeId(2).subscribe(result => {
       this.voucherJournalList = result;
-    }, error => console.error(error));
-  }
+      for(let i in result){
+        this.voucherJournalList[i].isSelected = false;
+      }
+    }, error => console.error(error))};
+
+  // voucherJournalGetAll() {
+  //   this.service.voucherJournalGetAll().subscribe( result => {
+
+  //     this.voucherJournalList = result;
+  //     for(let i in result){
+  //       this.voucherJournalList[i].isSelected = false;
+  //     }
+  //   }, error => console.error(error));
+ 
+  // }
 
   voucherJournalGetById(id: any) {
     if (id) {
@@ -227,6 +244,9 @@ export class VoucherJournalComponent implements OnInit {
 
   // flag to determine the ability to update or disable all controls
   public isUpdate = false;
+  public pageName = "قيد اليومية";
+
+  
   voucherJournalIsUpdateableToggle(){
     this.isUpdate = !this.isUpdate;
   }
@@ -270,7 +290,8 @@ export class VoucherJournalComponent implements OnInit {
             this.successCreateUpdate(result);
         },  error => console.error(error));
       }
-      else{             
+      else{          
+           
         this.service.voucherJournalUpdate(this.voucherJournal).
         subscribe(result => {
           this.successCreateUpdate(result);          
@@ -633,9 +654,7 @@ addCostCenterItem(id:number){
     this.isDateRefFilter  = false;
   }
 
-  closePopup(): void {
-    this.displayStyle = "none";    
-  }
+  
 
   // <----- Account modal ----->
   displayAccountStyle = "none";
@@ -648,7 +667,8 @@ addCostCenterItem(id:number){
   }
 
   AccountClosePopup(): void {
-    this.displayAccountStyle = "none";    
+    this.displayAccountStyle = "none"; 
+      
   }
 
   // <----- Cost Center modal ----->
@@ -676,7 +696,78 @@ addCostCenterItem(id:number){
 
 
   CostCenterClosePopup(): void {
-    this.displayCostCenterStyle = "none";    
+    this.displayCostCenterStyle = "none"; 
+   
+  }
+
+
+
+  printReportJV(id:any){
+var url=Constants.ApiUrl +'/api/JournalVoucher/JournalReport/' + id
+window.open(url, "_blank");
+  }
+   //checkbox
+   masterSelected: boolean = false;
+   checkedList: any ;
+ 
+  public index = 0;
+  GetFirst(){
+    this.index=0;
+ this.voucherJournalGetById(this.checkedList[this.index])
+  }
+GetLast(){
+  this.index=(this.checkedList.length)-1
+  this.voucherJournalGetById(this.checkedList[this.index])
+
+}
+GetNextIndex(){
+      if (this.index <= this.checkedList.length) {
+          // Call Function Display Data
+          ++this.index;
+      }
+      this.voucherJournalGetById(this.checkedList[this.index])
+    }
+    GetPrevIndex(){
+      if (this.index > 0) {
+          // Call Function Display Data
+          --this.index;
+      }
+      this.voucherJournalGetById(this.checkedList[this.index])
+    }
+
+   
+     // The master checkbox will check/ uncheck all items
+  checkUncheckAll() {
+    for (var i = 0; i < this.voucherJournalList.length; i++) {
+      this.voucherJournalList[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+  // Check All Checkbox Checked
+  isAllSelected() {
+    this.masterSelected = this.voucherJournalList.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+
+  // Get List of Checked Items
+  getCheckedItemList(){
+    this.checkedList = [];
+    for (var i = 0; i < this.voucherJournalList.length; i++) {
+      if(this.voucherJournalList[i].isSelected)
+      this.checkedList.push(this.voucherJournalList[i].id);
+    }
+  
+  }
+
+  closePopup(): void {
+    this.displayStyle = "none"; 
+    if(this.checkedList.length>0)
+    {
+      this.voucherJournalGetById(this.checkedList[0]) 
+    }      
   }
 
 

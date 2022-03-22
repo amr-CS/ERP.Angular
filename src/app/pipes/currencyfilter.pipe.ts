@@ -6,6 +6,7 @@ import { Currency } from '../interfaces/currency.interface.';
 })
 export class CurrencyfilterPipe implements PipeTransform {
 
+
   transform(currencyList: Currency[], textFilterModel:string) {
     if (textFilterModel)
     {
@@ -17,4 +18,7 @@ export class CurrencyfilterPipe implements PipeTransform {
     return currencyList;
   }
 
+
 }
+
+

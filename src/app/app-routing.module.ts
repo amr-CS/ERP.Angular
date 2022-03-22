@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AreaComponent } from './Area/Area.component';
+import { ChartOfAccountComponent } from './chartOfAccount/chartOfAccount.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DemographicinfoComponent } from './demographicinfo/demographicinfo.component';
 import { VoucherJournalComponent } from './voucherjournal/voucherjournal.component';
@@ -26,8 +27,12 @@ const routes: Routes = [
              { path: 'demographicinfo', component: DemographicinfoComponent},
              { path: 'home', component: HomeComponent},
              { path: 'dashboard', component: DashboardComponent},
+
              { path: 'voucherjournal', component: VoucherJournalComponent },
-             { path: 'voucherreceipt', component: VoucherReceiptComponent }
+             { path: 'voucherreceipt', component: VoucherReceiptComponent },
+
+             { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
+
           ]
 }
 ];

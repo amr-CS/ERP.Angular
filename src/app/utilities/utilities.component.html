@@ -1,0 +1,87 @@
+<div class="d-flex page__box p-3 mt-2" >
+  <div class="d-flex flex-row">
+    <div class="" style="color: aliceblue;padding-right:50px; ">
+    {{name}}
+    </div>
+  <div class=" row"  style="padding-right:150px; ">
+    <div class="bg-white ">
+        <div class="w-100">
+            <div class="d-flex justify-content-end">
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- Save -->
+                    <button (click)="save()"   [disabled]="IsUpdateFromParent" class="btn btnUtility btnSave" title="{{'save-all'|translate}}" ><i class="fa fa-save"></i></button>
+                    <button class="btn btnUtility btnSearch" (click)="openPopup()" title="{{'search'|translate}}"><i class="fa fa-search"></i></button>
+                    <button class="btn btnUtility btnDeleteHead" title="@appResource.btnDelete"><i class="fa fa-trash"></i></button>
+                    <button class="btn btnUtility "  (click)="isUpdateableToggle()" id="btnEdit" title="{{'update_status'|translate}}"><i class="fa fa-edit"></i></button>
+                <!-- Print -->
+                <button class="btn btnUtility btnPrint" (click)="print()" title="طباعة"><i class="fa fa-print"></i></button>
+
+                  </div>
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- Copy -->
+                    <button class="btn btnUtility btnCopy" title="@appResource.ttCopy"><i class="fa fa-copy"></i></button>
+                    <!-- Cut -->
+                    <button class="btn btnUtility btnCut" title="@appResource.ttCut"><i class="fa fa-cut"></i></button>
+                    <!-- Paste -->
+                    <button class="btn btnUtility btnPaste" title="@appResource.ttPaste"><i class="fa fa-paste"></i></button>
+                </div>
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                                       <!-- Sort Asc -->
+                    <button class="btn btnUtility btnSortAsc" title="@appResource.ttSortAsc"><i class="fa fa-sort-asc"></i></button>
+                    <!-- Sort Desc -->
+                    <button class="btn btnUtility btnSortDesc" title="@appResource.ttSortDesc"><i class="fa fa-sort-desc"></i></button>
+                </div>
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- ADD -->
+                    <button class="btn btnUtility"   (click)="reloadComponent()"  title="{{'new'|translate}}"><i class="fa fa-plus"></i></button>
+                    <!-- Edit -->
+                </div>
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- PDF -->
+                    <button class="btn btnUtility btnPDF" title="@appResource.ttPDF"><i class="fa fa-file-pdf-o"></i></button>
+                    <!-- Excel -->
+                    <button class="btn btnUtility btnExcel btnDataTablePrint " title="@appResource.ttExcel"><i class="fa fa-file-excel-o"></i></button>
+                    <!-- Word -->
+                    <button class="btn btnUtility btnWord" id="btnWord" title="@appResource.ttWord"><i class="fa fa-file-word-o"></i></button>
+                </div>
+
+
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- Close -->
+                </div>
+
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- Next -->
+                    <button class="btn btnUtility   btnFirst" (click)="first()" id="btnFirst" title="الاول"><i class="fa  fa-fast-forward"></i></button>
+                    <!-- Prev -->
+                    <button class="btn btnUtility   btnNext"  (click)="next()"  id="btnNext" title="التالي"><i class="fa  fa-forward "></i></button>
+                    <!-- First -->
+                    <button class="btn btnUtility btnPrev"  (click)="prev()"  id="btnPrev" title="السابق"><i class="fa fa-backward"></i></button>
+                    <!-- Last -->
+                    <button class="btn btnUtility btnLast" (click)="last()"  id="btnLast" title="الاخير"><i class="fa fa-fast-backward"></i></button>
+                </div>
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <!-- Full Screen -->
+                    <button class="btn btnUtility btnFullScreen" title="@appResource.ttFullScreen"><i class="fa fa-window-maximize"></i></button>
+                </div>
+
+                <div class="btn-group m-2" role="group" aria-label="First group">
+                    <div class="dropdown">
+                        <button class="btn btnUtility dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-table"></i>
+                        </button>
+                        <div id="chkboxdiv" class="flex-shrink-1 dropdown-menu" aria-labelledby="dropdownMenuButton"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  
+  
+  </div>
+
+
+
+</div>

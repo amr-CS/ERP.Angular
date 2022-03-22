@@ -18,7 +18,7 @@ export class AuthService {
 constructor(private http:HttpClient,private router:Router ) { }
 
 login(model:any){
-return this.http.post(Constants.ApiUrlLogin,model).pipe(
+return this.http.post(Constants.ApiUrlMain+'user/authenticate',model).pipe(
   map((result:any)=>{
 const user=result;
 const token=user.token;
