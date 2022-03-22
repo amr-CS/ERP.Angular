@@ -10,5 +10,5 @@ export class Constants {
 
   
 
-  static inputsCount = 5;
+  static inputsCount = 3;
 }

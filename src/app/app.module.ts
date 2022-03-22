@@ -73,6 +73,7 @@ import { AccountfilterPipe } from './pipes/accountfilter.pipe';
 import { CostcenterfilterPipe } from './pipes/costcenterfilter.pipe';
 import { CurrencyfilterPipe } from './pipes/currencyfilter.pipe';
 import { SecurityGradePipe } from './pipes/securityGrade.pipe';
+import { UtilitiesComponent } from './utilities/utilities.component';
 
 
 
@@ -83,7 +84,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [										
+  declarations: [											
     AppComponent,
     DemographicinfoComponent,
     DemographicfilterPipe,
@@ -102,7 +103,8 @@ export function HttpLoaderFactory(http:HttpClient){
       AccountfilterPipe,
       CostcenterfilterPipe,
       CurrencyfilterPipe,
-      SecurityGradePipe
+      SecurityGradePipe,
+      UtilitiesComponent
    ],
   imports: [
     BrowserModule,

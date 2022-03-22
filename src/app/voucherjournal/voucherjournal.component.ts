@@ -53,6 +53,7 @@ export class VoucherJournalComponent implements OnInit {
     isReversed: false,
     isDeleted: false,
     notes: '',
+    isSelected:false,
     journalVoucherDetails: []
   };
   public voucherJournalList: VoucherJournal[] = [];
@@ -169,9 +170,13 @@ export class VoucherJournalComponent implements OnInit {
   }
   
   voucherJournalGetAll() {
-    this.service.voucherJournalGetAll().subscribe(result => {
+    this.service.voucherJournalGetAll().subscribe( result => {
       this.voucherJournalList = result;
+      for(let i in result){
+        this.voucherJournalList[i].isSelected = false;
+      }
     }, error => console.error(error));
+ 
   }
 
   voucherJournalGetById(id: any) {
@@ -198,7 +203,6 @@ export class VoucherJournalComponent implements OnInit {
           }); 
           this.totalDebitCreditCalculate();        
         }
-        console.log(this.voucherJournal.journalVoucherDetails)
       }, error => console.error(error));
     }
 
@@ -222,6 +226,9 @@ export class VoucherJournalComponent implements OnInit {
 
   // flag to determine the ability to update or disable all controls
   public isUpdate = false;
+  public pageName = "قيد اليومية";
+
+  
   voucherJournalIsUpdateableToggle(){
     this.isUpdate = !this.isUpdate;
   }
@@ -252,7 +259,6 @@ export class VoucherJournalComponent implements OnInit {
   }
   voucherJournalCreateUpdate(myForm:NgForm) {
     // force the UI validation to appear
-    console.log(this.voucherJournal)
     myForm.form.markAllAsTouched();
     if (this.Validate(myForm)) {
       this.undefineObjectProperties();
@@ -604,9 +610,7 @@ addCostCenterItem(id:number){
     this.isDateRefFilter  = false;
   }
 
-  closePopup(): void {
-    this.displayStyle = "none";    
-  }
+  
 
   // <----- Account modal ----->
   displayAccountStyle = "none";
@@ -619,7 +623,8 @@ addCostCenterItem(id:number){
   }
 
   AccountClosePopup(): void {
-    this.displayAccountStyle = "none";    
+    this.displayAccountStyle = "none"; 
+      
   }
 
   // <----- Cost Center modal ----->
@@ -647,7 +652,78 @@ addCostCenterItem(id:number){
 
 
   CostCenterClosePopup(): void {
-    this.displayCostCenterStyle = "none";    
+    this.displayCostCenterStyle = "none"; 
+   
+  }
+
+
+
+  printReportJV(id:any){
+var url=Constants.ApiUrl +'/api/JournalVoucher/JournalReport/' + id
+window.open(url, "_blank");
+  }
+   //checkbox
+   masterSelected: boolean = false;
+   checkedList: any ;
+ 
+  public index = 0;
+  GetFirst(){
+    this.index=0;
+ this.voucherJournalGetById(this.checkedList[this.index])
+  }
+GetLast(){
+  this.index=(this.checkedList.length)-1
+  this.voucherJournalGetById(this.checkedList[this.index])
+
+}
+GetNextIndex(){
+      if (this.index <= this.checkedList.length) {
+          // Call Function Display Data
+          ++this.index;
+      }
+      this.voucherJournalGetById(this.checkedList[this.index])
+    }
+    GetPrevIndex(){
+      if (this.index > 0) {
+          // Call Function Display Data
+          --this.index;
+      }
+      this.voucherJournalGetById(this.checkedList[this.index])
+    }
+
+   
+     // The master checkbox will check/ uncheck all items
+  checkUncheckAll() {
+    for (var i = 0; i < this.voucherJournalList.length; i++) {
+      this.voucherJournalList[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+  // Check All Checkbox Checked
+  isAllSelected() {
+    this.masterSelected = this.voucherJournalList.every(function(item:any) {
+        return item.isSelected == true;
+      })
+    this.getCheckedItemList();
+  }
+
+  // Get List of Checked Items
+  getCheckedItemList(){
+    this.checkedList = [];
+    for (var i = 0; i < this.voucherJournalList.length; i++) {
+      if(this.voucherJournalList[i].isSelected)
+      this.checkedList.push(this.voucherJournalList[i].id);
+    }
+  
+  }
+
+  closePopup(): void {
+    this.displayStyle = "none"; 
+    if(this.checkedList.length>0)
+    {
+      this.voucherJournalGetById(this.checkedList[0]) 
+    }      
   }
 
 

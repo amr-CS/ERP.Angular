@@ -11,6 +11,7 @@ import { TreeService } from '../services/tree.service';
 export class ChartOfAccountComponent implements OnChanges {
   @Input() getData=new EventEmitter<any>();
   buttonToggle: boolean = false;
+  public pageName="دليل الحسابات"
  
   //test
   data:any = 0
@@ -43,6 +44,9 @@ export class ChartOfAccountComponent implements OnChanges {
     
 }
 
+save(): void {
+  this.buttonToggle = !this.buttonToggle;
+}
 
 
 }

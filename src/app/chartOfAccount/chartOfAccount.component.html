@@ -1,17 +1,20 @@
-<div class="container-fluid page">
-  <div class="d-flex page__box p-3 mt-2">{{'home' |translate}}</div>
-  <div class="page__content shadow p-3 ">
-    <div class="row">
       
+      <app-utilities
+      (clickSave)="save()"
+      [name]="pageName"
+      
+     ></app-utilities>
+    <div class="row">
+
+     
+
   <div class="divTreeContainer col-md-3">
     <app-tree-component #myButton (passId)="reload($event)"  ></app-tree-component>
   </div>
   <div  id="divContainer" class="col-md-9 divContainer" >
-    <app-TableDynamicArrayDataExample  #myButton1 [parentData]=data [accountFromParent]="account" ></app-TableDynamicArrayDataExample>
+    <app-TableDynamicArrayDataExample  #myButton1 [parentData]=data [accountFromParent]="account" [buttonTrigger]="buttonToggle"></app-TableDynamicArrayDataExample>
   </div> <!-- End of Data Container -->
   </div>
  
 
-  </div>
-  <!--<button class="btn btn-primary" (click)="changeFromParent()"></button>-->
-    <br/>
+ 

@@ -131,9 +131,19 @@ id:number=0
 
  
 
-
+  ngOnInit(){
+    this.buttonToggle= false;
+  }
 
   ngOnChanges(changes: SimpleChanges) {
+   
+    if (changes['buttonTrigger'] && changes['buttonTrigger']?.previousValue != changes['buttonTrigger']?.currentValue&&!changes['buttonTrigger']?.firstChange) {
+      this.buttonToggle= !this.buttonToggle;
+      
+      //alert(this.buttonToggle)
+      // Do Something triggered by the parent button  Save AccountTree.
+      this.AccountCreateUpdate();
+    }
     if(this.parentData!=0){
       this.mainAccountId= this.accountFromParent.id
       this.mainAccountNo= this.accountFromParent.accountNo
@@ -267,17 +277,7 @@ id:number=0
    }
 
 
-   AccountCreateUpdate(myForm:NgForm) {
-    // force the UI validation to appear
-    //myForm.form.markAllAsTouched();
-    
-    
-    
-
-    //if (this.Validate(myForm)) {
-     // this.undefineObjectProperties();
-
-      //if(this.voucherJournal.id == 0){         
+   AccountCreateUpdate() { 
       this.tree.CreateAccount(this.accountMain.accountDetail).
           subscribe(result => {
 

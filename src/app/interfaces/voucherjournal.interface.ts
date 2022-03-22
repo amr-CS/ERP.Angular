@@ -18,6 +18,7 @@ export interface VoucherJournal {
     isReversed:boolean;
     isDeleted:boolean;
     notes:string;
+    isSelected:boolean;
     journalVoucherDetails: VoucherJournalDetails[];
   }
   
