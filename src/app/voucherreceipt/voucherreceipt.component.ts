@@ -249,7 +249,7 @@ export class VoucherReceiptComponent {
     if (id) {
       this.service.voucherJournalGetById(Number(id)).subscribe(result => {
         if (result !== null) {
-          
+
           this.isUpdate = true;
           this.voucherReceipt = result;
           this.voucherReceipt.date = this.datePipe.transform(this.voucherReceipt.date, 'yyyy-MM-dd') || '';
@@ -289,55 +289,55 @@ export class VoucherReceiptComponent {
 
             if (e.box == null) {
               e.box = {};
-            } 
+            }
             else {
               if (e.box && e.box.boxDetails &&
                 e.box.boxDetails.length > 0 && e.box.boxDetails[0].account)
-                
+
                 e.account = e.box?.boxDetails?.[0].account;
               if (e.account)
                 e.account.code = e.box?.boxDetails?.[0].account.accountNo;
-                e.box.accountId = e.box?.boxDetails?.[0].account.id;           
+              e.box.accountId = e.box?.boxDetails?.[0].account.id;
             }
           });
 
-         
 
-          this.voucherReceipt.receiptVoucherCheque.forEach(e => {            
+
+          this.voucherReceipt.receiptVoucherCheque.forEach(e => {
 
             if (e.bankAccount == null) {
               e.bankAccount = {};
             }
-            else{                                           
-              e.bankBranch = {};            
+            else {
+              e.bankBranch = {};
               e.bankBranch.nameL1 = e.bankAccount?.nameL1;
               e.bankBranch.nameL2 = e.bankAccount?.nameL2;
-              e.bankBranch.code = e.bankAccount?.code;                       
-           
+              e.bankBranch.code = e.bankAccount?.code;
+
               e.bankAccount.nameL1 = e.bankAccount?.bank?.nameL1;
               e.bankAccount.nameL2 = e.bankAccount?.bank?.nameL2;
-              e.bankAccount.code =   e.bankAccount?.bank?.code
+              e.bankAccount.code = e.bankAccount?.bank?.code
             }
-            
+
             if (e.costCenter == null) {
               e.costCenter = {};
             }
           });
 
-          this.voucherReceipt.receiptVoucherCreditCard.forEach(e => {        
-                              
+          this.voucherReceipt.receiptVoucherCreditCard.forEach(e => {
+
             if (e.bankAccount == null) {
               e.bankAccount = {};
             }
-            else{        
-                e.bankBranch = {};            
-                e.bankBranch.nameL1 = e.bankAccount?.nameL1;
-                e.bankBranch.nameL2 = e.bankAccount?.nameL2;
-                e.bankBranch.code = e.bankAccount?.code;                       
-             
-                e.bankAccount.nameL1 = e.bankAccount?.bank?.nameL1;
-                e.bankAccount.nameL2 = e.bankAccount?.bank?.nameL2;
-                e.bankAccount.code =   e.bankAccount?.bank?.code
+            else {
+              e.bankBranch = {};
+              e.bankBranch.nameL1 = e.bankAccount?.nameL1;
+              e.bankBranch.nameL2 = e.bankAccount?.nameL2;
+              e.bankBranch.code = e.bankAccount?.code;
+
+              e.bankAccount.nameL1 = e.bankAccount?.bank?.nameL1;
+              e.bankAccount.nameL2 = e.bankAccount?.bank?.nameL2;
+              e.bankAccount.code = e.bankAccount?.bank?.code
             }
 
             if (e.creditCardType == null) {
@@ -349,8 +349,8 @@ export class VoucherReceiptComponent {
           this.calculateTotalCash();
           this.calculateTotalCheque();
           this.calculateTotalCreditCard();
-          this.calculateTotalCreditCard();   
-          
+          this.calculateTotalCreditCard();
+
         }
       }, error => console.error(error));
     }
@@ -375,6 +375,7 @@ export class VoucherReceiptComponent {
 
   // flag to determine the ability to update or disable all controls
   public isUpdate = false;
+  public pageName = "سند قبض";
   voucherReceiptIsUpdateableToggle() {
     this.isUpdate = !this.isUpdate;
   }
@@ -388,7 +389,7 @@ export class VoucherReceiptComponent {
         detailsCopy.push(element);
       }
     });
-    this.voucherReceipt.journalVoucherDetails = detailsCopy;    
+    this.voucherReceipt.journalVoucherDetails = detailsCopy;
   }
 
   successCreateUpdate(result: any) {
@@ -407,20 +408,20 @@ export class VoucherReceiptComponent {
     });
 
     this.voucherReceipt.receiptVoucherCash.forEach(element => {
-      if(element.box && element.box.boxDetails && 
-        element.box.boxDetails.length > 0 &&  element.box.boxDetails[0].account)              
-      element.account = element.box?.boxDetails?.[0].account;
+      if (element.box && element.box.boxDetails &&
+        element.box.boxDetails.length > 0 && element.box.boxDetails[0].account)
+        element.account = element.box?.boxDetails?.[0].account;
 
-      if(element.account && element.box){
-          element.account.code = element.box?.boxDetails?.[0].account.accountNo;
-          element.box.accountId = element.box?.boxDetails?.[0].account.id;    
+      if (element.account && element.box) {
+        element.account.code = element.box?.boxDetails?.[0].account.accountNo;
+        element.box.accountId = element.box?.boxDetails?.[0].account.id;
       }
 
       element.costCenter = element.costCenter ? element.costCenter : {};
       element.costCenterId = element.costCenterId ? element.costCenterId : undefined;
     });
-    
-    this.voucherReceipt.receiptVoucherCheque.forEach(e => {     
+
+    this.voucherReceipt.receiptVoucherCheque.forEach(e => {
       e.bankBranch = {};
       if (e.bankBranch) {
         e.bankBranch.nameL1 = e.bankAccount?.nameL1;
@@ -428,12 +429,12 @@ export class VoucherReceiptComponent {
         e.bankBranch.code = e.bankAccount?.code;
       }
 
-      if (e.bankAccount) {     
+      if (e.bankAccount) {
         e.bankAccount.nameL1 = e.bankAccount?.bank?.nameL1;
         e.bankAccount.nameL2 = e.bankAccount?.bank?.nameL2;
-        e.bankAccount.code =   e.bankAccount?.bank?.code
-      }           
-      
+        e.bankAccount.code = e.bankAccount?.bank?.code
+      }
+
     });
 
 
@@ -445,16 +446,16 @@ export class VoucherReceiptComponent {
         e.bankBranch.code = e.bankAccount?.code;
       }
 
-      if (e.bankAccount) {     
+      if (e.bankAccount) {
         e.bankAccount.nameL1 = e.bankAccount?.bank?.nameL1;
         e.bankAccount.nameL2 = e.bankAccount?.bank?.nameL2;
-        e.bankAccount.code =   e.bankAccount?.bank?.code
+        e.bankAccount.code = e.bankAccount?.bank?.code
       }
 
-      
+
     });
 
-    
+
     //this.voucherReceiptGetByTransactionTypeId();
 
     this.isUpdate = true;
@@ -472,23 +473,23 @@ export class VoucherReceiptComponent {
       if (this.voucherReceipt.id == 0) {
         this.service.voucherJournalCreate(this.voucherReceipt).
           subscribe(result => {
-       
+
             this.successCreateUpdate(result);
           }, error => console.error(error));
       }
       else {
 
         // empty list if corresponding checkbox is false
-        if(!this.voucherReceipt.isCash)
-            this.voucherReceipt.receiptVoucherCash = [];
-        if(!this.voucherReceipt.isCheck)
-            this.voucherReceipt.receiptVoucherCheque = [];
-        if(!this.voucherReceipt.isCreditCard)
-            this.voucherReceipt.receiptVoucherCreditCard = [];
+        if (!this.voucherReceipt.isCash)
+          this.voucherReceipt.receiptVoucherCash = [];
+        if (!this.voucherReceipt.isCheck)
+          this.voucherReceipt.receiptVoucherCheque = [];
+        if (!this.voucherReceipt.isCreditCard)
+          this.voucherReceipt.receiptVoucherCreditCard = [];
 
         this.service.voucherJournalUpdate(this.voucherReceipt).
           subscribe(result => {
-         
+
             this.successCreateUpdate(result);
           }, error => console.error(error));
       }
@@ -505,7 +506,7 @@ export class VoucherReceiptComponent {
     this.voucherReceipt.journalVoucherDetails.forEach(e => {
       e.account = undefined;
       e.currency = undefined;
-      e.costCenter = undefined;      
+      e.costCenter = undefined;
     });
 
     this.voucherReceipt.receiptVoucherCash.forEach(e => {
@@ -518,15 +519,15 @@ export class VoucherReceiptComponent {
     this.voucherReceipt.receiptVoucherCheque.forEach(e => {
       e.bankAccount = undefined;
       e.bankBranch = undefined;
-      e.costCenter = undefined;    
+      e.costCenter = undefined;
     });
 
     this.voucherReceipt.receiptVoucherCreditCard.forEach(e => {
       e.bankAccount = undefined;
       e.bankBranch = undefined;
-      e.creditCardType = undefined;  
+      e.creditCardType = undefined;
     });
-    
+
   }
 
 
@@ -576,24 +577,24 @@ export class VoucherReceiptComponent {
 
   }
 
-  totalReceiptCalculate(){
-    this.totalReceipt =  this.totalDebitReceipt - this.totalDifferenceReceipt;
+  totalReceiptCalculate() {
+    this.totalReceipt = this.totalDebitReceipt - this.totalDifferenceReceipt;
   }
 
-  totalDifferenceCalculate(){
+  totalDifferenceCalculate() {
     this.totalDifferenceReceipt = this.totalCash + this.totalCheck + this.totalCreditCard;
     this.totalReceiptCalculate();
   }
 
   totalDebitCalculate() {
-    this.totalDebitReceipt = 0;    
-    this.voucherReceipt.journalVoucherDetails.forEach(e => {    
+    this.totalDebitReceipt = 0;
+    this.voucherReceipt.journalVoucherDetails.forEach(e => {
       this.totalDebitReceipt += e.debitDefaultCurrency || 0;
     });
 
-    this.totalDifferenceCalculate();    
+    this.totalDifferenceCalculate();
   }
- 
+
   calculateTotalCash() {
     this.totalCash = 0;
     this.voucherReceipt.receiptVoucherCash.forEach(e => {
@@ -764,21 +765,21 @@ export class VoucherReceiptComponent {
     }
   }
 
-  isCurrencyNoRequired(accountNumber: any, currency :any) {     
+  isCurrencyNoRequired(accountNumber: any, currency: any) {
     return (accountNumber.value && accountNumber.dirty && !currency.value);
   }
 
   isAccountNoRequired(accountNumber: any, debit: any) {
     return (accountNumber.value == '' && (accountNumber.dirty))
       || (accountNumber.value == '' && ((debit.invalid || debit.dirty)));
-      // || (currencyCode.invalid || currencyCode.dirty)
+    // || (currencyCode.invalid || currencyCode.dirty)
   }
 
   // UI Valiadtion When Submit
   isDetailsEmpty = false;
   Validate(myForm: NgForm) {
     this.isDetailsEmpty = false;
- 
+
     if (!myForm.valid) {
       this.alertify.error('يجب ملء الحقول الالزامية');
       return false;
@@ -807,10 +808,10 @@ export class VoucherReceiptComponent {
     }
 
     this.totalReceiptCalculate();
-    if(this.totalReceipt != 0){
+    if (this.totalReceipt != 0) {
       this.alertify.error('يجب ان يكون مجموع النقدية و الشيكات صفر');
       return false;
-    }    
+    }
 
     return true;
   }
@@ -955,7 +956,7 @@ export class VoucherReceiptComponent {
       }
       this.addItemDetail();
     }
-    else if (source === 'cash') {  
+    else if (source === 'cash') {
       if (result) {
         if (this.newVoucherReceiptCashDetail.account) {
           this.newVoucherReceiptCashDetail.account.accountId = result.id;
@@ -1450,7 +1451,7 @@ export class VoucherReceiptComponent {
         this.newVoucherReceiptCashDetail.box.accountId = item.boxDetails[0] ? item.boxDetails[0].accountId : undefined;
         if (this.newVoucherReceiptCashDetail.box.accountId)
           this.addAccountItemById(this.newVoucherReceiptCashDetail.box.accountId, 'cash');
-        else{
+        else {
           this.addItemCashDetail();
         }
 
@@ -1516,10 +1517,10 @@ export class VoucherReceiptComponent {
     this.accountIndex = this.bankIndex;
     if (source == 'cheque') {
       if (this.bankIndex != -1) {
-        
+
         var temp = this.voucherReceipt.receiptVoucherCheque[this.bankIndex].bankAccount;
         var tempBranch = this.voucherReceipt.receiptVoucherCheque[this.bankIndex].bankBranch;
-        if(item.bankAccount && item.bankAccount.length > 0)
+        if (item.bankAccount && item.bankAccount.length > 0)
           this.voucherReceipt.receiptVoucherCheque[this.bankIndex].bankAccountId = item.bankAccount[0].id;
 
         if (temp) {
@@ -1549,7 +1550,7 @@ export class VoucherReceiptComponent {
       }
       else {
 
-        if(item.bankAccount && item.bankAccount.length > 0)
+        if (item.bankAccount && item.bankAccount.length > 0)
           this.newVoucherReceiptChequeDetail.bankAccountId = item.bankAccount[0].id;
 
         if (this.newVoucherReceiptChequeDetail.bankAccount) {
@@ -1563,7 +1564,7 @@ export class VoucherReceiptComponent {
           else {
             this.newVoucherReceiptChequeDetail.costCenterId = undefined;
             this.newVoucherReceiptChequeDetail.costCenter = {};
-            this.addItemChequeDetail();            
+            this.addItemChequeDetail();
           }
 
         }
@@ -1588,8 +1589,8 @@ export class VoucherReceiptComponent {
       if (this.bankIndex != -1) {
         var temp = this.voucherReceipt.receiptVoucherCreditCard[this.bankIndex].bankAccount;
         var tempBranch = this.voucherReceipt.receiptVoucherCreditCard[this.bankIndex].bankBranch;
-        if(item.bankAccount && item.bankAccount.length > 0)
-          this.voucherReceipt.receiptVoucherCreditCard[this.bankIndex].bankAccountId = item.bankAccount[0].id;      
+        if (item.bankAccount && item.bankAccount.length > 0)
+          this.voucherReceipt.receiptVoucherCreditCard[this.bankIndex].bankAccountId = item.bankAccount[0].id;
 
         if (temp) {
           temp.nameL1 = item.nameL1;
@@ -1597,7 +1598,7 @@ export class VoucherReceiptComponent {
           temp.code = item.code;
           temp.accountId = item.bankAccount && item.bankAccount.length > 0 ? item.bankAccount[0].accountId : 0;
           if (temp.accountId)
-            this.addAccountItemById(temp.accountId, 'creditcard');          
+            this.addAccountItemById(temp.accountId, 'creditcard');
         }
         if (tempBranch && item.bankAccount && item.bankAccount.length > 0) {
           this.bankBranchList = item.bankAccount;
@@ -1613,8 +1614,8 @@ export class VoucherReceiptComponent {
       }
       else {
 
-        if(item.bankAccount && item.bankAccount.length > 0)
-          this.newVoucherReceiptCreditCardDetail.bankAccountId = item.bankAccount[0].id;        
+        if (item.bankAccount && item.bankAccount.length > 0)
+          this.newVoucherReceiptCreditCardDetail.bankAccountId = item.bankAccount[0].id;
 
         if (this.newVoucherReceiptCreditCardDetail.bankAccount) {
           this.newVoucherReceiptCreditCardDetail.bankAccount.nameL1 = item.nameL1;
@@ -1624,9 +1625,9 @@ export class VoucherReceiptComponent {
             this.newVoucherReceiptCreditCardDetail.bankAccount.accountId = item.bankAccount[0].accountId;
           if (this.newVoucherReceiptCreditCardDetail.bankAccount.accountId)
             this.addAccountItemById(this.newVoucherReceiptCreditCardDetail.bankAccount.accountId, 'creditcard');
-          else          
-            this.addItemCreditCardDetail();            
-          
+          else
+            this.addItemCreditCardDetail();
+
         }
 
         if (this.newVoucherReceiptCreditCardDetail.bankBranch &&
@@ -1640,9 +1641,9 @@ export class VoucherReceiptComponent {
         }
         else {
           this.newVoucherReceiptCreditCardDetail.bankBranch = {};
-        }        
+        }
       }
-     
+
     }
 
     this.bankIndex = -1;
@@ -1701,11 +1702,11 @@ export class VoucherReceiptComponent {
   displayBankBranchStyle = "none";
   bankBranchIndex = -1;
   addBankBranchItem(item: any, source?: string) {
-    
+
     this.accountIndex = this.bankBranchIndex;
     if (source == 'cheque') {
       if (this.bankBranchIndex != -1) {
-   
+
         this.voucherReceipt.receiptVoucherCheque[this.bankBranchIndex].bankAccountId = item.id;
         var temp = this.voucherReceipt.receiptVoucherCheque[this.bankBranchIndex].bankBranch;
         if (temp) {
@@ -1715,7 +1716,7 @@ export class VoucherReceiptComponent {
         }
       }
       else {
-        this.newVoucherReceiptChequeDetail.bankAccountId = item.id;    
+        this.newVoucherReceiptChequeDetail.bankAccountId = item.id;
         if (this.newVoucherReceiptChequeDetail.bankAccount) {
           this.newVoucherReceiptChequeDetail.bankAccount.nameL1 = item.nameL1;
           this.newVoucherReceiptChequeDetail.bankAccount.nameL2 = item.nameL2;
@@ -1827,5 +1828,64 @@ export class VoucherReceiptComponent {
 
 
 
+  printReportJV(id: any) {
+    var url = Constants.ApiUrl + '/api/JournalVoucher/JournalReport/' + id
+    window.open(url, "_blank");
+  }
+  //checkbox
+  masterSelected: boolean = false;
+  checkedList: any;
+
+  public index = 0;
+  GetFirst() {
+    this.index = 0;
+    this.voucherReceiptGetById(this.checkedList[this.index])
+  }
+  GetLast() {
+    this.index = (this.checkedList.length) - 1
+    this.voucherReceiptGetById(this.checkedList[this.index])
+
+  }
+  GetNextIndex() {
+    if (this.index <= this.checkedList.length) {
+      // Call Function Display Data
+      ++this.index;
+    }
+    this.voucherReceiptGetById(this.checkedList[this.index])
+  }
+  GetPrevIndex() {
+    if (this.index > 0) {
+      // Call Function Display Data
+      --this.index;
+    }
+    this.voucherReceiptGetById(this.checkedList[this.index])
+  }
+
+
+  // The master checkbox will check/ uncheck all items
+  checkUncheckAll() {
+    for (var i = 0; i < this.voucherReceiptList.length; i++) {
+      this.voucherReceiptList[i].isSelected = this.masterSelected;
+    }
+    this.getCheckedItemList();
+  }
+
+  // Check All Checkbox Checked
+  isAllSelected() {
+    this.masterSelected = this.voucherReceiptList.every(function (item: any) {
+      return item.isSelected == true;
+    })
+    this.getCheckedItemList();
+  }
+
+  // Get List of Checked Items
+  getCheckedItemList() {
+    this.checkedList = [];
+    for (var i = 0; i < this.voucherReceiptList.length; i++) {
+      if (this.voucherReceiptList[i].isSelected)
+        this.checkedList.push(this.voucherReceiptList[i].id);
+    }
+
+  }
 
 }
