@@ -230,11 +230,11 @@ export class VoucherPaymentComponent {
     var debtSum = 0;
     // var creditSum = 0;
     this.voucherReceipt.journalVoucherDetails.forEach(e => {
-      debtSum += e.debit || 0;
+      debtSum += e.credit || 0;
       // creditSum += e.credit || 0;
     });
 
-    this.totalDebit = debtSum;
+    this.totalCredit = debtSum;
     // this.totalCredit = creditSum;
     // this.totalDifference = Math.abs(debtSum - creditSum);
   }
@@ -766,12 +766,14 @@ export class VoucherPaymentComponent {
   }
 
   isCurrencyNoRequired(accountNumber: any, currency: any) {
-    return (accountNumber.value && accountNumber.dirty && !currency.value);
+    return (accountNumber.value && accountNumber.dirty && !currency.value) || (
+      currency.dirty && currency.invalid
+    )     
   }
 
-  isAccountNoRequired(accountNumber: any, debit: any) {
+  isAccountNoRequired(accountNumber: any, credit: any) {
     return (accountNumber.value == '' && (accountNumber.dirty))
-      || (accountNumber.value == '' && ((debit.invalid || debit.dirty)));
+      || (accountNumber.value == '' && ((credit.invalid || credit.dirty)));
     // || (currencyCode.invalid || currencyCode.dirty)
   }
 
@@ -807,6 +809,21 @@ export class VoucherPaymentComponent {
       return false;
     }
 
+    if (this.voucherReceipt.isCash && this.voucherReceipt.receiptVoucherCash.length == 0) {
+      this.alertify.error('على الاقل ادخل نقدي واحد فى التفاصيل !');
+      return false;
+    }
+
+    if (this.voucherReceipt.isCheck && this.voucherReceipt.receiptVoucherCheque.length == 0) {
+      this.alertify.error('على الاقل ادخل شيك واحد فى التفاصيل !');
+      return false;
+    }
+
+    if (this.voucherReceipt.isCreditCard && this.voucherReceipt.receiptVoucherCreditCard.length == 0) {
+      this.alertify.error('على الاقل ادخل بطاقة ائتمان واحد فى التفاصيل !');
+      return false;
+    }
+
     this.totalReceiptCalculate();
     if (this.totalReceipt != 0) {
       this.alertify.error('يجب ان يكون مجموع النقدية و الشيكات صفر');
@@ -835,7 +852,7 @@ export class VoucherPaymentComponent {
         tempJournalVoucherDetailsCurrency.code = result.currency?.code;
       }
 
-      this.voucherReceipt.journalVoucherDetails[i].debit = (this.voucherReceipt.journalVoucherDetails[i].debitDefaultCurrency || 0) * (this.voucherReceipt.journalVoucherDetails[i].currencyExchange || 1);
+      this.voucherReceipt.journalVoucherDetails[i].credit = (this.voucherReceipt.journalVoucherDetails[i].creditDefaultCurrency || 0) * (this.voucherReceipt.journalVoucherDetails[i].currencyExchange || 1);
 
 
       if (result.accountCostCenter.length > 0) {
@@ -1313,8 +1330,8 @@ export class VoucherPaymentComponent {
         this.voucherReceipt.journalVoucherDetails[this.currencyIndex].currencyId = item.id;
         this.voucherReceipt.journalVoucherDetails[this.currencyIndex].currencyExchange = item.currencyExchange;
 
-        this.voucherReceipt.journalVoucherDetails[this.currencyIndex].debit =
-          (this.voucherReceipt.journalVoucherDetails[this.currencyIndex].debitDefaultCurrency || 0) * (item.currencyExchange || 1);
+        this.voucherReceipt.journalVoucherDetails[this.currencyIndex].credit =
+          (this.voucherReceipt.journalVoucherDetails[this.currencyIndex].creditDefaultCurrency || 0) * (item.currencyExchange || 1);
 
         if (journalVoucherDetailsCurrencyTemp) {
           journalVoucherDetailsCurrencyTemp.nameL1 = item.nameL1;
@@ -1368,7 +1385,7 @@ export class VoucherPaymentComponent {
       if (this.currencyIndex != -1) {
         this.voucherReceipt.journalVoucherDetails[this.currencyIndex].currencyId = 0;
         this.voucherReceipt.journalVoucherDetails[this.currencyIndex].currencyExchange = undefined;
-        this.voucherReceipt.journalVoucherDetails[this.currencyIndex].debit = undefined;
+        this.voucherReceipt.journalVoucherDetails[this.currencyIndex].credit = undefined;
         this.voucherReceipt.journalVoucherDetails[this.currencyIndex].currency = {};
       } else {
         this.newVoucherReceiptDetail.currencyId = 0;

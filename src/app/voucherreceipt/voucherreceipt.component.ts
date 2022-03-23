@@ -765,8 +765,10 @@ export class VoucherReceiptComponent {
     }
   }
 
-  isCurrencyNoRequired(accountNumber: any, currency: any) {
-    return (accountNumber.value && accountNumber.dirty && !currency.value);
+ isCurrencyNoRequired(accountNumber: any, currency: any) {
+    return (accountNumber.value && accountNumber.dirty && !currency.value) || (
+      currency.dirty && currency.invalid
+    )     
   }
 
   isAccountNoRequired(accountNumber: any, debit: any) {
@@ -804,6 +806,21 @@ export class VoucherReceiptComponent {
 
     if (!isOneDetailValid) {
       this.alertify.error('على الاقل ادخل رقم حساب واحد فى التفاصيل !');
+      return false;
+    }
+
+    if (this.voucherReceipt.isCash && this.voucherReceipt.receiptVoucherCash.length == 0) {
+      this.alertify.error('على الاقل ادخل نقدي واحد فى التفاصيل !');
+      return false;
+    }
+
+    if (this.voucherReceipt.isCheck && this.voucherReceipt.receiptVoucherCheque.length == 0) {
+      this.alertify.error('على الاقل ادخل شيك واحد فى التفاصيل !');
+      return false;
+    }
+
+    if (this.voucherReceipt.isCreditCard && this.voucherReceipt.receiptVoucherCreditCard.length == 0) {
+      this.alertify.error('على الاقل ادخل بطاقة ائتمان واحد فى التفاصيل !');
       return false;
     }
 

@@ -1113,7 +1113,9 @@
                           name="{{'txtAccountCurrencyCode' + i}}" [(ngModel)]="vj.currency.code"
                           (dblclick)="CurrencyOpenPopup(i)" (change)="currencyGetByCode(creditCurrency.value,i)"
                           [disabled]="isUpdate" [required]="isCurrencyNoRequired(accountNumber,creditCurrency) "
-                          [ngClass]="{'is-invalid': accountNumber.value && accountNumber.dirty && !creditCurrency.value}" />
+                          [ngClass]="{'is-invalid': (accountNumber.value && accountNumber.dirty && !creditCurrency.value) || (
+                            creditCurrency.dirty && creditCurrency.invalid
+                          ) }" />
                       
                       </div>
                       <div class="col-sm-8 p-0">
