@@ -764,14 +764,9 @@ export class VoucherReceiptComponent {
     }
   }
 
-  // isCurrencyNoRequired(accountNumber: any,debit:any, currency :any) {
-  //   //console.log(accountNumber.value);    
-  //   return (accountNumber.value == '' && (accountNumber.dirty))
-  //   || (accountNumber.value == '' && ((debit.invalid || debit.dirty)))
-  //   || (((currency.invalid || currency.dirty)))
-  //   ;
-  //   //return accountNumber ! = '' && accountNumber != undefined;
-  // }
+  isCurrencyNoRequired(accountNumber: any, currency :any) {     
+    return (accountNumber.value && accountNumber.dirty && !currency.value);
+  }
 
   isAccountNoRequired(accountNumber: any, debit: any) {
     return (accountNumber.value == '' && (accountNumber.dirty))

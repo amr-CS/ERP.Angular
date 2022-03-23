@@ -1133,8 +1133,8 @@
                       class=" form-control form-control-sm text-center txtAccountCurrencyCode txtDTLAccountCurrencyCode"
                       name="{{'txtAccountCurrencyCode' + i}}" [(ngModel)]="vj.currency.code"
                       (dblclick)="CurrencyOpenPopup(i)" (change)="currencyGetByCode(debitCurrency.value,i)" 
-                      [disabled]="isUpdate" [required]="accountNumber.value !='' "
-                      [ngClass]="{'is-invalid': debitCurrency.invalid}"/>
+                      [disabled]="isUpdate" [required]="isCurrencyNoRequired(accountNumber,debitCurrency) "
+                      [ngClass]="{'is-invalid': accountNumber.value && accountNumber.dirty && !debitCurrency.value}"/>
                       <!-- [ngClass]="{'is-invalid': debitCurrency.invalid}" -->
                       <!-- [required]="accountNumber.value !='' " -->
                   </div>
