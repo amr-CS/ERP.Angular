@@ -901,7 +901,7 @@
                             [ngClass]="{'is-invalid': (AmountDefaultCredit.invalid) && (AmountDefaultCredit.touched || AmountDefaultCredit.dirty)}" />
                         </td>
                         <td class="">
-                          <textarea class="form-control form-control-sm text-center fullHeightInput" style="height:62px"
+                          <textarea class="form-control form-control-sm text-center fullHeightInput" style="height:62px" [disabled]="isUpdate"
                             name="{{'txtCreditCardNote' + i}}" [(ngModel)]="vj.notes"></textarea>
                         </td>
             
@@ -1156,7 +1156,7 @@
                     <input #debitDefaultCurrency="ngModel"
                       class="form-control form-control-sm text-center font-weight-bold txtPayDebit" type="number" min=0
                       required name="{{'txtPayDebit' + i}}" [(ngModel)]="vj.debitDefaultCurrency"
-                      (change)="totalDebitCalculate()"
+                      (change)="totalDebitCalculate()" [disabled]="isUpdate"
                       (ngModelChange)="vj.debit = (vj.debitDefaultCurrency || 0) * (vj.currencyExchange || 1)"
                       [ngClass]="{'is-invalid': (debitDefaultCurrency.invalid) && (debitDefaultCurrency.touched || debitDefaultCurrency.dirty)}" />
       
@@ -1237,7 +1237,7 @@
                         <input #NewCurrencyDebit *ngIf="newVoucherReceiptDetail.currency" type="number"
                           class=" form-control form-control-sm text-center txtAccountCurrencyId txtDTLAccountCurrencyId"
                           name="txtNewAccountCurrencyCode" [(ngModel)]="newVoucherReceiptDetail.currency.code"
-                          (dblclick)="CurrencyOpenPopup()" (change)="currencyGetByCode(NewCurrencyDebit.value)">
+                          (dblclick)="CurrencyOpenPopup()" (change)="currencyGetByCode(NewCurrencyDebit.value)" [disabled]="isUpdate">
                       </div>
                       <div class="col-sm-8 p-0">
                         <input *ngIf="newVoucherReceiptDetail.currency"
@@ -1247,7 +1247,7 @@
                       </div>
                     </div>
                     <input class="form-control form-control-sm text-center font-weight-bold txtPayDebit" type="text" min=0
-                      name="txtPayDebit" [(ngModel)]="newVoucherReceiptDetail.debit" (change)="addItemDetail()"
+                      name="txtPayDebit" [(ngModel)]="newVoucherReceiptDetail.debit" (change)="addItemDetail()" [disabled]="isUpdate"
                       (ngModelChange)="newVoucherReceiptDetail.debitDefaultCurrency = (newVoucherReceiptDetail.debit || 0) * (newVoucherReceiptDetail.currencyExchange || 1)" />
       
                   </td>
