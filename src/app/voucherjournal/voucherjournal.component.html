@@ -192,7 +192,7 @@
                       </div>
 
                   </th>
-                  <th class="">
+                  <th>
                       <div>{{'voucher_note' |translate}}</div>
                   </th>
                   <th></th>
@@ -224,7 +224,7 @@
                   </td>
                   <td>
                       <!-- <input class="form-control form-control-sm text-center   txtAccountCurrency d-none" type="text" required disabled /> -->
-                      <input *ngIf="vj.currency" class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyName' + i}}" [(ngModel)]="vj.currency.nameL1"/>
+                    <input *ngIf="vj.currency" class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyName' + i}}" [(ngModel)]="vj.currency.nameL1"/>
                     <input class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyExchange' + i}}" [(ngModel)]="vj.currencyExchange" />
                   </td>
                   <td>

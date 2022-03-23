@@ -1,14 +1,8 @@
 
-
-
-
     body {
         font-family: Cairo;
     }
-
-    .fullHeightInput {
-        height: 50px;
-    }
+   
 
     .table th, .table td {
         font-size: 12px;
@@ -92,3 +86,299 @@
     .errorClass {
         border: 1px solid red;
     }
+
+
+    .page {
+    color: white;
+    padding: 0 1rem;
+    background: #f1f5f9;
+}
+.page__box {
+    min-height: 50px;
+    background: #1e293b;
+    margin: 0 -1rem;
+    font-size: 36px;
+}
+
+.page__content {
+     min-height: calc(100vh - 180px);
+    /*border-radius: 10px;*/
+  /*  margin-top: -2rem;*/
+    background: white;
+color: black;
+}
+
+
+body {
+    font-family: Cairo;
+}
+
+
+
+.table th, .table td {
+    font-size: 12px;
+    text-align: center;
+}
+
+.table th {
+    margin: auto;
+    border: none !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/*.table td {
+    margin-top: 0.5rem;
+    padding: 0rem !important;
+}*/
+
+.tblHead {
+    border-bottom: 1px solid #d4d4d4;
+    margin-bottom: 0.5rem;
+}
+
+input, select, textarea {
+    max-width: 100% !important;
+}
+
+textarea {
+    max-width: 100% !important;
+}
+
+.form-inline {
+    margin-top: 0.5rem;
+}
+
+.table td, .table th {
+    border-top: 0 !important;
+}
+
+
+/* Special Classes */
+.controlRow {
+    margin-top: 0.5rem;
+}
+
+.checkInput {
+    margin: auto;
+}
+
+.tblFooter {
+    border: 0 !important;
+}
+
+.tooltip > .tooltip-inner {
+    background-color: #2980b9;
+}
+
+.tooltip > .tooltip-arrow {
+    border-bottom-color: #2980b9;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #eef1f5;
+    opacity: 1;
+}
+
+.divGlVoucher {
+    max-height: 50vh !important;
+    overflow-y: scroll !important;
+    background-color: #FFF;
+}
+
+body {
+    font-family: Cairo;
+  }
+  
+  .table th, .table td {
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  .table th {
+    margin: auto;
+    border: none !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .table th, .table td {
+    padding: 0rem !important;
+  
+  }
+  
+  tbody td .form-control {
+  
+     border-radius: 0rem !important; 
+  }
+  #table-wrapper {
+    position: relative;
+}
+
+#table-scroll {
+    height: 250px;
+    overflow: auto;
+    margin-top: 20px;
+}
+
+
+#table-wrapper table thead th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #fff;
+}
+
+/* Newwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww */
+
+
+.page {
+    color: white;
+    padding: 0 1rem;
+    background: #f1f5f9;
+}
+.page__box {
+    min-height: 50px;
+    background: #1e293b;
+    margin: 0 -1rem;
+    font-size: 36px;
+}
+
+.page__content {
+     min-height: calc(100vh - 180px);
+    /*border-radius: 10px;*/
+  /*  margin-top: -2rem;*/
+    background: white;
+color: black;
+}
+
+
+body {
+    font-family: Cairo;
+}
+
+.fullHeightInput {
+    height: 62px;
+}
+
+.table th, .table td {
+    font-size: 12px;
+    text-align: center;
+}
+
+.table th {
+    margin: auto;
+    border: none !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+/*.table td {
+    margin-top: 0.5rem;
+    padding: 0rem !important;
+}*/
+
+.tblHead {
+    border-bottom: 1px solid #d4d4d4;
+    margin-bottom: 0.5rem;
+}
+
+input, select, textarea {
+    max-width: 100% !important;
+}
+
+textarea {
+    max-width: 100% !important;
+}
+
+.form-inline {
+    margin-top: 0.5rem;
+}
+
+.table td, .table th {
+    border-top: 0 !important;
+}
+
+
+/* Special Classes */
+.controlRow {
+    margin-top: 0.5rem;
+}
+
+.checkInput {
+    margin: auto;
+}
+
+.tblFooter {
+    border: 0 !important;
+}
+
+.tooltip > .tooltip-inner {
+    background-color: #2980b9;
+}
+
+.tooltip > .tooltip-arrow {
+    border-bottom-color: #2980b9;
+}
+
+.form-control:disabled, .form-control[readonly] {
+    background-color: #eef1f5;
+    opacity: 1;
+}
+
+.divGlVoucher {
+    max-height: 50vh !important;
+    overflow-y: scroll !important;
+    background-color: #FFF;
+}
+
+body {
+    font-family: Cairo;
+  }
+  
+  .table th, .table td {
+    font-size: 12px;
+    text-align: center;
+  }
+  
+  .table th {
+    margin: auto;
+    border: none !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .table th, .table td {
+    padding: 0rem !important;
+  
+  }
+  
+  tbody td .form-control {
+  
+     border-radius: 0rem !important; 
+  }
+  #table-wrapper {
+    position: relative;
+}
+
+#table-scroll {
+    height: 250px;
+    overflow: auto;
+    margin-top: 20px;
+}
+#table-scrollsub {
+    height: 200px;
+    overflow: auto;
+    margin-top: 20px;
+}
+
+
+#table-wrapper table thead th {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #fff;
+}
+
