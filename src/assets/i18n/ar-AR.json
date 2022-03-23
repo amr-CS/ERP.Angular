@@ -98,7 +98,8 @@
     "voucher_creditcardtype":"نوع بطاقة الائتمان",
     "voucher_chosepaymenttypetitle":"لاختيار نوع الدفع انقر مزودج",
     "voucher_cashreceipt":"سند قبض",
-    "voucher_glvouchercategoryid":"فئة القيد"
+    "voucher_glvouchercategoryid":"فئة القيد",
+    "voucher_payment" :"سند صرف"
 
 
     

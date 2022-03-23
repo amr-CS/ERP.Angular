@@ -79,6 +79,7 @@ import { CurrencyfilterPipe } from './pipes/currencyfilter.pipe';
 
 import { SecurityGradePipe } from './pipes/securityGrade.pipe';
 import { UtilitiesComponent } from './utilities/utilities.component';
+import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
 
 
 
@@ -112,7 +113,8 @@ export function HttpLoaderFactory(http:HttpClient){
       NameCommonfilterPipe,       
       CurrencyfilterPipe,
       SecurityGradePipe,
-      UtilitiesComponent
+      UtilitiesComponent,
+      VoucherPaymentComponent
    ],
   imports: [
     BrowserModule,

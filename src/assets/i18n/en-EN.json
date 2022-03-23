@@ -98,6 +98,7 @@
     "voucher_creditcardtype":"Credit Card Type",
     "voucher_chosepaymenttypetitle":"To Choose Payment Type Double Click",
     "voucher_cashreceipt":"Cash Receipt",
-    "voucher_glvouchercategoryid":"Voucher Category"
+    "voucher_glvouchercategoryid":"Voucher Category",
+    "voucher_payment" :"Voucher Payment"
     
 }
