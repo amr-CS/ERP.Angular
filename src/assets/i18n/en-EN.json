@@ -1,6 +1,8 @@
 {
     "arabic":"Arabic",
+    "arabic2":"Arabic",
     "english":"English",
+    "english2":"English",
     "user_name":"User Name",
     "home":"Home",
     "dashboard":"Dashboard",
@@ -99,6 +101,16 @@
     "voucher_chosepaymenttypetitle":"To Choose Payment Type Double Click",
     "voucher_cashreceipt":"Cash Receipt",
     "voucher_glvouchercategoryid":"Voucher Category",
-    "voucher_payment" :"Voucher Payment"
+    "voucher_payment" :"Voucher Payment",
+
+    "bank_banks":"Banks",
+    "bank_bank":"Bank Name",
+    "bank_code":"Code",
+    "bank_isactive":"Status - Active",
+    "bank_actions":"Actions",
+    "bank_banksaccounts":"Bank Accounts",
+    "bank_branch":"Branch",
+    "bank_account":"Account"
+    
     
 }

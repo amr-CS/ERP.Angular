@@ -1,0 +1,65 @@
+
+    body {
+        background-color: #FFFFFF !important;
+    }
+
+    .divTableContainer {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .divBank, .divAccount {
+        max-height: 27vh;
+        overflow-y: scroll;
+    }
+
+    .divSectionTitle {
+        background-color: #FFFFFF !important;
+        font-weight: bold;
+        color: #2980b9;
+    }
+
+
+
+    #table-wrapper {
+        position: relative;
+    }
+
+    #table-wrapper-DTL {
+        position: relative;
+    }
+
+    #table-scroll {
+        height: 250px;
+        overflow: auto;
+        margin-top: 20px;
+    }
+
+    #table-scroll-DTL {
+        height: 300px;
+        overflow: auto;
+        margin-top: 20px;
+    }
+
+    #table-wrapper table thead th .text {
+        position: absolute;
+        top: -20px;
+    }
+
+    #table-wrapper-DTL table thead th .text {
+        position: absolute;
+        top: -20px;
+    }
+
+    .clsDiv {
+        /*position: fixed;*/
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+        position: absolute;
+        top: -20px;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        background-color: #D3EDFF !important;
+    }

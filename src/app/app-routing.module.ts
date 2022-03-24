@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guard/auth.guard';
 import { VoucherReceiptComponent } from './voucherreceipt/voucherreceipt.component';
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
+import { BankComponent } from './bank/bank.component';
 
 
 const routes: Routes = [
@@ -32,6 +33,7 @@ const routes: Routes = [
              { path: 'voucherjournal', component: VoucherJournalComponent },
              { path: 'voucherreceipt', component: VoucherReceiptComponent },
              { path: 'voucherpayment', component: VoucherPaymentComponent },
+             { path: 'bank', component: BankComponent },
 
              { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
 

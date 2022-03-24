@@ -1,6 +1,8 @@
 {
     "arabic":"العربية",
+    "arabic2":"عربى",
     "english":"الانجليزية",
+    "english2":"انجليزى",
     "user_name":"اسم المستخدم",
     "home":"الصفحة الرئيسية",
     "dashboard":"لوحة التحكم",
@@ -99,7 +101,18 @@
     "voucher_chosepaymenttypetitle":"لاختيار نوع الدفع انقر مزودج",
     "voucher_cashreceipt":"سند قبض",
     "voucher_glvouchercategoryid":"فئة القيد",
-    "voucher_payment" :"سند صرف"
+    "voucher_payment" :"سند صرف",
+
+    "bank_banks":"البنوك",
+    "bank_bank":"اسم البنك",
+    "bank_code":"كود",
+    "bank_isactive":"الحالة - مفعل",
+    "bank_actions":"العمليات",
+    "bank_banksaccounts":"حسابات البنك",
+    "bank_branch":"الفرع",
+    "bank_account":"الحساب"
+
+
 
 
     
