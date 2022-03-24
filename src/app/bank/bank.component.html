@@ -266,7 +266,7 @@
           </thead>
           <tbody>
 
-            <tr *ngFor="let bank of banks "
+            <tr *ngFor="let bank of banks | bankfilterPipe:textFilterModel "
             (dblclick)="bankAddFromModal(bank);closePopup()">                 
               <td>{{bank.id}}</td>
               <td>{{bank.code | date :'yyyy-MM-dd'}}</td> 

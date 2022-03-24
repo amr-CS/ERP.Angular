@@ -81,6 +81,7 @@ import { SecurityGradePipe } from './pipes/securityGrade.pipe';
 import { UtilitiesComponent } from './utilities/utilities.component';
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
 import { BankComponent } from './bank/bank.component';
+import { BankfilterPipe } from './pipes/bankfilter.pipe';
 
 
 
@@ -116,7 +117,8 @@ export function HttpLoaderFactory(http:HttpClient){
       SecurityGradePipe,
       UtilitiesComponent,
       VoucherPaymentComponent,
-      BankComponent
+      BankComponent,
+      BankfilterPipe
    ],
   imports: [
     BrowserModule,
