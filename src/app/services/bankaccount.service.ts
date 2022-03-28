@@ -13,24 +13,25 @@ export class BankAccountService {
   }
 
   bankGetAll(){
-    return this.http.get<[Bank]>(Constants.ApiUrl + '/api/bank/');
+    return this.http.get<Bank[]>(Constants.ApiUrl + '/api/bank/GetAllBanks');
   }
 
-  bankAccountsGetById(id:number){
-    return this.http.get<[BankAccount]>(Constants.ApiUrl + '/api/bank/');
+  bankAccountsGetById(id:number){    
+    return this.http.get<[BankAccount]>(Constants.ApiUrl + '/api/bank/GetBankAccounts?bankId=' + id);
   }
 
   bankDelete(id:number){
     return this.http.delete<boolean>(Constants.ApiUrl +'/api/bank/' + id);
   }
 
-  bankAddEdit(banks: Bank[]) {
+  bankAddEdit(banks: Bank[]) {    
+    
     return this.http.post<Bank[]>(Constants.ApiUrl +'/api/bank/AddEditBankBulk',
       JSON.stringify(banks),
       {
-        'headers': { 'content-type': 'application/json' }
+        'headers': {'content-type': 'application/json'}
       }
     );
-  }  
-  
+   
+  }
 }

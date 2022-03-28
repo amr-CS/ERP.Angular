@@ -53,42 +53,39 @@
 
                     <!-- Body -->
                     <tbody class="tblBankBody">
-                        <tr *ngFor="let vj of this.banks; let i = index;trackBy:trackByIndex;"
-                            style="overflow-y: scroll;" class='clickable-row' (click)="bankAccountsSelect(vj)">
-                            <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
-                                    (click)="addItem(i)" [disabled]="isUpdate">
-                                    <i class="fa fa-plus-circle"></i>
-                                </button></td>
-                            <td><input #bankCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankCode' + i}}" required type="text" [(ngModel)]="vj.code" [disabled]="isUpdate" 
-                                    [ngClass]="{'is-invalid': bankCode.invalid && (bankCode.touched || bankCode.dirty)}"
-                                    (change)="updateBankIsChanged()"/>
-                                    
-                            </td>
-                            <td>
-                                <input #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankNameL1' + i}}" required type="text" [(ngModel)]="vj.nameL1"
-                                    [disabled]="isUpdate" 
-                                    [ngClass]="{'is-invalid': bankNameL1.invalid && (bankNameL1.touched || bankNameL1.dirty)}"
-                                    (change)="updateBankIsChanged()"/>
-                            </td>
-                            <td>
-                                <input class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankNameL2' + i}}" type="text" [(ngModel)]="vj.nameL2"
-                                    [disabled]="isUpdate" 
-                                    (change)="updateBankIsChanged()"/>
-                            </td>
-                            <td>
-                                <input class="form-check-input form-control-sm text-center fullHeightInput"
-                                    name="{{'bankIsActive' + i}}" type="checkbox" [(ngModel)]="vj.isActive"
-                                    [disabled]="isUpdate" />
-                            </td>
-                            <td>
-                                <button type="button"
-                                    class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput"
-                                    (click)="removeItem(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
-                                </button>
-                            </td>
+                        <tr *ngFor="let item of this.banks; let i = index;trackBy:trackByIndex;" style="overflow-y: scroll;"
+                            class='clickable-row'>
+                            <ng-container *ngIf="!item.isDeleted">
+                                <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                        (click)="addItem(i);bankAccountsSelect(item);" [disabled]="isUpdate">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </button></td>
+                                <td><input #bankCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                        name="{{'bankCode' + i}}" required type="number" [(ngModel)]="item.code" [disabled]="isUpdate"
+                                        [ngClass]="{'is-invalid': bankCode.invalid && (bankCode.touched || bankCode.dirty)}"
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>                    
+                                </td>
+                                <td>
+                                    <input #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                        name="{{'bankNameL1' + i}}" required type="text" [(ngModel)]="item.nameL1" [disabled]="isUpdate"
+                                        [ngClass]="{'is-invalid': bankNameL1.invalid && (bankNameL1.touched || bankNameL1.dirty)}"
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-sm text-center fullHeightInput" name="{{'bankNameL2' + i}}"
+                                        type="text" [(ngModel)]="item.nameL2" [disabled]="isUpdate" (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>
+                                </td>
+                                <td>
+                                    <input class="form-check-input form-control-sm text-center fullHeightInput"
+                                        name="{{'bankIsActive' + i}}" type="checkbox" [(ngModel)]="item.isActive"
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)" [disabled]="isUpdate" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput"
+                                        (click)="removeItem(i,item)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </ng-container>
                         </tr>
                     </tbody>
                 </table>
@@ -136,9 +133,9 @@
                     </thead>
 
                     <!-- Body -->
-                    <tbody class="tblAccountBody">
+                    <tbody #detailsBody class="tblAccountBody" [ngStyle]="{'display':displayDetails}">
                         <tr class="tblAccountRow"
-                            *ngFor="let vj of this.bankAccountList; let i = index;trackBy:trackByIndex;"
+                            *ngFor="let item of this.bankAccountList; let i = index;trackBy:trackByIndex;"
                             style="overflow-y: scroll;">
                             <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
                                     (click)="addItemDetails(i)" [disabled]="isUpdate">
@@ -147,30 +144,33 @@
                             </td>
                             <td>
                                 <input #bankAccountNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankAccountNameL1' + i}}" type="text" [(ngModel)]="vj.nameL1"
-                                    [disabled]="isUpdate" required
+                                    name="{{'bankAccountNameL1' + i}}" type="text" [(ngModel)]="item.nameL1"
+                                    [disabled]="isUpdate" required (change)="updateBankIsChanged(item,true)"
                                     [ngClass]="{'is-invalid': bankAccountNameL1.invalid && (bankAccountNameL1.touched || bankAccountNameL1.dirty)}"/>
                             </td>
                             <td>
                                 <input class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankAccountNameL2' + i}}" type="text" [(ngModel)]="vj.nameL2"
+                                    name="{{'bankAccountNameL2' + i}}" type="text" [(ngModel)]="item.nameL2"
+                                    (change)="updateBankIsChanged(item,true)"
                                     [disabled]="isUpdate" />
                             </td>
                             <td>
                                 <input #bankAccountAccountCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankAccountAccountCode' + i}}" type="text" [(ngModel)]="vj.accountCode"
-                                    (dblclick)="AccountOpenPopup(i)" (change)="addAccountItemByAccountNo(bankAccountAccountCode.value,i)"
-                                    [disabled]="isUpdate" required 
+                                    name="{{'bankAccountAccountCode' + i}}" type="text" [(ngModel)]="item.accountCode"
+                                    (dblclick)="AccountOpenPopup(i);updateBankIsChanged(item,true);" (change)="addAccountItemByAccountNo(bankAccountAccountCode.value,i);updateBankIsChanged(item,true);"
+                                    [disabled]="isUpdate" required  
                                     [ngClass]="{'is-invalid': bankAccountAccountCode.invalid && (bankAccountAccountCode.touched || bankAccountAccountCode.dirty)}"/>
                             </td>
                             <td>
                                 <input class="form-control form-control-sm text-center fullHeightInput"
-                                    name="{{'bankAccountAccountName' + i}}" type="text" [(ngModel)]="vj.accountName"
+                                    name="{{'bankAccountAccountName' + i}}" type="text" [(ngModel)]="item.accountName" 
+                                    (change)="updateBankIsChanged(item,true)"
                                     disabled />
                             </td>
                             <td>
                                 <input class="form-check-input form-control-sm text-center fullHeightInput"
-                                    name="{{'bankAccountIsActive' + i}}" type="checkbox" [(ngModel)]="vj.isActive"
+                                    name="{{'bankAccountIsActive' + i}}" type="checkbox" [(ngModel)]="item.isActive"
+                                    (change)="updateBankIsChanged(item,true)"
                                     [disabled]="isUpdate" />
                             </td>
                             <td>
@@ -185,7 +185,7 @@
                         <tr>
                             <td>
                                 <button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
-                                    (click)="addItemDetails()" [disabled]="isUpdate">
+                                    (click)="addItemDetails(undefined,1);" [disabled]="isUpdate">
                                     <i class="fa fa-plus-circle"></i>
                                 </button>
                             </td>
@@ -193,12 +193,12 @@
                             <td>
                                 <input class="form-control form-control-sm text-center fullHeightInput"
                                     name="NewBankAccountNameL1" type="text" [(ngModel)]="newBankAccount.nameL1"
-                                    [disabled]="isUpdate" (change)="addItemDetails()"/>
+                                    [disabled]="isUpdate" (change)="addItemDetails(undefined,2);"/>
                             </td>
                             <td>
                                 <input class="form-control form-control-sm text-center fullHeightInput"
                                     name="NewBankAccountNameL2" type="text" [(ngModel)]="newBankAccount.nameL2"
-                                    [disabled]="isUpdate" (change)="addItemDetails()" />
+                                    [disabled]="isUpdate" (change)="addItemDetails(undefined,3)" />
                             </td>
                             <td>
                                 <input #NewBankAccountAccountCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
@@ -245,6 +245,10 @@
                       
         <table class="table">
           <thead>
+            <th>
+                <input type="checkbox" class="d-none"> 
+              <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"(change)="checkUncheckAll()" >
+              </th>
             <th width="20px">
                 <div class="text"></div>
             </th>
@@ -265,14 +269,18 @@
             </th>
           </thead>
           <tbody>
-
             <tr *ngFor="let bank of banks | bankfilterPipe:textFilterModel "
-            (dblclick)="bankAddFromModal(bank);closePopup()">                 
+            (dblclick)="bankAddFromModal(bank);closePopup()"> 
+              <td>
+                <input  type="checkbox" [(ngModel)]="bank.isSelected" name="list_name" value="{{bank.id}}"
+                (change)="isAllSelected()" />
+            
+              </td>                   
               <td>{{bank.id}}</td>
               <td>{{bank.code | date :'yyyy-MM-dd'}}</td> 
               <td>{{bank.nameL1}}</td>
               <td>{{bank.nameL2}}</td>                               
-              <td><input type="checkbox" checked="{{bank.isActive}}"></td>                   
+              <td><input type="checkbox" disabled [checked]="bank.isActive"></td>                   
             </tr>
           </tbody>
         </table>

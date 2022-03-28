@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Account } from '../interfaces/account.interface';
 import { Bank, BankAccount } from '../interfaces/bank.interface';
@@ -13,14 +13,22 @@ import { UtilityService } from '../services/utility.service';
   styleUrls: ['./bank.component.css']
 })
 export class BankComponent {
+  @ViewChild('detailsBody') detailsBody!: ElementRef;
 
   textFilterModel:string;
 
-  public bank: Bank = { id: 0, isActive: false, bankAccount: [], isChanged: false };
-  public newBank: Bank = { id: 0, isActive: false, bankAccount: [], isChanged: false };
+  public bank: Bank = {
+    id: 0, isActive: true, bankAccount: [], isInserted: false, isUpdated: false, isDeleted: false,
+    isSelected: false
+  };
+  public newBank: Bank = {
+    id: 0, isActive: true, bankAccount: [], isInserted: true, isUpdated: false, isDeleted: false,
+    isSelected: false
+  };
   public banks: Bank[] = [];
+  public banksOriginal: Bank[]=[];
   public bankAccountList: BankAccount[] = [];
-  public newBankAccount: BankAccount = { id: 0, bankId: 0, accountId: 0, isActive: false };
+  public newBankAccount: BankAccount = { id: 0, bankId: 0, accountId: 0, isActive: true };
 
   public accountList:Account[] = [];
   
@@ -34,9 +42,14 @@ export class BankComponent {
   bankGetAll() {
     this.service.bankGetAll().subscribe(result => {
       this.banks = result;
-      this.bankAccountsSelect(result[0])
-      console.log(this.banks);
-    }, error => console.error(error))
+      this.banksOriginal = result;
+      this.bankAccountsSelect(result[0]) 
+      
+      if(this.banks && this.banks.length == 0)
+          this.addItem();
+
+      
+    }, error => { console.error(error);this.addItem();})
   };
 
   accountGetAll()
@@ -46,16 +59,23 @@ export class BankComponent {
     });
   }
 
-  // bankAccountsGetById(id: number) {
-  //   this.service.bankAccountsGetById(id).subscribe(result => {
-  //     this.bankAccountList = result;
-  //   }, error => console.error(error))
-  // };
+  undefineObjectProperties() {
+     this.banks.forEach(eBanks => {
+      eBanks.bankAccount.forEach(e => {
+         e.account = undefined;                
+       });      
+    });    
+  }
 
   banksCreateUpdate(myForm: NgForm) {
     myForm.form.markAllAsTouched();
     if (this.Validate(myForm)) {
-      this.service.bankAddEdit(this.banks);
+      this.undefineObjectProperties();
+      this.banks = this.banks.filter(b=>b.isInserted || b.isUpdated || b.isDeleted); 
+      this.service.bankAddEdit(this.banks).subscribe(result=>{
+        this.banks = result;
+        this.banksOriginal = result;
+      });
     }
   }
 
@@ -85,11 +105,11 @@ export class BankComponent {
     return index;
   }
 
-  addItem(i: number) {
+  addItem(i?: number) {
     if (this.banks === null) {
       this.banks = [];
     }
-
+    
     if (i == undefined) {
       this.banks.push(this.newBank);
     }
@@ -97,16 +117,26 @@ export class BankComponent {
       this.banks.splice(i + 1, 0, this.newBank);
     }
 
-    this.newBank = { id: 0, isActive: false, bankAccount: [], isChanged: false };
+    this.newBank = { id: 0, isActive: true, bankAccount: [], isInserted: true, isUpdated: false, isDeleted: false, 
+    isSelected : false};
   }
 
-  removeItem(i: number) {
-    this.updateBankIsChanged();
-    this.banks.splice(i, 1);
+  displayDetails = '';
+  removeItem(i: number, item: Bank) {    
+    this.updateBankIsChanged(item);
+    if(item.isInserted == undefined || !item.isInserted)
+    {    
+      item.isDeleted = true;
+    }
+    else{
+      this.banks.splice(i, 1);
+    }
+
+    this.displayDetails = 'none';
   }
 
 
-  addItemDetails(i?: number) {
+  addItemDetails(i?: number, focusIndex?:number) {
     this.newBankAccount.bankId = this.bank.id;
     if (this.bank.bankAccount === null) {
       this.bank.bankAccount = [];
@@ -114,44 +144,82 @@ export class BankComponent {
 
     if (i == undefined) {
       this.bank.bankAccount.push(this.newBankAccount);
+      if(focusIndex != undefined)
+        this.setFocusDetails(focusIndex);
+      
     }
     else {
       this.bank.bankAccount.splice(i + 1, 0, this.newBankAccount);
     }
-    this.newBankAccount = { id: 0, bankId: 0, accountId: 0, isActive: false };
+    this.newBankAccount = { id: 0, bankId: 0, accountId: 0, isActive: true };
+    this.bank.isUpdated = true;
   }
 
   removeItemDetails(i: number) {
     this.bank.bankAccount.splice(i, 1);
+    this.bank.isUpdated = true;
   }
 
   bankAccountsSelect(bank: Bank) {
+    this.displayDetails = '';
     this.bank = bank;
-    this.bankAccountList = bank.bankAccount;
+    if (bank) {
+      this.bankAccountList = bank.bankAccount;
+      if (this.bankAccountList.length > 0) {
+        this.bankAccountList.forEach(e => {
+          if (!e.accountCode)
+            e.accountCode = e.account?.accountNo;
+          if (!e.accountName)
+            e.accountName = e.account?.nameL1;
+        });
+      }
+    }
   }
 
-  updateBankIsChanged() {
-    var currentBank = this.banks.filter(b => b.id == this.bank.id);
-    currentBank[0].isChanged = true;
-    console.log(currentBank[0].isChanged);
+  updateBankIsChanged(item: any, isDetails?:boolean) {   
+    if(isDetails == undefined || !isDetails){
+      item.isUpdated = true;
+    }
+    else
+    {
+      this.bank.isUpdated = true;
+    }
+
+    
   }
 
 
   
-  
-
-
   Validate(myForm: NgForm) {
     if (!myForm.valid) {
       this.alertify.error('يجب ملء الحقول الالزامية');
       return false;
-    }    
-    // if(this.banks.bankAccount == null || this.banks.bankAccount.length < 1)
-    // {     
+    }       
 
-    //   this.alertify.error('على الاقل ادخل بيانات واحدة فى التفاصيل !');
-    //   return false;
-    // }
+
+    var isValidBankAccounts = true;
+
+    var filterdBanks =  this.banks.filter(b=>b.isUpdated || b.isInserted);    
+    filterdBanks.forEach(eBank => {
+      if (eBank.bankAccount.length <= 0) {
+        this.alertify.error('على الاقل ادخل بيانات واحدة فى تفاصيل بنك !' + eBank.nameL1);
+        isValidBankAccounts = false;
+      }
+    });
+
+    if (!isValidBankAccounts) return false;    
+    else {
+      filterdBanks.forEach(eBank => {
+        eBank.bankAccount.forEach(e => {
+          if ((!e.nameL1 || e.accountId <= 0) && isValidBankAccounts) {
+            this.alertify.error('ادخل البيانات المفقوده فى ' + eBank.nameL1);
+            isValidBankAccounts = false;
+          }
+        });
+      });
+    }
+
+    if(!isValidBankAccounts) return false;
 
     return true;
   }
@@ -162,21 +230,13 @@ export class BankComponent {
 
   }
 
-  GetNextIndex(){
-
-
-  }
-
-  GetPrevIndex(){
-
-  }
-
-  GetLast(){
-
-  }
-
-  GetFirst(){
-    
+  setFocusDetails(i: number) {
+    setTimeout(() => {
+      var t = this.detailsBody.nativeElement;
+      var length = t.children.length;
+      var element = t.childNodes[length - 1].childNodes[i].childNodes[0];
+      element.focus();
+    }, 0);
   }
 
 
@@ -184,6 +244,7 @@ export class BankComponent {
 
   displayStyle = "none";  
   openPopup(): void {
+    this.banks = this.banksOriginal;
     this.displayStyle = "block";
     this.textFilterModel = '';    
   }
@@ -192,9 +253,21 @@ export class BankComponent {
     this.displayStyle = "none";       
   }
 
-  bankAddFromModal(bank:Bank){
+  bankAddFromModal(bank: Bank) {
 
-    
+    if (!this.checkedList || this.checkedList.length == 0) {
+      this.banks = this.banks.filter(b => b.id == bank.id);
+    }
+    else {
+      var temp = [];
+      for (var i = 0; i < this.banks.length; i++) {
+        if (this.banks[i].isSelected)
+          temp.push(this.banks[i]);
+      }
+      this.banks = temp;
+      bank = this.banks[0];
+    }
+    this.bankAccountsSelect(bank);
   }
 
   // <-------------------------------------------------- Account modal --------------------------->
@@ -265,7 +338,69 @@ export class BankComponent {
   
   
   }
+
+//checkbox
+masterSelected: boolean = false;
+checkedList: any ;
+
+
+ // The master checkbox will check/ uncheck all items
+ checkUncheckAll() {
+  for (var i = 0; i < this.banks.length; i++) {
+    this.banks[i].isSelected = this.masterSelected;
+  }
+  this.getCheckedItemList();
 }
+
+// Check All Checkbox Checked
+isAllSelected() {
+  this.masterSelected = this.banks.every(function(item:any) {
+      return item.isSelected == true;
+    })
+
+  this.getCheckedItemList();
+}
+
+// Get List of Checked Items
+getCheckedItemList(){
+  this.checkedList = [];
+  for (var i = 0; i < this.banks.length; i++) {
+    if(this.banks[i].isSelected)
+    this.checkedList.push(this.banks[i].id);
+  }
+}
+
+
+GetNextIndex(){
+
+
+}
+
+GetPrevIndex(){
+
+}
+
+GetLast(){
+
+}
+
+GetFirst(){
+  
+}
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
 
 
 
