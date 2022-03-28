@@ -301,7 +301,7 @@ export class BankComponent {
       this.newBankAccount.accountCode = acc.accountNo ;
       this.newBankAccount.accountName = acc.nameL1 ;
 
-      this.addItemDetails();                 
+      this.addItemDetails(undefined,5);                 
     }   
     this.accountIndex = -1;
   }
@@ -320,7 +320,7 @@ export class BankComponent {
             this.newBankAccount.accountId = result.id ;
             this.newBankAccount.accountCode = result.accountNo ;
             this.newBankAccount.accountName = result.nameL1 ;                   
-            this.addItemDetails();                         
+            this.addItemDetails(undefined,5);                         
         }
       }
       else if(i !== undefined)
