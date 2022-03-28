@@ -1,0 +1,510 @@
+<app-utilities
+(clickSave)="voucherJournalCreateUpdate(myForm)"
+(clickPopup)="openPopup()"
+(UpdateableToggle)="voucherJournalIsUpdateableToggle()"
+(printReport)="printReportJV(voucherJournal.id)"
+(getNext)="GetNextIndex()"
+(getPrev)="GetPrevIndex()"
+(getLast)="GetLast()"
+(getFirst)="GetFirst()"
+[IsUpdateFromParent]="isUpdate"
+[name]="pageName"
+></app-utilities>
+
+
+<form #myForm="ngForm" (submit)="voucherJournalCreateUpdate(myForm)" class="page__content shadow p-3 page__content-data">
+
+
+  <!-- </div> -->
+    <div class="row">
+        <!-- Main Inputs -->
+        <div class="col-sm-8">
+            <!-- 1st Row Input -->
+            <div class="row">
+                <!-- Transaction Type -->
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label class="label-control small">{{'voucher_type' |translate}}</label>
+                        <div class="d-flex">
+                            <input type="number" class="form-control form-control-sm w-25" name="txtjournalTypeId" [(ngModel)]="voucherJournal.journalTypeId"  disabled />
+                            <!-- value="2" -->
+                            <!-- TO DO different language inputs Yehia -->
+                            <input type="text" id="start" class="form-control form-control-sm" name="txtjournalTypeName"  disabled [(ngModel)]="journalTypeName"/>                               
+                            <!-- value="{{'voucher_journalentry' |translate}}" -->
+                        </div>
+                    </div>
+                </div>
+ 
+                <!-- Is Posted -->
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label class="label-control small">{{'voucher_postingentry' |translate}}</label>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input chkDocIsPosted" disabled name="chkIsPosted" [(ngModel)]="voucherJournal.isPosted">
+                            <label class="custom-control-label small" for="chkDocIsPosted">{{'voucher_posted' |translate}}</label>
+                        </div>
+                    </div>
+                </div>
+     <!-- Source -->
+     <div class="row controlRow col-sm-6">
+      <div class="col-sm-4">
+          <label class="small float-right pt-2">{{'voucher_transactionsource' |translate}}</label>
+      </div>
+      <div class="col-sm-8 d-flex">
+          <input type="number" class="form-control form-control-sm w-25 txtTransactionSource" disabled name="txtSourceTypeId" [(ngModel)]="voucherJournal.sourceTypeId"/>                    
+          <!-- value="1" -->
+          <!-- TO DO different language inputs Yehia -->
+          <input type="text" class="form-control form-control-sm w-75 txtTransactionSourceNamel1" disabled name="txtSourceTypeName" [(ngModel)]="sourceTypeName"/>                    
+          <!--value="{{'voucher_accounts' |translate}}"-->
+      </div>
+      
+  </div>
+            </div> <!-- End of 1st Row of Main Inputs -->
+             <!-- Source -->
+ 
+  <div class="row ">
+    <div class="form-group">
+        <label class="label-control small">{{'voucher_customerno' |translate}}</label>
+        <div class="col-sm-6 d-flex">
+          <input #customerCode="ngModel" type="number" class="form-control form-control-sm w-25 txtCSId" name="txtCSId"
+            [(ngModel)]="voucherJournal.customerVendorCode" [disabled]="isUpdate"
+            (dblclick)="isCustomer = true;CustomerOpenPopup()"
+            (change)="isCustomer=true;customerGetByCode(customerCode.value)" required
+            [ngClass]="{'is-invalid': (customerCode.invalid) && (customerCode.touched || customerCode.dirty)}"/>
+          <input type="text" class="form-control form-control-sm w-75 txtCSName" name="txtCSName" value=""
+            [(ngModel)]="voucherJournal.customerVendorName" disabled />
+        </div>
+    </div>
+</div>
+            <!-- 2nd Row Input -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="label-control small">{{'voucher_note' |translate}}</label>
+                        <textarea class="form-control form-control-sm txtDocNote" name="txtNotes" [(ngModel)]="voucherJournal.notes" [disabled]="isUpdate"></textarea>
+                        <!-- onblur="funFoucus('dtpDocDate')" -->
+                    </div>
+                </div>
+            </div>
+            <!-- 3rd Row Input -->
+            <div class="bg-light border p-3 rounded">
+                <div class="row">
+                    <div class="form-group checkInput col-sm-3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input bg-info chkIsDocRepeated" name="chkIsRepeated" [(ngModel)]="voucherJournal.isRepeated" [disabled]="isUpdate">
+                            <label class="custom-control-label small" >{{'voucher_preventry' |translate}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group checkInput  col-sm-3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input chkIsDocOpps" name="chkIsReversed" [(ngModel)]="voucherJournal.isReversed" [disabled]="isUpdate">
+                            <label class="custom-control-label small">{{'voucher_gloppsvoucherid' |translate}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group checkInput  col-sm-3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input chkIsDocWait" name="chkIsIncomplete" [(ngModel)]="voucherJournal.isIncomplete" [disabled]="isUpdate">
+                            <label class="custom-control-label small">{{'voucher_incomplete' |translate}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group checkInput  col-sm-3">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input chkIsDocCancelled" name="chkIsCancelled" [(ngModel)]="voucherJournal.isCancelled" [disabled]="isUpdate"> 
+                            <label class="custom-control-label small">{{'voucher_canceled' |translate}}</label>
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- End of 3rd Row -->
+
+        </div> <!-- End of Main Inputs -->
+        <!-- Left Controls [Doc No, Ref, ..] -->
+        <div class="col-sm-4 mt-3">
+
+            <!-- Doc No -->
+            <div class="row controlRow">
+                <div class="col-sm-4">
+                    <label class="small float-right pt-2">{{'voucher_no' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control form-control-sm txtDocNo" disabled name="txtDocumentNumber" [(ngModel)]="voucherJournal.documentNumber"/>
+                </div>
+            </div>
+
+            <!-- Doc Date -->
+            <div class="row controlRow">
+                <div class="col-sm-4">
+                    <label class="small float-right pt-2">{{'voucher_date' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                    <!-- <input type="date" class="form-control form-control-sm dtpDocDate" name="dtp.date" [(ngModel)]="voucherJournal.date"/> -->
+                    <input #date ="ngModel" type="date" class="form-control form-control-sm " required ngClass="invalid" name="dtp.date"  [ngModel] ="voucherJournal.date | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.date = $event" [disabled]="isUpdate"
+                    [ngClass]="{'is-invalid': (date.invalid || !isCurrentFinancialYear) && (date.touched || date.dirty)}" (change)="checkForcurrentSelectedDateYear()"/>
+                </div>
+            </div>
+
+            <!-- Ref Doc No -->
+            <div class="row controlRow">
+                <div class="col-sm-4">
+                    <label class="small float-right pt-2">{{'voucher_refrenceno' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control form-control-sm " name="txtReferenceNumber" [(ngModel)]="voucherJournal.referenceNumber" [disabled]="isUpdate"/>
+                </div>
+            </div>
+
+            <!-- Ref Doc Date -->
+            <div class="row controlRow">
+                <div class="col-sm-4">
+                    <label class="small float-right pt-2">{{'voucher_refrencedate' |translate}}</label>
+                </div>
+                <div class="col-sm-8">
+                    <!-- <input type="date" class="form-control form-control-sm dtpDocRefDate" name="dtpReferenceDate" [(ngModel)]="voucherJournal.referenceDate"/> -->
+                    <input type="date" class="form-control form-control-sm " name="dtpReferenceDate" [ngModel] ="voucherJournal.referenceDate | date:'yyyy-MM-dd'" (ngModelChange)="voucherJournal.referenceDate = $event" [disabled]="isUpdate"/>
+                    <!-- onblur="funFoucus('txtAccountCode')" -->
+                </div>
+            </div>
+
+     
+        </div>
+    </div>
+<!-- Details Main -->
+<div class="bg-white border rounded p-3 mt-3 ">
+  <div class="bg-white" id="table-wrapper">
+    <div id="table-scroll">
+    <!-- Details -->
+    <table #table name="table" class="table table-sm table-responsive-sm">
+        <thead>
+            <tr>
+                <th></th>
+                <th width="7%">
+                    <div>{{'voucher_accountno' |translate}}</div>
+                </th>
+                <th width="15%">
+                    <div>{{'voucher_accountdesc' |translate}}</div>
+                </th>
+                <th  width="5%">
+                    <div>{{'voucher_currency' |translate}}</div>
+                    <div>{{'voucher_exchangerate' |translate}}</div>
+                </th>
+                <th>
+                    <div>{{'voucher_rptdebitbase' |translate}}</div>
+                    <div>{{'voucher_debitbase' |translate}}</div>
+                </th>
+                <th>
+                    <div>{{'voucher_rptcreditbase' |translate}}</div>
+                    <div>{{'voucher_creditbase' |translate}}</div>
+                </th>
+                <th width="20%">
+                    <div class="d-flex">
+
+                        <div class="col-sm-3">
+                            <div>{{'voucher_costcenter' |translate}}</div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div>{{'voucher_costcentername' |translate}}</div>
+                        </div>
+
+                    </div>
+
+                </th>
+                <th>
+                    <div>{{'voucher_note' |translate}}</div>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody >
+            <tr *ngFor="let vj of this.voucherJournal.journalVoucherDetails; let i = index;trackBy:trackByIndex;" style="overflow-y: scroll;" > 
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput" (click)="addItemDetail(i)" [disabled]="isUpdate">
+                    <i class="fa fa-plus-circle"></i>
+                </button>
+                </td>
+                <td>
+                    <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none txtAccountId" type="text" required />
+                    <input class="form-control form-control-sm text-center fullHeightInput d-none  txtAccountIsCostCenter" type="text" required /> -->
+                    <input #accountNumberRow  #accountNumber = "ngModel" class="form-control form-control-sm text-center fullHeightInput" type="text" title="{{'voucher_choseaccounttitle' |translate}}"   name="{{'txtAccountNo' + i}}" [(ngModel)]="vj.accountNo" 
+                    (dblclick)="AccountOpenPopup(i)" [disabled]="isUpdate" (change)="addAccountItemByAccountNo(accountNumber.value,i)"                      
+                    [required]="isAccountNoRequired(accountNumber,debit,credit)"
+                    [ngClass]="{'is-invalid': (accountNumber.value =='' && (accountNumber.dirty))  
+                                            || (accountNumber.value =='' && ((debit.invalid || debit.dirty) || (credit.invalid || credit.dirty)))}"/>
+                    <!-- [required]="accountNumberRow.classList.contains('is-invalid')" -->
+                    <!-- [ngClass]="{'is-invalid': accountNumber.invalid && (accountNumber.touched || accountNumber.dirty)}" -->
+                    <!-- (blur)="setFocus(table,$event.target,4) -->
+                  <!-- onblur="funFoucus('txtDebitCurrency')" -->
+                </td>
+                <td>
+                  <textarea *ngIf="vj.account" class="form-control form-control-sm text-center fullHeightInput" type="text"  readonly name="{{'txtAccountName' + i}}" [(ngModel)]="vj.account.nameL1" [disabled]="isUpdate"></textarea>
+                </td>
+                <td>
+                    <!-- <input class="form-control form-control-sm text-center   txtAccountCurrency d-none" type="text" required disabled /> -->
+                  <input *ngIf="vj.currency" class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyName' + i}}" [(ngModel)]="vj.currency.nameL1"/>
+                  <input class="form-control form-control-sm text-center" type="text" required disabled name="{{'txtCurrencyExchange' + i}}" [(ngModel)]="vj.currencyExchange" />
+                </td>
+                <td>
+                  <input #debit="ngModel" class="form-control form-control-sm text-center font-weight-bold" (change)="totalDebitCreditCalculate();" value="0" type="number" min=0 required name="{{'txtDebitCurrency' + i}}" [(ngModel)]="vj.debit" (ngModelChange)="vj.debitDefaultCurrency = (vj.debit || 0) * (vj.currencyExchange || 0)" [disabled]="isUpdate"
+                  [ngClass]="{'is-invalid': debit.invalid && (debit.touched || debit.dirty)}"/>
+                  <input class="form-control form-control-sm text-center font-weight-bold" type="number" value="0" min=0 required disabled name="{{'txtDebitBase' + i}}" [(ngModel)]="vj.debitDefaultCurrency"/>
+                </td>
+                <td>
+                  <input #credit="ngModel" class="form-control form-control-sm text-center font-weight-bold" (change)="totalDebitCreditCalculate();" value="0" type="number" min=0 required name="{{'txtCreditCurrency' + i}}" [(ngModel)]="vj.credit" (ngModelChange)="vj.creditDefaultCurrency = (vj.credit || 0) * (vj.currencyExchange || 0)" [disabled]="isUpdate"
+                  [ngClass]="{'is-invalid': credit.invalid && (credit.touched || credit.dirty)}"/>
+                  <input class="form-control form-control-sm text-center font-weight-bold" value="0" type="number" min=0 required disabled name="{{'txtCreditBase' + i}}" [(ngModel)]="vj.creditDefaultCurrency"/>
+                </td>
+                <td class="d-flex">
+                      <div class="col-sm-4 p-0">
+                          <!-- <input class="form-control form-control-sm text-center fullHeightInput d-none txtCostCenterId" type="text" required /> -->
+                          <!-- <input class="form-control form-control-sm text-center col-sm-4 p-0 fullHeightInput"  title="{{'voucher_chosecostcentertitle' |translate}}" type="text"  readonly name="{{'txtCostCenterId' + i}}" [(ngModel)]="vj.costCenterId" (dblclick)="CostCenterOpenPopup(vj.accountId,i)" [disabled]="isUpdate"/> -->
+                          <input *ngIf="vj.costCenter" class="form-control form-control-sm text-center col-sm-4 p-0 fullHeightInput"  title="{{'voucher_chosecostcentertitle' |translate}}" type="text"  readonly name="{{'txtCostCenterCode' + i}}" [(ngModel)]="vj.costCenter.code" (dblclick)="CostCenterOpenPopup(vj.accountId,i)" [disabled]="isUpdate"/>
+                        <!-- onblur="funFoucus('txtNote')" -->
+                      </div>
+                      <div class="col-sm-8 p-0">
+                        <input *ngIf="vj.costCenter" class="form-control form-control-sm text-center col-sm-8 p-0 fullHeightInput" type="text"  readonly name="{{'txtCostCenterName' + i}}" [(ngModel)]="vj.costCenter.nameL1"/>
+                      </div>
+                </td>
+                <td>
+                  <textarea class="form-control form-control-sm text-center txtNote fullHeightInput"  name="{{'txtNotes' + i}} " [(ngModel)]="vj.notes" [disabled]="isUpdate"></textarea>
+                </td>
+                <td>                  
+                  <button type="button" class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput" (click)="removeItemDetail(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                  </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+  </div>
+
+    <!-- Details Footer -->
+    <table class="table table-sm tblFooter border-0">
+        <tbody class="">
+            <tr class="d-flex">
+                <td class="col-sm-5">
+                    <label class="small float-right mx-1 pt-2">{{'voucher_total' |translate}}</label>
+                </td>
+                <td class="col-sm-2">
+                    <input class="form-control form-control-sm text-center disabled font-weight-bold txtTotalDebit " name="txtTotalDebit" disabled type="number" min=0  [(ngModel)]="totalDebit" />
+                </td>
+                <td class="col-sm-2">
+                    <input class="form-control form-control-sm text-center disabled font-weight-bold   txtTotalCredit" name="txtTotalCredit" disabled type="number" min=0  [(ngModel)]="totalCredit"/>
+                </td>
+                <td class="col-sm-3">
+                    <div class="d-flex">
+                        <label class="small mx-1 pt-2">{{'voucher_diff' |translate}}</label>
+                        <input class="form-control form-control-sm text-center disabled txtDiff font-weight-bold" name="txtTotalDifference" disabled type="text"  [(ngModel)]="totalDifference" />
+                    </div>
+
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+</form>
+
+
+
+
+
+
+  <!-----------------------------------------Modal All------------------------------------------>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content modal-inside-scroll">
+          <div class="modal-header">
+            <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup()" >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6" (keyup)="modalSearchKeyUp()">
+            </p>
+            <div class="row">
+              <div class="form-group col-md-3">
+                <label>{{'from'|translate}}</label>
+                <input type="date" placeholder="From" [(ngModel)]="dateFromFilterModel" class="form-control" (change)="onChangeDate()">
+              </div>
+              <div class="form-group col-md-3">
+                <label>{{'to'|translate}}</label>
+                <input type="date" placeholder="To" [(ngModel)]="dateToFilterModel" class="form-control" (change)="onChangeDate()"> 
+              </div>
+              <div class="form-group col-md-3">
+                <label>{{'voucher_refdate'|translate}}</label>
+                <input type="date" placeholder="To" [(ngModel)]="dateReferenceFilterModel" class="form-control" (change)="onChangeDateRef()"> 
+              </div>
+              <div class="form-group col-md-2">
+                <label>&nbsp;</label>
+                <input type="button" value="{{'search_dates'|translate}}" class="btn btn-primary" (click)="filterListByDate()"/>
+              </div>
+            </div>         
+                        
+          <table class="table">
+            <thead>
+              <th>
+                <input type="checkbox" class="d-none"> 
+              <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"(change)="checkUncheckAll()" >
+              </th>
+              <th>
+                {{'voucher_glvoucherno'|translate}}
+              </th>
+              <th>
+                {{'date'|translate}}
+              </th>
+              <th>
+                {{'voucher_glvoucherref'|translate}}
+              </th>
+              <th>
+                {{'voucher_glvoucherrefdate'|translate}}
+              </th>
+              <th>
+                {{'voucher_transactionsource'|translate}}
+              </th>
+              <th>
+                {{'voucher_statement'|translate}}
+              </th>
+            </thead>
+            <tbody>
+
+              <tr *ngFor="let vj of voucherJournalList | voucherjournalfilter:textFilterModel:dateFromFilterModel:dateToFilterModel:dateReferenceFilterModel:isDateFilter:isDateRefFilter"
+              (dblclick)="voucherJournalGetById(vj.id);closePopup()">
+              <td>
+                <input  type="checkbox"     [(ngModel)]="vj.isSelected" name="list_name" value="{{vj.id}}"
+                (change)="isAllSelected()" />
+            
+              </td>            
+              <td>{{vj.id}}</td>
+                <td>{{vj.date | date :'yyyy-MM-dd'}}</td> 
+                <td>{{vj.referenceNumber}}</td>
+                <td>{{vj.referenceDate}}</td>                 
+                <td><div *ngIf="vj.sourceTypeId">{{sourceTypeName}}</div></td>
+                <!-- <td>{{'voucher_accounts' |translate}}</td> -->
+                <td>{{vj.notes}}</td>                   
+              </tr>
+            </tbody>
+          </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" 
+                    (click)="closePopup()">
+                    {{'close'|translate}}
+            </button>
+            <button type="button" class="btn btn-primary" 
+            (click)="closePopup()">اختيار</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-----------------------------------------Modal Account------------------------------------------>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAccountStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'account_accountdirectory'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="AccountClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let acc of accountList | accountfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountItemById(acc.id || 0);AccountClosePopup();
+            ">     
+              <!-- setFocus(table,$event.target,4); -->
+              <td>{{acc.accountNo}} </td>
+              <td> {{acc.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="AccountClosePopup()">
+                  {{'close'|translate}}
+          </button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-----------------------------------------Modal Cost Center------------------------------------------>
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCostCenterStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'costcenter_costcenter'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CostCenterClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let cost of costCenterList | costcenterfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addCostCenterItem(cost.id || 0);CostCenterClosePopup();setFocus(table,$event.target,7);">     
+              <td>{{cost.code}} </td>
+              <td> {{cost.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="CostCenterClosePopup()">
+                  {{'close'|translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-----------------------------------------Modal Customers------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCustomerStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 *ngIf="!isCustomer" class="modal-title" style="color: black;">{{'voucher_salesman'|translate}}</h4>
+        <h4 *ngIf="isCustomer" class="modal-title" style="color: black;">{{'voucher_customer'|translate}}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CustomerClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of customersList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addCustomerItem(item);CustomerClosePopup();">
+              <td> {{item.code}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="CustomerClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -31,6 +31,7 @@
     "bootstrap-icons": "^1.8.1",
     "font-awesome": "^4.7.0",
     "ng-sidebar": "^9.4.3",
+    "ngx-bootstrap": "^8.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

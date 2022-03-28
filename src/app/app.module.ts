@@ -80,6 +80,10 @@ import { CurrencyfilterPipe } from './pipes/currencyfilter.pipe';
 import { SecurityGradePipe } from './pipes/securityGrade.pipe';
 import { UtilitiesComponent } from './utilities/utilities.component';
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
+import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/voucherJournalForCustomer.component';
+import { BranchsettingComponent } from './branchsetting/branchsetting.component';
+
+
 
 
 
@@ -91,7 +95,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [											
+  declarations: [													
     AppComponent,
     DemographicinfoComponent,
     DemographicfilterPipe,
@@ -114,7 +118,9 @@ export function HttpLoaderFactory(http:HttpClient){
       CurrencyfilterPipe,
       SecurityGradePipe,
       UtilitiesComponent,
-      VoucherPaymentComponent
+      VoucherPaymentComponent,
+      VoucherJournalForCustomerComponent,
+      BranchsettingComponent
    ],
   imports: [
     BrowserModule,

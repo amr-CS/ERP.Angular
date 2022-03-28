@@ -1,0 +1,1046 @@
+      <app-utilities
+      (clickSave)="save()"
+      [name]="pageName"
+     ></app-utilities>
+<form #myForm="ngForm"  class="page__content shadow p-3 page__content-data">
+ 
+<div class=" bg-white border rounded p-3 ">
+  <div class="row">
+      <div class="col-sm-3">
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label"> كود الفرع</label>
+              </div>
+              <div class="col-sm-4">
+                  <input type="text" class="form-control form-control-sm" name="txtid"  [(ngModel)]="branchsetting.id"  />
+                  <input type="text" class="form-control form-control-sm d-none"     value="0" />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">اسم الفرع </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "   name="txtnameL1" [(ngModel)]="branchsetting.nameL1"    />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">اسم الفرع -EN </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "   name="txtnameL2" [(ngModel)]="branchsetting.nameL2"    />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">نسبة الضريبة </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "   name="txtVatPerc" [(ngModel)]="branchsetting.vatPerc"    />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">الرقم الضريبي </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "   name="txtVatCode" [(ngModel)]="branchsetting.vatCode"   />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">ايبان</label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm" [(ngModel)]="branchsetting.iban"   name="txtIBAN"  />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">نوع احتساب الغياب
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm  txtEmpAtType" [(ngModel)]="branchsetting.empAtType" name="txtempAtType"    data-val="16" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">فئة محضري الطعام
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.foodPrepareCat" name="txtFoodPrepareCat"  data-val="110" readonly />
+              </div>
+          </div>
+
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">الموقع الافتراضي
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.defaultLocation" name="txtDefaultLocation"  readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">فئة الولائم -منتجات
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.sheepCatProduct" name="txtSheepCatProduct"  data-val="114" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">فئة الولائم
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.sheepCat" name="txtSheepCat"  data-val="123" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">فئة المنتجات من العميل
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.sheepOutRes" name="txtSheepOutRes"  data-val="123" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">فئة الأرز
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.riceCat" name="txtRiceCat"  data-val="114" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">مخزن البيع
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.sellStore" name="txtSellStore"  data-val="117" readonly />
+              </div>
+          </div>
+
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">وحدة الصحون
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.plateUnit" name="txtPlateUnit"  data-val="108" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">مخزن الصحون
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.plateStore" name="txtPlateStore"  data-val="117" readonly />
+              </div>
+          </div>
+          <div class="row pt-1">
+              <div class="col-sm-4">
+                  <label class="control-label">فئة الصحون
+                  </label>
+              </div>
+              <div class="col-sm-8">
+                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.plateStore" name="txtPlateCode"  data-val="122" readonly />
+              </div>
+          </div>
+      </div>
+      <div class=" col-sm-6">
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">كمية الأرز للصحن
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.qtyPlateRice" name="txtQtyPlateRice"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">أقصى يوم للتأمين
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.insuranceLimit" name="txtInsuranceLimit"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">كمية العرض
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.showQty" name="txtShowQty"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">صيغة التاريخ </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.formatDate" name="txtFormatDate"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">حساب البيع
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.sellAcc" name="txtSellAcc"  data-val="120" readonly />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">حساب التأجير
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.rentAcc" name="txtRentAcc"  readonly />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">أقصى حد لرقم الفاتورة الالي
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.limitInvId" name="txtLimitInvId"  />
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+
+
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">رقم الفرع
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.branchPhone" name="txtBranchPhone"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+
+                          <label class="control-label">صيغة القيمة
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.maskAmount" name="txtMaskAmount"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">الفترة الزمنية للتعليق
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.holdInvTimer" name="txtHoldInvTimer"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">نوع التحقق من الجهاز
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.pcDetectionType" name="txtPcDetectionType"  />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">حساب التأمين
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.insurAcc" name="txtpInsurAcc"  readonly />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">نوع احتساب العمولة
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.commAccount" name="txtCommAccount"  readonly />
+                      </div>
+                  </div>
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">طول فترة العمل باليوم
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.lengthPeriodDay" name="txtLengthPeriodDay"  />
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="">
+              <div class="row pt-1">
+                  <div class="col-sm-3">
+                      <label class="control-label">مسئول الطبخ
+                      </label>
+                  </div>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.orderEmp" name="txtOrderEmp"  />
+                  </div>
+              </div>
+              <div class="row pt-1">
+                  <div class="col-sm-3">
+                      <label class="control-label">عنوان فاتورة الطبخ
+                      </label>
+                  </div>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.branchAddress" name="txtBranchAddress" />
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">تليفون مسئول الطبخ
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.orderPhone" name="txtOrderPhone"  />
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">تليفون الفرع للمطبخ
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.branchPhoneOrder" name="txtBranchPhoneOrder"  />
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="">
+              <div class="row pt-1">
+                  <div class="col-sm-3">
+                      <label class="control-label">الموقع الافتراضي للتوصيل
+                      </label>
+                  </div>
+                  <div class="col-sm-9">
+                      <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.defaultLocationDelivery" name="txtDefaultLocationDelivery"  readonly />
+                  </div>
+              </div>
+          </div>
+
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">عدد مرات الترقيم
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.companyId" name="txtCompanyId"  />
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <input type="button" class="btn btn-secondary" value="اعادة الترقيم"   name="txtResetInv" />
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <div class="col-sm-6">
+                          <label class="control-label">عدد مرات الترقيم لطلب المطبخ
+                          </label>
+                      </div>
+                      <div class="col-sm-6">
+                          <input type="text" class="form-control form-control-sm"   name="txtResetOrder"  />
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-6">
+                  <div class="row pt-1">
+                      <input type="button" class="btn btn-secondary" value="اعادة الترقيم" />
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="bg-white border rounded p-3">
+
+  <ul class="nav nav-pills"   id="myTab" role="tablist">
+
+      <li class="nav-item divCash"   id="divCash">
+          <a class="nav-link active clsCashDesk" (click)="selectedTab = 'generalData'"   name="home-tab" data-toggle="tab"  role="tab" aria-controls="home" aria-selected="true"> بيانات عامة</a>
+      </li>
+
+      <li class="nav-item divCheck"  id="divCheck">
+          <a class="nav-link " (click)="selectedTab = 'auth'"  id="profile-tab" data-toggle="tab" role="tab" aria-controls="profile" aria-selected="false">صلاحيات اخري</a>
+      </li>
+      <li class="nav-item divCheck" id="divCheck">
+          <a class="nav-link" (click)="selectedTab = 'mail'"    id="Mail-tab" data-toggle="tab"  role="tab" aria-controls="Mail" aria-selected="false">اعدادات البريد الالكتروني</a>
+      </li>
+
+  </ul>
+  <div class="tab-content"  id="myTabContent">
+      <div class="tab-content"  id="myTabContent">
+          <div *ngIf="selectedTab === 'generalData'" class="tab-pane fade  divCash active show"  id="home" role="tabpanel" aria-labelledby="home-tab">
+              <div class="bg-white border rounded p-3">
+                  <div class="row">
+                      <div class="col-sm-5">
+
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">فئات الموظفين
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.branchMgr" name="txtBranchMgr"  readonly />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">فئات الوجبات
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.grpAddPlate" name="txtGrpAddPlate"  readonly />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">نوع احتساب الاخراج والاتلاف المخزني
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.productTypeOut" name="txtProductTypeOut"  readonly />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">صلاحيات الحجز
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.reservType" name="txtReservType"  readonly />
+                              </div>
+                          </div>
+
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">وصف التوصيل
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.itemDelivery" name="txtItemDelivery"  readonly />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">الطابعات
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.kitchenPrinter" name="txtKitchenPrINTer"  readonly />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">الموظف  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.cashCode" name="txtCashCode"  readonly />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">السائق
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.driverSeq" name="txtDriverSeq"  readonly />
+                              </div>
+                          </div>
+
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">مسار الخط
+                                  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.fontPath" name="txtFontPath"  />
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" col-sm-6">
+                          <div class="row">
+                              <div class="col-sm-6">
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">الشهر الحالي
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.empDate" name="txtEmpDate"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">ارفاق فاتورة
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.newOrderTime" name="txtNewOrderTime"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">رقم الربط للفرع
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.compIdPost" name="txtCompIdPost"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">صندوق الفرع
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.branchAccount" name="txtBranchAccount"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">عدد نسخ التوصيل
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.deliveryTrans" name="txtDeliveryTrans"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">الحد الاقصي للخصم </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.discountMax" name="txtDiscountMax"  />
+                                      </div>
+                                  </div>
+
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">مستودع الفرع
+
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.storeBasic" name="txtStoreBasic"  readonly />
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-sm-6">
+
+
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">الجزء
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.fraction" name="txtFraction"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">الرقم المختصر
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.shortNum" name="txtShortNum"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">مركز التكلفة
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.costCenter" name="txtCostCenter"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">مخزن العميل
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.clientStoreId" name="txtClientStoreId"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">مركز تكلفة العميل
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.empCostId" name="txtEmpCostId"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">بدون طباعة
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.allowSwithoutcPrinters" name="txtAllowSwithoutcprINTers"  />
+                                      </div>
+                                  </div>
+                                  <div class="row pt-1">
+                                      <div class="col-sm-6">
+                                          <label class="control-label">المخزن
+                                          </label>
+                                      </div>
+                                      <div class="col-sm-6">
+                                          <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.storeProduction" name="txtStoreProduction"  readonly />
+                                      </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                          <div class="">
+                              <div class="row pt-1">
+                                  <div class="col-sm-3">
+                                      <label class="control-label">مسار الصورة
+                                      </label>
+                                  </div>
+                                  <div class="col-sm-9">
+                                      <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.imgPath" name="txtImgPath"  />
+                                      <input type='file'   name="imgFile" />
+                                      <form   name="form1" runat="server">
+                                          <img  
+                                               src=""
+                                               class="imagepreview" style="width: 10%;height: 10%">
+                                      </form>
+
+                                  </div>
+                              </div>
+                              <div class="row pt-1">
+                                  <div class="col-sm-3">
+                                      <label class="control-label">تذييل الفاتورة
+                                      </label>
+                                  </div>
+                                  <div class="col-sm-9">
+                                      <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.invoiceRemark" name="txtInvoiceRemark"  />
+                                  </div>
+                              </div>
+                              <div class="row pt-1">
+                                  <div class="col-sm-3">
+                                      <label class="control-label">تذييل الطلبات</label>
+                                  </div>
+                                  <div class="col-sm-9">
+                                      <input type="text" class="form-control form-control-sm"  [(ngModel)]="branchsetting.orderRemark" name="txtOrderRemark"  />
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="tab-pane fade divCheck container-fluid active show" *ngIf="selectedTab === 'auth'"  id="profile" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="row bg-white border  rounded p-3">
+                  <div class="col-sm-4">
+
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkIsPOSPrinterNetwork"  [(ngModel)]="branchsetting.isPOSPrinterNetwork" name="chkIsPOSPrinterNetwork" value="option3">
+                                  <label class="custom-control-label small" for="chkIsPOSPrinterNetwork">هل طابعة الكاشير شبكة؟</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAssemblingPrINTer"  [(ngModel)]="branchsetting.assemblingPrinter" name="chkAssemblingPrINTer" value="option3">
+                                  <label class="custom-control-label small" for="chkAssemblingPrINTer">تجميع الفواتير بفاتورة المطبخ
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkModifyInvoice"  [(ngModel)]="branchsetting.modifyInvoice" name="chkModifyInvoice" value="option3">
+                                  <label class="custom-control-label small" for="chkModifyInvoice">امكانية تعديل الفواتير
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkPrINTCancelInvoice"  [(ngModel)]="branchsetting.printCancelInvoice" name="chkPrINTCancelInvoice" value="option3">
+                                  <label class="custom-control-label small" for="chkPrINTCancelInvoice">طباعة الفواتير الملغية
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkPrINTUpdateInvoice"  [(ngModel)]="branchsetting.printUpdateInvoice" name="chkPrINTUpdateInvoice" value="option3">
+                                  <label class="custom-control-label small" for="chkPrINTUpdateInvoice">طباعة الفواتير المعدلة
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAutoOpenPeriod"  [(ngModel)]="branchsetting.autoOpenPeriod" name="chkAutoOpenPeriod" value="option3">
+                                  <label class="custom-control-label small" for="chkAutoOpenPeriod">فتح فترة عمل اليا
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkEnterHelfoodAllowed"  [(ngModel)]="branchsetting.enterHelfoodAllowed" name="chkEnterHelfoodAllowed" value="option3">
+                                  <label class="custom-control-label small" for="chkEnterHelfoodAllowed">السماح باضافة عميل هالفود
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkEnterPartbuildAllowed"  [(ngModel)]="branchsetting.enterPartbuildAllowed" name="chkEnterPartbuildAllowed" value="option3">
+                                  <label class="custom-control-label small" for="chkEnterPartbuildAllowed">السماح باضافة عميل شقق مفروشة</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkManualProduction"  [(ngModel)]="branchsetting.manualProduction" name="chkManualProduction" value="option3">
+                                  <label class="custom-control-label small" for="chkManualProduction">اضافة كميات المنتجات يدويا</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAssemblingPost"  [(ngModel)]="branchsetting.assemblingPost" name="chkAssemblingPost" value="option3">
+                                  <label class="custom-control-label small" for="chkAssemblingPost">الترحيل مجمع للكاشيرات
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkChoiceStoreProdAuto"  [(ngModel)]="branchsetting.choiceStoreProdAuto" name="chkChoiceStoreProdAuto" value="option3">
+                                  <label class="custom-control-label small" for="chkChoiceStoreProdAuto">اختيار مخازن النظام اليا
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+
+
+                  </div>
+                  <div class="col-sm-4">
+
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkDeliveryCashier"  [(ngModel)]="branchsetting.deliveryCashier" name="chkDeliveryCashier" value="option3">
+                                  <label class="custom-control-label small" for="chkDeliveryCashier">اختيار السائق من قبل الكاشير
+
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkPayCashierAmount"  [(ngModel)]="branchsetting.payCashierAmount" name="chkPayCashierAmount" value="option3">
+                                  <label class="custom-control-label small" for="chkPayCashierAmount">اظهار مبلغ الفاتورة كمدفوع
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkDisplayDirverAccount"  [(ngModel)]="branchsetting.displayDirverAccount" name="chkDisplayDirverAccount" value="option3">
+                                  <label class="custom-control-label small" for="chkDisplayDirverAccount">عرض فواتير السائقين
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkDisplayUpdateDirver"  [(ngModel)]="branchsetting.displayUpdateDirver" name="chkDisplayUpdateDirver" value="option3">
+                                  <label class="custom-control-label small" for="chkDisplayUpdateDirver">عرض شاشة تعديل السائقين
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAutoClosePeriod"  [(ngModel)]="branchsetting.autoClosePeriod" name="chkAutoClosePeriod" value="option3">
+                                  <label class="custom-control-label small" for="chkAutoClosePeriod">اغلاق فترة العمل اليا
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkChangeUpdateCashier"  [(ngModel)]="branchsetting.changeUpdateCashier" name="chkChangeUpdateCashier" value="option3">
+                                  <label class="custom-control-label small" for="chkChangeUpdateCashier">تغيير الكاشير بحسب معدل الفاتورة
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkChangeUpdateDate"  [(ngModel)]="branchsetting.changeUpdateDate" name="chkChangeUpdateDate" value="option3">
+                                  <label class="custom-control-label small" for="chkChangeUpdateDate">تعديل تاريخ الفاتورة بحسب تاريخ التعديل</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkConvertProductionFullQty"  [(ngModel)]="branchsetting.convertProductionFullQty" name="chkConvertProductionFullQty" value="option3">
+                                  <label class="custom-control-label small" for="chkConvertProductionFullQty">التحويل للانتاج ليس بعدد صحيح مقرب</label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkCloseFormUpdateAuto"  [(ngModel)]="branchsetting.closeFormUpdateAuto" name="chkCloseFormUpdateAuto" value="option3">
+                                  <label class="custom-control-label small" for="chkCloseFormUpdateAuto">اغلاق الشاشة اوتوماتيك بعد التعديل
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkDecreaseProdAuto"  [(ngModel)]="branchsetting.decreaseProdAuto" name="chkDecreaseProdAuto" value="option3">
+                                  <label class="custom-control-label small" for="chkDecreaseProdAuto">انقاص الكميات اليا
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+
+                  </div>
+                  <div class="col-sm-4">
+
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkShowRefItem"  [(ngModel)]="branchsetting.showRefItem" name="chkShowRefItem" value="option3">
+                                  <label class="custom-control-label small" for="chkShowRefItem">اظهار مرجع الحركات للاصناف
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkShowRefProduct"  [(ngModel)]="branchsetting.showRefProduct" name="chkShowRefProduct" value="option3">
+                                  <label class="custom-control-label small" for="chkShowRefProduct">اظهار مرجع الحركات للمنتجات
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAllowBlkList"  [(ngModel)]="branchsetting.allowBlkList" name="chkAllowBlkList" value="option3">
+                                  <label class="custom-control-label small" for="chkAllowBlkList">السماح للشراء لقائمة العملاء السوداء
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAllowCancelInvoice"  [(ngModel)]="branchsetting.allowCancelInvoice" name="chkAllowCancelInvoice" value="option3">
+                                  <label class="custom-control-label small" for="chkAllowCancelInvoice">السماح بالغاء الفواتير المعلقة اليا
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkPrINTBasicInvId"  [(ngModel)]="branchsetting.printBasicInvId" name="chkPrINTBasicInvId" value="option3">
+                                  <label class="custom-control-label small" for="chkPrINTBasicInvId">طباعة رقم الفاتورة الاساسي
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkShowAllInvoiceForCancel"  [(ngModel)]="branchsetting.showAllInvoiceForCancel" name="chkShowAllInvoiceForCancel" value="option3">
+                                  <label class="custom-control-label small" for="chkShowAllInvoiceForCancel">اظهار فواتير جميع الكاشيرات للالغاء
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkShowAllInvoiceForUpdate"  [(ngModel)]="branchsetting.showAllInvoiceForUpdate" name="chkShowAllInvoiceForUpdate" value="option3">
+                                  <label class="custom-control-label small" for="chkShowAllInvoiceForUpdate">اظهار فواتير جميع الكاشيرات للتعديل
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAllowDiscount"  [(ngModel)]="branchsetting.allowDiscount" name="chkAllowDiscount" value="option3">
+                                  <label class="custom-control-label small" for="chkAllowDiscount">السماح بالخصم
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkAddQyProductbeforeSpend"  [(ngModel)]="branchsetting.addQyProductbeforeSpend" name="chkAddQyProductbeforeSpend" value="option3">
+                                  <label class="custom-control-label small" for="chkAddQyProductbeforeSpend">اضافة كميات تحت التجهيز قبل التحويل المخزني
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class=" PayTypeId ">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkUpdateInvoiceDriver"  [(ngModel)]="branchsetting.updateInvoiceDriver" name="chkUpdateInvoiceDriver" value="option3">
+                                  <label class="custom-control-label small" for="chkUpdateInvoiceDriver">تعديل السائق من الكاشير
+                                  </label>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="ShowQtyZero">
+                          <div class="row m-1">
+                              <div class="form-check  custom-control custom-checkbox ">
+                                  <input type="checkbox" class="custom-control-input chkShowQtyZero"  [(ngModel)]="branchsetting.showQtyZero" name="chkShowQtyZero" value="option3">
+                                  <label class="custom-control-label small" for="chkShowQtyZero">اظهار المبيعات الصفرية للكاشير </label>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="tab-pane fade  divCash active show" *ngIf="selectedTab === 'mail'"   id="Mail" role="tabpanel" aria-labelledby="Mail-tab">
+              <div class="bg-white border rounded p-3">
+                  
+                      
+
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailHost </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailHost" name="txtMailHost"   />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailPort</label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailPort" name="txtMailPort"   />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailFrom</label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailFrom" name="txtMailFrom"   />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailPassword </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="password" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailPassword" name="txtMailPassword"   />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailSubject</label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailSubject" name="txtMailSubject"   />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailBody </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailBody" name="txtMailBody"   />
+                              </div>
+                          </div>
+                          <div class="row pt-1">
+                              <div class="col-sm-4">
+                                  <label class="control-label">MailTo  </label>
+                              </div>
+                              <div class="col-sm-4">
+                                  <input type="text" class="form-control form-control-sm "  [(ngModel)]="branchsetting.mailTo" name="txtMailTo"   />
+                              </div>
+                          </div>
+                        
+                             
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+</form>

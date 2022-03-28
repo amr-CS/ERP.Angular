@@ -469,7 +469,7 @@ export class VoucherReceiptComponent {
       this.voucherReceipt.date = this.datePipe.transform(this.voucherReceipt.date, 'yyyy-MM-dd') || '';
       this.voucherReceipt.referenceDate = this.datePipe.transform(this.voucherReceipt.referenceDate, 'yyyy-MM-dd') || '';
       this.voucherReceiptDetailsAdjustment();
-
+      console.log(this.voucherReceipt)
       if (this.voucherReceipt.id == 0) {
         this.service.voucherJournalCreate(this.voucherReceipt).
           subscribe(result => {

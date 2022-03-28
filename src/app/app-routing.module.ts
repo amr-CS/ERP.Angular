@@ -10,6 +10,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guard/auth.guard';
 import { VoucherReceiptComponent } from './voucherreceipt/voucherreceipt.component';
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
+import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/voucherJournalForCustomer.component';
+import { BranchsettingComponent } from './branchsetting/branchsetting.component';
 
 
 const routes: Routes = [
@@ -28,12 +30,12 @@ const routes: Routes = [
              { path: 'demographicinfo', component: DemographicinfoComponent},
              { path: 'home', component: HomeComponent},
              { path: 'dashboard', component: DashboardComponent},
-
              { path: 'voucherjournal', component: VoucherJournalComponent },
              { path: 'voucherreceipt', component: VoucherReceiptComponent },
              { path: 'voucherpayment', component: VoucherPaymentComponent },
-
-             { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
+             { path: 'ChartOfAccount', component: ChartOfAccountComponent}, 
+             { path: 'voucherjournalForCustomer', component: VoucherJournalForCustomerComponent },
+             { path: 'branchsetting', component: BranchsettingComponent },
 
           ]
 }

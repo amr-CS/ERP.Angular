@@ -15,13 +15,15 @@ import { CostCenter } from '../interfaces/costcenter.interface';
 import { CostCenterService } from '../services/costcenter.service';
 import { FinancialYearService } from '../services/financialyear.service';
 import { Constants } from '../services/constants';
+import { CustomerService } from '../services/customer.service';
 
 @Component({
-  selector: 'app-voucherjournal',
-  templateUrl: './voucherjournal.component.html',
-  styleUrls: ['./voucherjournal.component.css']
+  selector: 'app-voucherJournalForCustomer',
+  templateUrl: './voucherJournalForCustomer.component.html',
+  styleUrls: ['./voucherJournalForCustomer.component.css']
 })
-export class VoucherJournalComponent implements OnInit {
+export class VoucherJournalForCustomerComponent implements OnInit {
+
   @ViewChild('table') detailsTable!: ElementRef;
 
   textFilterModel:string;
@@ -44,8 +46,12 @@ export class VoucherJournalComponent implements OnInit {
     date: new Date().toLocaleDateString(),
     referenceNumber: '',
     referenceDate: new Date().toLocaleDateString(),
-    journalTypeId: 2,
+    journalTypeId: 7,
     sourceTypeId: 1,
+    customerVendorId: 0,
+  customerVendorCode: '',
+  customerVendorName: '',
+  sourceTypeName: '',
     isPosted: false,
     isIncomplete: false,
     isCancelled: false,
@@ -87,7 +93,9 @@ export class VoucherJournalComponent implements OnInit {
 
   public accountList:Account[] = [];
   public costCenterList:CostCenter[] = [];
-
+  public customerCustomersList: NameCommon[] = [];
+  public customerSalesList: NameCommon[] = [];
+  public customersList: NameCommon[] = [];
   itemDetailOld: VoucherJournalDetails ={
     id: 0,
     journalVoucherId: 0,
@@ -108,14 +116,14 @@ export class VoucherJournalComponent implements OnInit {
   constructor(private service: VoucherJournalService,private transactionSourceService: TransactionSourceService,
     private transactionTypeService: TransactionTypeService, public datePipe:DatePipe, public utilityService: UtilityService,
     private alertify: AlertifyService, private accountService: AccountService, private costCenterService: CostCenterService
-    ,private financialYearService : FinancialYearService) {
+    ,private financialYearService : FinancialYearService, private customerService: CustomerService) {
 
     this.transactionSourceGet();
     this.transactionTypeGet();
     this.accountGetAll();
     this.voucherJournalGetByTransactionTypeId();
     this.getCurrentFinancialYear();
-
+    this.customersGetAllByType();
     this.textFilterModel = '';
     this.dateFromFilterModel = new Date();
     this.dateToFilterModel = new Date();
@@ -143,7 +151,7 @@ export class VoucherJournalComponent implements OnInit {
   transactionTypeGet()
   {
     // the id for this page for type is 2
-    this.transactionTypeService.transactionTypeGetById(2).subscribe(result=>{
+    this.transactionTypeService.transactionTypeGetById(7).subscribe(result=>{
       this.journalTypeName = result.nameL1;
       this.voucherJournal.journalTypeName = result.nameL1;
     });
@@ -179,7 +187,8 @@ export class VoucherJournalComponent implements OnInit {
   
 
   voucherJournalGetByTransactionTypeId() {
-    this.service.voucherJournalGetByTransactionTypeId(2).subscribe(result => {
+    this.service.voucherJournalGetByTransactionTypeId(7).subscribe(result => {
+      console.log(result)
       this.voucherJournalList = result;
       for(let i in result){
         this.voucherJournalList[i].isSelected = false;
@@ -202,7 +211,11 @@ export class VoucherJournalComponent implements OnInit {
       this.service.voucherJournalGetById(Number(id)).subscribe(result => {
         if (result !== null) {
           this.isUpdate = true;
-          this.voucherJournal = result;         
+          this.voucherJournal = result;    
+          this.voucherJournal.customerVendorName = result.customerVendor?.nameL1;
+          this.voucherJournal.customerVendorCode = result.customerVendor?.code;
+          this.voucherJournal.salesName = result.sales?.nameL1;
+          this.voucherJournal.salesCode = result.sales?.code;     
           this.voucherJournal.date = this.datePipe.transform(this.voucherJournal.date,'yyyy-MM-dd') || '';
           this.voucherJournal.referenceDate = this.datePipe.transform(this.voucherJournal.referenceDate,'yyyy-MM-dd') || '';
           // to remove null console errors
@@ -240,7 +253,7 @@ export class VoucherJournalComponent implements OnInit {
 
   // flag to determine the ability to update or disable all controls
   public isUpdate = false;
-  public pageName = "قيد اليومية";
+  public pageName = "قيد يومية لعميل";
 
   
   voucherJournalIsUpdateableToggle(){
@@ -263,6 +276,9 @@ export class VoucherJournalComponent implements OnInit {
   successCreateUpdate(result:any){
     this.alertify.success('نجاح');
     this.voucherJournal = result;
+    this.voucherJournal.sourceTypeName = result.sourceType?.nameL1;
+          this.voucherJournal.customerVendorName = result.customerVendor?.nameL1;
+          this.voucherJournal.customerVendorCode = result.customerVendor?.code;
     this.voucherJournal.journalVoucherDetails.forEach(element => {
       element.costCenter = element.costCenter ? element.costCenter :{};
       element.costCenterId = element.costCenterId ? element.costCenterId :undefined;
@@ -278,9 +294,11 @@ export class VoucherJournalComponent implements OnInit {
       this.undefineObjectProperties();
       this.voucherJournal.date = this.datePipe.transform(this.voucherJournal.date, 'yyyy-MM-dd') || '';
       this.voucherJournal.referenceDate = this.datePipe.transform(this.voucherJournal.referenceDate, 'yyyy-MM-dd') || '';
+      this.voucherJournal.salesId=20;
       this.voucherJournalDetailsAdjustment();
+      console.log(this.voucherJournal)   
 
-      if(this.voucherJournal.id == 0){         
+      if(this.voucherJournal.id == 0){      
         this.service.voucherJournalCreate(this.voucherJournal).
           subscribe(result => {
             this.successCreateUpdate(result);
@@ -764,6 +782,79 @@ GetNextIndex(){
     {
       this.voucherJournalGetById(this.checkedList[0]) 
     }      
+  }
+  customersGetAllByType() {
+    this.customerService.customerGetAllByType(true).subscribe(result => {
+      this.customerCustomersList = result;
+    });
+
+    this.customerService.customerGetAllByType(false).subscribe(result => {
+      this.customerSalesList = result;
+    });
+  }
+
+  // <----- Customer modal ----->
+
+  displayCustomerStyle = "none";
+  isCustomer = true;
+  addCustomerItem(item: any) {
+    if (this.isCustomer) {
+      this.voucherJournal.customerVendorId = item.id;
+      this.voucherJournal.customerVendorCode = item.code;
+      this.voucherJournal.customerVendorName = item.nameL1;
+    }
+    else {
+
+      this.voucherJournal.salesId = item.id;
+      this.voucherJournal.salesCode = item.code;
+      this.voucherJournal.salesName = item.nameL1;
+    }
+
+  }
+
+  emptyCustomerItem() {
+    if (this.isCustomer) {
+      this.voucherJournal.customerVendorId = undefined;
+      this.voucherJournal.customerVendorCode = undefined;
+      this.voucherJournal.customerVendorName = undefined;
+    }
+    else {
+
+      this.voucherJournal.salesId = undefined;
+      this.voucherJournal.salesCode = undefined;
+      this.voucherJournal.salesName = undefined;
+    }
+  }
+
+  CustomerOpenPopup(): void {
+    this.displayCustomerStyle = "block";
+    if (this.isCustomer)
+      this.customersList = this.customerCustomersList;
+    else
+      this.customersList = this.customerSalesList;
+  }
+
+  CustomerClosePopup(): void {
+    this.displayCustomerStyle = "none";
+  }
+
+  customerGetByCode(code: string) {
+    if (code != undefined && code && Number.isInteger(Number(code))) {
+      this.customerService.customerGetByCode(this.isCustomer, Number(code)).subscribe(result => {
+        if (result) {
+
+          this.addCustomerItem(result);
+        }
+        else {
+          var errorMsg = this.isCustomer ? 'لا يوجد مندوبين لهذا الرقم' : 'لا يوجد عملاء لهذا الرقم';
+          this.alertify.error(errorMsg);
+          this.emptyCustomerItem();
+        }
+
+      });
+    } else {
+      this.emptyCustomerItem();
+    }
   }
 
 
