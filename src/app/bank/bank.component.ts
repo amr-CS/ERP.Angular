@@ -75,6 +75,8 @@ export class BankComponent {
       this.service.bankAddEdit(this.banks).subscribe(result=>{
         this.banks = result;
         this.banksOriginal = result;
+        this.alertify.success('نجاح');
+        this.isUpdate = true;
       });
     }
   }
