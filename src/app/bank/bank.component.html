@@ -56,18 +56,18 @@
                         <tr *ngFor="let item of this.banks; let i = index;trackBy:trackByIndex;" style="overflow-y: scroll;"
                             class='clickable-row'>
                             <ng-container *ngIf="!item.isDeleted">
-                                <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                <td><button  type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
                                         (click)="addItem(i);bankAccountsSelect(item);" [disabled]="isUpdate">
                                         <i class="fa fa-plus-circle"></i>
                                     </button></td>
-                                <td><input #bankCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                <td><input class="form-control form-control-sm text-center fullHeightInput"
                                         name="{{'bankCode' + i}}" type="number" [(ngModel)]="item.code" disabled/>
-                                        <!-- [disabled]="isUpdate" required
+                                        <!-- #bankCode="ngModel" [disabled]="isUpdate" required
                                         [ngClass]="{'is-invalid': bankCode.invalid && (bankCode.touched || bankCode.dirty)}"
                                         (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"                     -->
                                 </td>
                                 <td>
-                                    <input #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    <input  #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
                                         name="{{'bankNameL1' + i}}" required type="text" [(ngModel)]="item.nameL1" [disabled]="isUpdate"
                                         [ngClass]="{'is-invalid': bankNameL1.invalid && (bankNameL1.touched || bankNameL1.dirty)}"
                                         (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>

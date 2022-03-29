@@ -37,7 +37,7 @@ export class BankComponent {
     this.bankGetAll();
     this.accountGetAll();
     this.textFilterModel = '';
-  }
+  }  
 
   bankGetAll() {
     this.service.bankGetAll().subscribe(result => {
@@ -73,10 +73,55 @@ export class BankComponent {
       this.undefineObjectProperties();
       this.banks = this.banks.filter(b=>b.isInserted || b.isUpdated || b.isDeleted); 
       this.service.bankAddEdit(this.banks).subscribe(result=>{
+        var temp = this.banks;        
         this.banks = result;
         this.banksOriginal = result;
         this.alertify.success('نجاح');
-        this.isUpdate = true;
+        this.isUpdate = true; 
+        
+        
+        temp.forEach(eTemp => {
+          this.banks.forEach(eBank => {
+            if (eTemp.id == eBank.id) {
+              eTemp.bankAccount = eBank.bankAccount;
+              return;
+            }
+          });
+        });
+
+        temp.filter(x => x.id == 0).forEach(eTemp => {
+          this.banks.forEach(eBank => {
+            if (eTemp.nameL1 == eBank.nameL1 && eTemp.nameL2 == eBank.nameL2
+              && eTemp.isActive == eBank.isActive
+              && eTemp.bankAccount.length == eBank.bankAccount.length) {
+              var isChildMatch = false;
+              eTemp.bankAccount.forEach(eTempSub => {
+                eBank.bankAccount.forEach(eBankSub => {
+                  isChildMatch = false;
+                  if (eTempSub.accountId == eBankSub.accountId &&
+                    eTempSub.nameL1 == eBankSub.nameL1 && eTempSub.nameL2 == eBankSub.nameL2 &&
+                    eTempSub.isActive == eBankSub.isActive) {
+                    isChildMatch = true;
+                    return;
+                  }
+                });
+              });
+
+              if (isChildMatch) {
+                eTemp.id = eBank.id;
+                eTemp.code = eBank.code;
+                eTemp.bankAccount = eBank.bankAccount;
+                return;
+              }
+            }
+          });
+        });
+
+        if (temp.length > 0) {
+          this.banks = temp;
+          this.bankAccountsSelect(this.banks[0]);
+        }
+
       });
     }
   }
