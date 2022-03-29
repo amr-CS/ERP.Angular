@@ -251,8 +251,13 @@ export class BankComponent {
     this.textFilterModel = '';    
   }
 
-  closePopup(): void {
-    this.displayStyle = "none";       
+  closePopup(bank?: Bank): void {
+    this.displayStyle = "none";
+    if (bank) {
+      if (this.checkedList.length > 0) {
+        this.bankAddFromModal(bank);
+      }
+    }
   }
 
   bankAddFromModal(bank: Bank) {
