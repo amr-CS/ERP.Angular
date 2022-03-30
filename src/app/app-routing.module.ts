@@ -11,6 +11,7 @@ import { AuthGuard } from './_guard/auth.guard';
 import { VoucherReceiptComponent } from './voucherreceipt/voucherreceipt.component';
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
 import { BankComponent } from './bank/bank.component';
+import { LookupComponent } from './lookup/lookup.component';
 
 
 const routes: Routes = [
@@ -34,7 +35,7 @@ const routes: Routes = [
              { path: 'voucherreceipt', component: VoucherReceiptComponent },
              { path: 'voucherpayment', component: VoucherPaymentComponent },
              { path: 'bank', component: BankComponent },
-
+             { path: 'lookup', component: LookupComponent },
              { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
 
           ]

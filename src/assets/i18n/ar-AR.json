@@ -7,6 +7,15 @@
     "home":"الصفحة الرئيسية",
     "dashboard":"لوحة التحكم",
     "link":"الرابط ",
+    "type":"النوع",
+    "menu":"القائمة",
+    "menu_details":"تفاصيل القائمة",
+    "group":"المجموعة",
+    "note":"ملاحظات",
+    "isactive":"الحالة - مفعل",
+    "isdefault":"افتراضي",
+    "value":"القيمة",
+    "seq":"الرقم التسلسلي",
     "demographic_info":"المعلومات الديموغرافيه",
     "applications":"التطبيقات",
     "log_out":"تسجيل خروج",
@@ -110,7 +119,12 @@
     "bank_actions":"العمليات",
     "bank_banksaccounts":"حسابات البنك",
     "bank_branch":"الفرع",
-    "bank_account":"الحساب"
+    "bank_account":"الحساب",
+
+    "lookup_details":"بيانات الترميز",    
+    "lookup_typedetails":"بيانات النوع",
+    "lookup_dtltype":"تفصيلي النوع"
+   
 
 
 
