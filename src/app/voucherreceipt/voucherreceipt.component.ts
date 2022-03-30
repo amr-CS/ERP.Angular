@@ -255,10 +255,25 @@ export class VoucherReceiptComponent {
           this.voucherReceipt.date = this.datePipe.transform(this.voucherReceipt.date, 'yyyy-MM-dd') || '';
           this.voucherReceipt.referenceDate = this.datePipe.transform(this.voucherReceipt.referenceDate, 'yyyy-MM-dd') || '';
           this.voucherReceipt.sourceTypeName = result.sourceType?.nameL1;
-          this.voucherReceipt.customerVendorName = result.customerVendor?.nameL1;
-          this.voucherReceipt.customerVendorCode = result.customerVendor?.code;
-          this.voucherReceipt.salesName = result.sales?.nameL1;
-          this.voucherReceipt.salesCode = result.sales?.code;
+          // this.voucherReceipt.customerVendorName = result.customerVendor?.nameL1;
+          // this.voucherReceipt.customerVendorCode = result.customerVendor?.code;
+          if (this.voucherReceipt.customerVendorId) {
+            var currentCustomer = this.customerCustomersList.filter(c => c.id == this.voucherReceipt.customerVendorId);
+            if (currentCustomer && currentCustomer.length > 0) {
+              this.voucherReceipt.customerVendorName = currentCustomer[0].nameL1;
+              this.voucherReceipt.customerVendorCode = currentCustomer[0].code;
+            }
+          }
+
+          // this.voucherReceipt.salesName = result.sales?.nameL1;
+          // this.voucherReceipt.salesCode = result.sales?.code;
+          if (this.voucherReceipt.salesId) {
+            var currentSales = this.customerSalesList.filter(s => s.id == this.voucherReceipt.salesId);
+            if (currentSales && currentSales.length > 0) {
+              this.voucherReceipt.salesName = currentSales[0].nameL1;
+              this.voucherReceipt.salesCode = currentSales[0].code;
+            }
+          }
           // to remove null console errors
           this.voucherReceipt.journalVoucherDetails.forEach(e => {
             if (e.account == null) {
@@ -397,10 +412,25 @@ export class VoucherReceiptComponent {
     this.voucherReceipt = result;
 
     this.voucherReceipt.sourceTypeName = result.sourceType?.nameL1;
-    this.voucherReceipt.customerVendorName = result.customerVendor?.nameL1;
-    this.voucherReceipt.customerVendorCode = result.customerVendor?.code;
-    this.voucherReceipt.salesName = result.sales?.nameL1;
-    this.voucherReceipt.salesCode = result.sales?.code;
+    // this.voucherReceipt.customerVendorName = result.customerVendor?.nameL1;
+          // this.voucherReceipt.customerVendorCode = result.customerVendor?.code;
+          if (this.voucherReceipt.customerVendorId) {
+            var currentCustomer = this.customerCustomersList.filter(c => c.id == this.voucherReceipt.customerVendorId);
+            if (currentCustomer && currentCustomer.length > 0) {
+              this.voucherReceipt.customerVendorName = currentCustomer[0].nameL1;
+              this.voucherReceipt.customerVendorCode = currentCustomer[0].code;
+            }
+          }
+
+          // this.voucherReceipt.salesName = result.sales?.nameL1;
+          // this.voucherReceipt.salesCode = result.sales?.code;
+          if (this.voucherReceipt.salesId) {
+            var currentSales = this.customerSalesList.filter(s => s.id == this.voucherReceipt.salesId);
+            if (currentSales && currentSales.length > 0) {
+              this.voucherReceipt.salesName = currentSales[0].nameL1;
+              this.voucherReceipt.salesCode = currentSales[0].code;
+            }
+          }
 
     this.voucherReceipt.journalVoucherDetails.forEach(element => {
       element.costCenter = element.costCenter ? element.costCenter : {};

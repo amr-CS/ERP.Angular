@@ -1,5 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Branchsetting } from '../interfaces/branchsetting.interface';
+import { AlertifyService } from '../services/alertify.service';
 import { BranchsettingService } from '../services/branchsetting.service';
 
 @Component({
@@ -11,7 +12,7 @@ export class BranchsettingComponent implements OnInit {
   selectedTab='generalData'
   public pageName="اعدادات الفرع"
 
-  constructor(private service:BranchsettingService) { this.getAll() }
+  constructor(private service:BranchsettingService,private alertify:AlertifyService) { this.getAll() }
 
   public branchsetting: Branchsetting={
     id:0  ,
@@ -163,7 +164,7 @@ save()
 {
 console.log(this.branchsetting)
 this.service.SaveBranchsetting(this.branchsetting).subscribe(()=>{
-alert('yes')
+this.alertify.success('تم الحفظ بنجاح')
 })
 }
 getAll(){
@@ -173,7 +174,12 @@ this.service.getAllBranchsetting().subscribe(arg => {
 this.branchsetting.id=arg.id
   console.log(this.branchsetting)
 
-});
+});}
 
+
+getLookup(){
+  this.service.getLookup(16);
 }
+
+
 }

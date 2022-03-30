@@ -12,6 +12,8 @@ import { VoucherReceiptComponent } from './voucherreceipt/voucherreceipt.compone
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
 import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/voucherJournalForCustomer.component';
 import { BranchsettingComponent } from './branchsetting/branchsetting.component';
+import { BankComponent } from './bank/bank.component';
+
 
 
 const routes: Routes = [
@@ -33,9 +35,15 @@ const routes: Routes = [
              { path: 'voucherjournal', component: VoucherJournalComponent },
              { path: 'voucherreceipt', component: VoucherReceiptComponent },
              { path: 'voucherpayment', component: VoucherPaymentComponent },
+
              { path: 'ChartOfAccount', component: ChartOfAccountComponent}, 
              { path: 'voucherjournalForCustomer', component: VoucherJournalForCustomerComponent },
              { path: 'branchsetting', component: BranchsettingComponent },
+
+             { path: 'bank', component: BankComponent },
+
+             { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
+
 
           ]
 }

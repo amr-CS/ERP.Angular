@@ -71,19 +71,16 @@ import {OverlayModule} from '@angular/cdk/overlay';
 import { TableDynamicArrayDataExampleComponent } from './TableDynamicArrayDataExample/TableDynamicArrayDataExample.component';
 import { AccountfilterPipe } from './pipes/accountfilter.pipe';
 import { CostcenterfilterPipe } from './pipes/costcenterfilter.pipe';
-
 import { VoucherReceiptComponent } from './voucherreceipt/voucherreceipt.component';
 import { NameCommonfilterPipe } from './pipes/namecommonfilter.pipe';
 import { CurrencyfilterPipe } from './pipes/currencyfilter.pipe';
-
-
 import { SecurityGradePipe } from './pipes/securityGrade.pipe';
 import { UtilitiesComponent } from './utilities/utilities.component';
 import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.component';
 import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/voucherJournalForCustomer.component';
 import { BranchsettingComponent } from './branchsetting/branchsetting.component';
-
-
+import { BankComponent } from './bank/bank.component';
+import { BankfilterPipe } from './pipes/bankfilter.pipe';
 
 
 
@@ -120,7 +117,9 @@ export function HttpLoaderFactory(http:HttpClient){
       UtilitiesComponent,
       VoucherPaymentComponent,
       VoucherJournalForCustomerComponent,
-      BranchsettingComponent
+      BranchsettingComponent,
+      BankComponent,
+      BankfilterPipe
    ],
   imports: [
     BrowserModule,

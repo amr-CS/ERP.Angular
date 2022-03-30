@@ -1,0 +1,333 @@
+<app-utilities
+  (clickSave)="banksCreateUpdate(myForm)"
+ (clickPopup)="openPopup()"
+ (UpdateableToggle)="bankIsUpdateableToggle()"
+ (printReport)="printReportJV(bank.id)"
+ (getNext)="GetNextIndex()"
+ (getPrev)="GetPrevIndex()"
+ (getLast)="GetLast()"
+ (getFirst)="GetFirst()"
+ [IsUpdateFromParent]="isUpdate"
+  [name]="pageName"
+ ></app-utilities>
+
+
+<form #myForm="ngForm" class="page__content shadow p-3 page__content-data">
+    <!-- (submit)="voucherJournalCreateUpdate(myForm)" -->
+
+    <div class="divTableContainer">
+
+        <!-- Cash Desk Header -->
+        <div class="w-100 divSectionTitle p-2 px-4">{{'bank_banks' |translate}}</div>
+
+        <div id="table-wrapper">
+            <!-- Cash Desks Data -->
+            <div class="divBank bg-white border p-2" id="table-scroll">
+                <!-- <div class=" clsDiv">
+                    <div style="visibility:hidden;">1</div>
+                </div> -->
+                <table class="table tblBank">
+                    <!-- Head -->
+                    <thead>
+                        <tr>
+                            <th width="20px">
+                                <div class="text"></div>
+                            </th>
+                            <th>
+                                <div class="text"> {{'bank_code' |translate}}</div>
+                            </th>
+                            <th>
+                                <div class="text"> {{'bank_bank' |translate}} -{{'arabic2' |translate}}</div>
+                            </th>
+                            <th>
+                                <div class="text"> {{'bank_bank' |translate}} -{{'english2' |translate}}</div>
+                            </th>
+                            <th>
+                                <div class="text">{{'bank_isactive' |translate}}</div>
+                            </th>
+                            <th class="thActions">
+                                <!-- <div class="text">{{'bank_actions' |translate}}</div> -->
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <!-- Body -->
+                    <tbody class="tblBankBody">
+                        <tr *ngFor="let item of this.banks; let i = index;trackBy:trackByIndex;" style="overflow-y: scroll;"
+                            class='clickable-row'>
+                            <ng-container *ngIf="!item.isDeleted">
+                                <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                        (click)="addItem(i);bankAccountsSelect(item);" [disabled]="isUpdate">
+                                        <i class="fa fa-plus-circle"></i>
+                                    </button></td>
+                                <td><input #bankCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                        name="{{'bankCode' + i}}" required type="number" [(ngModel)]="item.code" [disabled]="isUpdate"
+                                        [ngClass]="{'is-invalid': bankCode.invalid && (bankCode.touched || bankCode.dirty)}"
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>                    
+                                </td>
+                                <td>
+                                    <input #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                        name="{{'bankNameL1' + i}}" required type="text" [(ngModel)]="item.nameL1" [disabled]="isUpdate"
+                                        [ngClass]="{'is-invalid': bankNameL1.invalid && (bankNameL1.touched || bankNameL1.dirty)}"
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>
+                                </td>
+                                <td>
+                                    <input class="form-control form-control-sm text-center fullHeightInput" name="{{'bankNameL2' + i}}"
+                                        type="text" [(ngModel)]="item.nameL2" [disabled]="isUpdate" (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>
+                                </td>
+                                <td>
+                                    <input class="form-check-input form-control-sm text-center fullHeightInput"
+                                        name="{{'bankIsActive' + i}}" type="checkbox" [(ngModel)]="item.isActive"
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)" [disabled]="isUpdate" />
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput"
+                                        (click)="removeItem(i,item)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                                    </button>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="divTableContainer">
+        <!-- Account Header -->
+        <div class="w-100 divSectionTitle p-2 px-4">{{'bank_banksaccounts' |translate}}</div>
+        <div id="table-wrapper-DTL">
+            <!-- Account Data -->
+            <div class="divAccount bg-white border p-2" id="table-scroll-DTL">
+                <div class=" clsDiv">
+                    <div style="visibility:hidden;">1</div>
+                </div>
+                <table class="table tblAccount">
+                    <!-- Head -->
+                    <thead class="">
+                        <tr>
+                            <th width="15px">
+                                <div class="text"></div>
+                            </th>
+                            <th width="25%">
+                                <div class="text">{{'bank_branch' |translate}} - {{'arabic2' |translate}}</div>
+                            </th>
+                            <th width="25%">
+                                <div class="text">{{'bank_branch' |translate}} - {{'english2' |translate}}</div>
+                            </th>
+                            <th>
+                                <div class="text">{{'voucher_accountno' |translate}}</div>
+                            </th>
+                            <th width="25%">
+                                <div class="text">{{'bank_account' |translate}}</div>
+                            </th>
+                            <th>
+                                <div class="text">{{'bank_isactive' |translate}}</div>
+                            </th>
+                            <th class="thActions">
+                                <!-- <div class="text">{{'bank_actions' |translate}}</div> -->
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <!-- Body -->
+                    <tbody #detailsBody class="tblAccountBody" [ngStyle]="{'display':displayDetails}">
+                        <tr class="tblAccountRow"
+                            *ngFor="let item of this.bankAccountList; let i = index;trackBy:trackByIndex;"
+                            style="overflow-y: scroll;">
+                            <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                    (click)="addItemDetails(i)" [disabled]="isUpdate">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <input #bankAccountNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'bankAccountNameL1' + i}}" type="text" [(ngModel)]="item.nameL1"
+                                    [disabled]="isUpdate" required (change)="updateBankIsChanged(item,true)"
+                                    [ngClass]="{'is-invalid': bankAccountNameL1.invalid && (bankAccountNameL1.touched || bankAccountNameL1.dirty)}"/>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'bankAccountNameL2' + i}}" type="text" [(ngModel)]="item.nameL2"
+                                    (change)="updateBankIsChanged(item,true)"
+                                    [disabled]="isUpdate" />
+                            </td>
+                            <td>
+                                <input #bankAccountAccountCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'bankAccountAccountCode' + i}}" type="text" [(ngModel)]="item.accountCode"
+                                    (dblclick)="AccountOpenPopup(i);updateBankIsChanged(item,true);" (change)="addAccountItemByAccountNo(bankAccountAccountCode.value,i);updateBankIsChanged(item,true);"
+                                    [disabled]="isUpdate" required  
+                                    [ngClass]="{'is-invalid': bankAccountAccountCode.invalid && (bankAccountAccountCode.touched || bankAccountAccountCode.dirty)}"/>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'bankAccountAccountName' + i}}" type="text" [(ngModel)]="item.accountName" 
+                                    (change)="updateBankIsChanged(item,true)"
+                                    disabled />
+                            </td>
+                            <td>
+                                <input class="form-check-input form-control-sm text-center fullHeightInput"
+                                    name="{{'bankAccountIsActive' + i}}" type="checkbox" [(ngModel)]="item.isActive"
+                                    (change)="updateBankIsChanged(item,true)"
+                                    [disabled]="isUpdate" />
+                            </td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput"
+                                    (click)="removeItemDetails(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                    (click)="addItemDetails(undefined,1);" [disabled]="isUpdate">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </td>
+
+                            <td>
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="NewBankAccountNameL1" type="text" [(ngModel)]="newBankAccount.nameL1"
+                                    [disabled]="isUpdate" (change)="addItemDetails(undefined,2);"/>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="NewBankAccountNameL2" type="text" [(ngModel)]="newBankAccount.nameL2"
+                                    [disabled]="isUpdate" (change)="addItemDetails(undefined,3)" />
+                            </td>
+                            <td>
+                                <input #NewBankAccountAccountCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    name="NewBankAccountAccountCode" type="text" [(ngModel)]="newBankAccount.accountCode"
+                                    [disabled]="isUpdate" (change)="addAccountItemByAccountNo(NewBankAccountAccountCode.value)"
+                                    (dblclick)="AccountOpenPopup()"/>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="NewBankAccountAccountName" disabled type="text" [(ngModel)]="newBankAccount.accountName"/>
+                            </td>
+                            <td>
+                                <input class="form-check-input form-control-sm text-center fullHeightInput"
+                                    name="NewBankAccountIsActive" type="checkbox" [(ngModel)]="newBankAccount.isActive"
+                                    [disabled]="isUpdate" (change)="addItemDetails()" />
+                            </td>
+
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+
+
+</form>
+
+<!-----------------------------------------Modal All------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>               
+                      
+        <table class="table">
+          <thead>
+            <th>
+                <input type="checkbox" class="d-none"> 
+              <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"(change)="checkUncheckAll()" >
+              </th>
+            <th width="20px">
+                <div class="text"></div>
+            </th>
+            <th>
+                <div class="text"> {{'bank_code' |translate}}</div>
+            </th>
+            <th>
+                <div class="text"> {{'bank_bank' |translate}} -{{'arabic2' |translate}}</div>
+            </th>
+            <th>
+                <div class="text"> {{'bank_bank' |translate}} -{{'english2' |translate}}</div>
+            </th>
+            <th>
+                <div class="text">{{'bank_isactive' |translate}}</div>
+            </th>
+            <th class="thActions">
+                <!-- <div class="text">{{'bank_actions' |translate}}</div> -->
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bank of banks | bankfilterPipe:textFilterModel "
+            (dblclick)="bankAddFromModal(bank);closePopup()"> 
+              <td>
+                <input  type="checkbox" [(ngModel)]="bank.isSelected" name="list_name" value="{{bank.id}}"
+                (change)="isAllSelected()" />
+            
+              </td>                   
+              <td>{{bank.id}}</td>
+              <td>{{bank.code | date :'yyyy-MM-dd'}}</td> 
+              <td>{{bank.nameL1}}</td>
+              <td>{{bank.nameL2}}</td>                               
+              <td><input type="checkbox" disabled [checked]="bank.isActive"></td>                   
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="closePopup()">
+                  {{'close'|translate}}
+          </button>         
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-----------------------------------------Modal Account------------------------------------------>
+ <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAccountStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'account_accountdirectory'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="AccountClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let acc of accountList | accountfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountItem(acc);AccountClosePopup();
+            ">     
+              <!-- setFocus(table,$event.target,4); -->
+              <td>{{acc.accountNo}} </td>
+              <td> {{acc.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="AccountClosePopup()">
+                  {{'close'|translate}}
+          </button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
