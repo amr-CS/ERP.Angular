@@ -56,17 +56,18 @@
                         <tr *ngFor="let item of this.banks; let i = index;trackBy:trackByIndex;" style="overflow-y: scroll;"
                             class='clickable-row'>
                             <ng-container *ngIf="!item.isDeleted">
-                                <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                <td><button  type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
                                         (click)="addItem(i);bankAccountsSelect(item);" [disabled]="isUpdate">
                                         <i class="fa fa-plus-circle"></i>
                                     </button></td>
-                                <td><input #bankCode="ngModel" class="form-control form-control-sm text-center fullHeightInput"
-                                        name="{{'bankCode' + i}}" required type="number" [(ngModel)]="item.code" [disabled]="isUpdate"
+                                <td><input class="form-control form-control-sm text-center fullHeightInput"
+                                        name="{{'bankCode' + i}}" type="number" [(ngModel)]="item.code" disabled/>
+                                        <!-- #bankCode="ngModel" [disabled]="isUpdate" required
                                         [ngClass]="{'is-invalid': bankCode.invalid && (bankCode.touched || bankCode.dirty)}"
-                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>                    
+                                        (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"                     -->
                                 </td>
                                 <td>
-                                    <input #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    <input  #bankNameL1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
                                         name="{{'bankNameL1' + i}}" required type="text" [(ngModel)]="item.nameL1" [disabled]="isUpdate"
                                         [ngClass]="{'is-invalid': bankNameL1.invalid && (bankNameL1.touched || bankNameL1.dirty)}"
                                         (change)="updateBankIsChanged(item)" (click)="bankAccountsSelect(item)"/>
@@ -234,7 +235,7 @@
       <div class="modal-content modal-inside-scroll">
         <div class="modal-header">
           <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup()" >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup(bank)" >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -270,7 +271,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let bank of banks | bankfilterPipe:textFilterModel "
-            (dblclick)="bankAddFromModal(bank);closePopup()"> 
+            (dblclick)="bankAddFromModal(bank);closePopup(bank)"> 
               <td>
                 <input  type="checkbox" [(ngModel)]="bank.isSelected" name="list_name" value="{{bank.id}}"
                 (change)="isAllSelected()" />
@@ -287,9 +288,11 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" 
-                  (click)="closePopup()">
+                  (click)="closePopup(bank)">
                   {{'close'|translate}}
-          </button>         
+          </button>
+          <button type="button" class="btn btn-primary" 
+              (click)="closePopup(bank)">{{'select'|translate}}</button>         
         </div>
       </div>
     </div>
