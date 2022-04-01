@@ -1,0 +1,623 @@
+<app-utilities (clickSave)="lookupsCreateUpdate(myForm)" (clickPopup)="openPopup()"
+    (UpdateableToggle)="lookupIsUpdateableToggle()" (printReport)="printReportJV(lookup.id)" (getNext)="GetNextIndex()"
+    (getPrev)="GetPrevIndex()" (getLast)="GetLast()" (getFirst)="GetFirst()" [IsUpdateFromParent]="isUpdate"
+    [name]="pageName"></app-utilities>
+
+
+<form #myForm="ngForm" class="page__content shadow p-3 page__content-data">
+    <div class="">
+
+        <!-- Title -->
+        <div class="w-100 divSectionTitle p-2 px-4">{{'lookup_typedetails' |translate}}</div>        
+        <!-- Cash Desks Data -->
+        <div class="divLookup bg-white border p-2">
+            <table class="table tblLookup">
+                <!-- Head -->
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{{'voucher_no' |translate}}</th>
+                        <th>{{'type' |translate}} {{'arabic2' |translate}} </th>
+                        <th>{{'type' |translate}} {{'english2' |translate}} </th>
+                        <th>{{'menu' |translate}}</th>
+                        <th>{{'menu_details' |translate}}</th>
+                        <th>{{'group' |translate}}</th>
+                        <th>{{'note' |translate}}</th>
+                        <th>{{'isactive' |translate}}</th>
+                    </tr>
+                </thead>
+
+                <!-- Body -->
+                <tbody class="tblLookupBody">
+                    <tr class="tblLookupRow" *ngFor="let item of this.lookups; let i = index;trackBy:trackByIndex;"
+                       >
+                        <ng-container *ngIf="!item.isDeleted">
+                            <td><button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                    (click)="addItem(i);lookupDetailsSelect(item);" [disabled]="isUpdate">
+                                    <i class="fa fa-plus-circle"></i> </button>
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupCode" disabled> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'lookupCode' + i}}" type="number" [(ngModel)]="item.code" disabled />
+                            </td>
+                            <td width="16%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDesc"> -->
+                                <input #lookupNameL1="ngModel"
+                                    class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'lookupNameL1' + i}}" required type="text" [(ngModel)]="item.nameL1"
+                                    [disabled]="isUpdate"
+                                    [ngClass]="{'is-invalid': lookupNameL1.invalid && (lookupNameL1.touched || lookupNameL1.dirty)}"
+                                    (change)="updatelookupIsChanged(item)" (click)="lookupDetailsSelect(item)" />
+                            </td>
+                            <td width="16%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDescL"/> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'lookupNameL2' + i}}" type="text" [(ngModel)]="item.nameL2"
+                                    [disabled]="isUpdate" (change)="updatelookupIsChanged(item)"
+                                    (click)="lookupDetailsSelect(item)" />
+                            </td>
+                            <td width="16%">
+                                <div class="d-flex">
+                                    <div class="col-sm-4 p-0">
+                                       
+                                            <!-- [(ngModel)]="item.parentCode" -->
+                                        <input #ParentCode="ngModel" class="form-control form-control-sm text-center txtParentCode"
+                                            name="{{'parentCode' + i}}" type="number" [(ngModel)]="item.parentId"
+                                            [disabled]="isUpdate"
+                                            (click)="lookupDetailsSelect(item)" required 
+                                            [ngClass]="{'is-invalid': ParentCode.invalid && (ParentCode.touched || ParentCode.dirty)}"
+                                            (dblclick)="MenuOpenPopup(i);updatelookupIsChanged(item);" 
+                                            (change)="addMenuItemByMenuNo(ParentCode.value,i);updatelookupIsChanged(item);"/>
+                                    </div>
+                                    <div class="col-sm-8 p-0">
+                                        <!-- <input class="form-control form-control-sm text-center txtParentCodeName"
+                                            type="text" required disabled /> -->
+                                        <input class="form-control form-control-sm text-center txtParentCodeName"
+                                            name="{{'parentCodeName' + i}}" type="text" [(ngModel)]="item.parentName"
+                                            (change)="updatelookupIsChanged(item)"
+                                            (click)="lookupDetailsSelect(item)" disabled />
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="16%">
+                                <div class="d-flex">
+                                    <div class="col-sm-4 p-0">
+                                        
+                                        <!-- [(ngModel)]="item.parentCodeDtl" -->
+                                        <input #ParentCodeDtl="ngModel" class="form-control form-control-sm text-center txtParentCodeDtl"
+                                            name="{{'parentCodeDtl' + i}}" type="number" [(ngModel)]="item.parentIdDtl"
+                                            [disabled]="isUpdate" (change)="updatelookupIsChanged(item)"
+                                            (click)="lookupDetailsSelect(item)" 
+                                            (dblclick)="MenuDetailsOpenPopup(i);updatelookupIsChanged(item);" 
+                                            (change)="addMenuDetailsItemByMenuDetailsNo(ParentCodeDtl.value,i);updatelookupIsChanged(item);"
+                                            required [ngClass]="{'is-invalid': ParentCodeDtl.invalid && (ParentCodeDtl.touched || ParentCodeDtl.dirty)}"/>
+
+                                    </div>
+                                    <div class="col-sm-8 p-0">
+                                        <!-- <input class="form-control form-control-sm text-center txtParentCodeDtlName"
+                                            type="text" required disabled /> -->
+                                        <input  class="form-control form-control-sm text-center txtParentCodeDtlName"
+                                            name="{{'parentCodeDtlName' + i}}" type="text" [(ngModel)]="item.parentNameDtl"
+                                            disabled (change)="updatelookupIsChanged(item)"
+                                            (click)="lookupDetailsSelect(item)"/>
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="16%">
+                                <!-- <input type="text" class="form-control form-control-sm txtLookupGroup"> -->
+                                <input class="form-control form-control-sm txtLookupGroup" name="{{'lookupGroup' + i}}"
+                                    type="number" [(ngModel)]="item.lookupGroup" [disabled]="isUpdate"
+                                    (change)="updatelookupIsChanged(item)" (click)="lookupDetailsSelect(item)" />
+                            </td>
+                            <td width="16%">
+                                <!-- <input type="text" class="form-control form-control-sm txtNotes"> -->
+                                <input class="form-control form-control-sm txtNotes" name="{{'notes' + i}}" type="text"
+                                    [(ngModel)]="item.notes" [disabled]="isUpdate"
+                                    (change)="updatelookupIsChanged(item)" (click)="lookupDetailsSelect(item)" />
+                            </td>
+                            <td width="3%" class="" style=" padding-right:0.5rem !important;">
+                                <div class="custom-control custom-checkbox ">
+                                    <!-- <input type="checkbox" class="custom-control-input  chkDtlIsActive"
+                                        id="chkIsActive">
+                                    <label class="custom-control-label small" for="chkDtlIsActive"></label> -->
+                                    <input class="form-check-input text-center" name="{{'lookupIsActive' + i}}"
+                                        type="checkbox" [(ngModel)]="item.isActive"
+                                        (change)="updatelookupIsChanged(item)" (click)="lookupDetailsSelect(item)"
+                                        [disabled]="isUpdate" />
+                                </div>
+                            </td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput"
+                                    (click)="removeItem(i,item)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+
+    <div class="divTableContainer">
+        <!-- Account Header -->
+        <div class="w-100 divSectionTitle p-2 px-4">{{'lookup_dtltype' |translate}} </div>
+        <div>
+            <!-- Cash Desks Data -->
+            <div class="divLookup bg-white border p-2">
+                <table class="table tblLookup">
+                    <!-- Head -->
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{'voucher_no' |translate}}</th>
+                            <th>{{'arabic_description' |translate}}</th>
+                            <th>{{'english_description' |translate}}</th>
+                            <th>{{'seq' |translate}}</th>
+                            <th>{{'menu' |translate}}</th>
+                            <th>{{'value' |translate}}1</th>
+                            <th>{{'value' |translate}}2</th>
+                            <th>{{'date' |translate}}1</th>
+                            <th>{{'date' |translate}}2</th>
+                            <th>{{'bank_account' |translate}} 1</th>
+                            <th>{{'bank_account' |translate}} 2</th>
+                            <th>{{'note' |translate}}</th>
+                            <th>{{'isdefault' |translate}}</th>
+                            <th>{{'isactive' |translate}}</th>
+                        </tr>
+                    </thead>
+
+                    <!-- Body -->
+                    <tbody class="tblLookupDtlBody" #detailsBody class="tblAccountBody"
+                        [ngStyle]="{'display':displayDetails}">
+
+                        <tr class="tblLookupDtlRow" data-changed="0" data-id="0"
+                            *ngFor="let item of this.lookupDetailsList; let i = index;trackBy:trackByIndex;">
+                            <td class="" width="1%">
+                                <button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                    (click)="addItemDetails(i)" [disabled]="isUpdate">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDtlCode" disabled> -->
+                                <input class="form-control form-control-sm text-center txtLookupDtlCode"
+                                    name="{{'txtLookupDtlCode' + i}}" type="text" [(ngModel)]="item.code"
+                                    (change)="updatelookupIsChanged(item,true)" disabled />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDtlDesc"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlDescL1' + i}}" type="text" [(ngModel)]="item.nameL1"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDtlDescL"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlDescL2' + i}}" type="text" [(ngModel)]="item.nameL2"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtORD"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlORD' + i}}" type="number" [(ngModel)]="item.ord"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="15%">
+                                <div class="d-flex">
+                                    <div class="col-sm-4 p-0">
+                                         <!-- [(ngModel)]="item.valLinkCode" -->
+                                        <input #LookupDtlValLink="ngModel" required
+                                            class="form-control form-control-sm text-center fullHeightInput"
+                                            name="{{'txtLookupDtlValLink' + i}}" type="number"
+                                            [(ngModel)]="item.valLink"
+                                            [disabled]="isUpdate" 
+                                            [ngClass]="{'is-invalid': LookupDtlValLink.invalid && (LookupDtlValLink.touched || LookupDtlValLink.dirty)}"
+                                            (dblclick)="MenuOpenPopup(i,true);updatelookupIsChanged(item,true);" 
+                                            (change)="addMenuItemByMenuNo(LookupDtlValLink.value,i,true);updatelookupIsChanged(item,true);"/>
+
+                                    </div>
+                                    <div class="col-sm-8 p-0">
+                                        <!-- <input class="form-control form-control-sm text-center txtValLinkName"
+                                            type="text" required disabled /> -->
+                                        <input class="form-control form-control-sm text-center fullHeightInput"
+                                        name="{{'txtLookupDtlValLinkName' + i}}" type="text"[(ngModel)]="item.valLinkName" 
+                                        (change)="updatelookupIsChanged(item,true)"disabled />
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtVal1"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlVal1' + i}}" type="text" [(ngModel)]="item.value1"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtVal2"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlVal2' + i}}" type="text" [(ngModel)]="item.value2"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="">
+                                <!-- <input type="date" class="form-control form-control-sm text-center txtDate1"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlDate1' + i}}" type="date" [(ngModel)]="item.date1"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="">
+                                <!-- <input type="date" class="form-control form-control-sm text-center txtDate2"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlDate2' + i}}" type="date" [(ngModel)]="item.date2"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtAccountCode1"> -->
+                                <input #LookupDtlAccountCode1 class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlAccountCode1' + i}}" type="text" [(ngModel)]="item.accountCode"
+                                    [disabled]="isUpdate" 
+                                    (dblclick)="AccountOpenPopup(i);updatelookupIsChanged(item,true);" 
+                                    (change)="addAccountItemByAccountNo(LookupDtlAccountCode1.value,i);updatelookupIsChanged(item,true);"/>
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtAccountCode2"> -->
+                                <input #LookupDtlAccountCode class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlAccountCode2' + i}}" type="text" [(ngModel)]="item.accountCode2"
+                                    [disabled]="isUpdate" 
+                                    (dblclick)="AccountOpenPopup(i,true);updatelookupIsChanged(item,true);" 
+                                    (change)="addAccountItemByAccountNo(LookupDtlAccountCode.value,i,true);updatelookupIsChanged(item,true);"/>
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtNotes"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="{{'txtLookupDtlNotes' + i}}" type="text" [(ngModel)]="item.notes"
+                                    (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="3%" class="" style=" padding-right:0.5rem !important;">
+                                <div class="custom-control custom-checkbox ">
+                                    <!-- <input type="checkbox" class="custom-control-input  chkIsDefault" id="chkIsDefault">
+                                    <label class="custom-control-label small" for="chkIsDefault"></label> -->
+                                    <input class="form-check-input  text-center" name="{{'lookupDetailsIsDefault' + i}}"
+                                        type="checkbox" [(ngModel)]="item.isDefault"
+                                        (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                                </div>
+                            </td>
+                            <td width="3%" class="" style=" padding-right:0.5rem !important;">
+                                <div class="custom-control custom-checkbox ">
+                                    <!-- <input type="checkbox" class="custom-control-input  chkIsActive " id="chkIsActive">
+                                    <label class="custom-control-label small" for="chkIsActive"></label> -->
+                                    <input class="form-check-input  text-center" name="{{'lookupDetailsIsActive' + i}}"
+                                        type="checkbox" [(ngModel)]="item.isActive"
+                                        (change)="updatelookupIsChanged(item,true)" [disabled]="isUpdate" />
+                                </div>
+                            </td>
+                            <td width="">
+                                <button type="button"
+                                    class="btn btn-danger btn-sm btnGLVoucherDtlDelete fullHeightInput"
+                                    (click)="removeItemDetails(i)" [disabled]="isUpdate"><i class="fa fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <td class="" width="1%">
+                                <button type="button" class="btn btn-primary btn-sm border btnAddRow fullHeightInput"
+                                (click)="addItemDetails(undefined,1);" [disabled]="isUpdate">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDtlCode" disabled> -->
+                                <input class="form-control form-control-sm text-center txtLookupDtlCode"
+                                    name="txtNewLookupDtlCode" type="text" [(ngModel)]="newLookupAccount.code"
+                                    (change)="addItemDetails(undefined,1);" disabled />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDtlDesc"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlDescL1" type="text" [(ngModel)]="newLookupAccount.nameL1"
+                                    (change)="addItemDetails(undefined,3);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtLookupDtlDescL"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlDescL2" type="text" [(ngModel)]="newLookupAccount.nameL2"
+                                    (change)="addItemDetails(undefined,4);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtORD"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlORD" type="number" [(ngModel)]="newLookupAccount.ord"
+                                    (change)="addItemDetails(undefined,5);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="15%">
+                                <div class="d-flex">
+                                    <div class="col-sm-4 p-0">
+                                        <!-- < [(ngModel)]="newLookupAccount.valLinkCode" -->
+                                        <input #newLookupDtlValLink="ngModel" required
+                                            class="form-control form-control-sm text-center fullHeightInput"
+                                            name="txtNewLookupDtlValLink" type="number"
+                                            [(ngModel)]="newLookupAccount.valLink"
+                                            [disabled]="isUpdate"
+                                            (dblclick)="MenuOpenPopup(undefined,true);"
+                                            (change)="addMenuItemByMenuNo(newLookupDtlValLink.value,undefined,true);"                                             
+                                             />
+                                    </div>
+                                    <div class="col-sm-8 p-0">
+                                        <!-- <input class="form-control form-control-sm text-center txtValLinkName"
+                                            type="text" required disabled /> -->
+                                        <input class="form-control form-control-sm text-center fullHeightInput"
+                                        name="txtNewLookupDtlValLinkName" type="text"[(ngModel)]="newLookupAccount.valLinkName" 
+                                        (change)="addItemDetails(undefined,1);"disabled />
+                                    </div>
+                                </div>
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtVal1"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlVal1" type="text" [(ngModel)]="newLookupAccount.value1"
+                                    (change)="addItemDetails(undefined,7);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="4%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtVal2"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlVal2" type="text" [(ngModel)]="newLookupAccount.value2"
+                                    (change)="addItemDetails(undefined,8);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="">
+                                <!-- <input type="date" class="form-control form-control-sm text-center txtDate1"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlDate1" type="date" [(ngModel)]="newLookupAccount.date1"
+                                    (change)="addItemDetails(undefined,9);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="">
+                                <!-- <input type="date" class="form-control form-control-sm text-center txtDate2"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlDate2" type="date" [(ngModel)]="newLookupAccount.date2"
+                                    (change)="addItemDetails(undefined,10);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtAccountCode1"> -->
+                                <input #newLookupAccount1="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlAccountCode1" type="text" [(ngModel)]="newLookupAccount.accountCode"
+                                    (change)="addAccountItemByAccountNo(newLookupAccount1.value)"
+                                    (dblclick)="AccountOpenPopup()" [disabled]="isUpdate" />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtAccountCode2"> -->
+                                <input #newLookupAccount2="ngModel" class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlAccountCode2" type="text" [(ngModel)]="newLookupAccount.accountCode2"
+                                    (change)="addAccountItemByAccountNo(newLookupAccount2.value, undefined, true)"
+                                    (dblclick)="AccountOpenPopup(undefined, true)" [disabled]="isUpdate" />
+                            </td>
+                            <td width="10%">
+                                <!-- <input type="text" class="form-control form-control-sm text-center txtNotes"> -->
+                                <input class="form-control form-control-sm text-center fullHeightInput"
+                                    name="txtNewLookupDtlNotes" type="text" [(ngModel)]="newLookupAccount.notes"
+                                    (change)="addItemDetails(undefined,13);" [disabled]="isUpdate" />
+                            </td>
+                            <td width="3%" class="" style=" padding-right:0.5rem !important;">
+                                <div class="custom-control custom-checkbox ">
+                                    <!-- <input type="checkbox" class="custom-control-input  chkIsDefault" id="chkIsDefault">
+                                    <label class="custom-control-label small" for="chkIsDefault"></label> -->
+                                    <input class="form-check-input  text-center" name="NewlookupDetailsIsDefault"
+                                        type="checkbox" [(ngModel)]="newLookupAccount.isDefault"
+                                        (change)="addItemDetails(undefined,14);" [disabled]="isUpdate" />
+                                </div>
+                            </td>
+                            <td width="3%" class="" style=" padding-right:0.5rem !important;">
+                                <div class="custom-control custom-checkbox ">
+                                    <!-- <input type="checkbox" class="custom-control-input  chkIsActive " id="chkIsActive">
+                                    <label class="custom-control-label small" for="chkIsActive"></label> -->
+                                    <input class="form-check-input  text-center" name="NewlookupDetailsIsActive"
+                                        type="checkbox" [(ngModel)]="newLookupAccount.isActive"
+                                        (change)="addItemDetails(undefined,2);" [disabled]="isUpdate" />
+                                </div>
+                            </td>                            
+
+                        </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</form>
+
+
+
+
+
+
+
+
+
+
+
+<!-----------------------------------------Modal All------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'search'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closePopup(lookup)" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>               
+                      
+        <table class="table">
+          <thead>
+            <th>
+                <input type="checkbox" class="d-none"> 
+              <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"(change)="checkUncheckAll()" >
+              </th>
+            <th width="20px">
+                <div class="text"></div>
+            </th>
+            <th>
+                <div class="text"> {{'voucher_no' |translate}}</div>
+            </th>
+            <th>
+                <div class="text"> {{'type' |translate}} -{{'arabic2' |translate}}</div>
+            </th>
+            <th>
+                <div class="text"> {{'type' |translate}} -{{'english2' |translate}}</div>
+            </th>           
+            <th class="thActions">
+                <!-- <div class="text">{{'bank_actions' |translate}}</div> -->
+            </th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let lookup of lookups | lookupfilter:textFilterModel "
+            (dblclick)="lookupAddFromModal(lookup);closePopup(lookup)"> 
+              <td>
+                <input  type="checkbox" [(ngModel)]="lookup.isSelected" name="list_name" value="{{lookup.id}}"
+                (change)="isAllSelected()" />
+            
+              </td>                   
+              <td>{{lookup.id}}</td>
+              <td>{{lookup.code | date :'yyyy-MM-dd'}}</td> 
+              <td>{{lookup.nameL1}}</td>
+              <td>{{lookup.nameL2}}</td>                                                            
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="closePopup(lookup)">
+                  {{'close'|translate}}
+          </button>
+          <button type="button" class="btn btn-primary" 
+              (click)="closePopup(lookup)">{{'select'|translate}}</button>         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+ <!-----------------------------------------Modal Account------------------------------------------>
+ <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayAccountStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'account_accountdirectory'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="AccountClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let acc of accountList | accountfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addAccountItem(acc);AccountClosePopup();
+            ">     
+              <!-- setFocus(table,$event.target,4); -->
+              <td>{{acc.accountNo}} </td>
+              <td> {{acc.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="AccountClosePopup()">
+                  {{'close'|translate}}
+          </button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-----------------------------------------Modal Menu------------------------------------------>
+ <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayMenuStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'menu'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="MenuClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let menu of menuList | namecommonfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="addMenuItem(menu);MenuClosePopup();
+            ">     
+              <!-- setFocus(table,$event.target,4); -->
+              <td>{{menu.code}} </td>
+              <td> {{menu.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="MenuClosePopup()">
+                  {{'close'|translate}}
+          </button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+ <!-----------------------------------------Modal Menu Details------------------------------------------>
+ <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayMenuDetailsStyle}" >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content modal-inside-scroll">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black;">{{'menu_details'|translate}}</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="MenuDetailsClosePopup()" >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel" class="form-control col-md-6">
+          </p>            
+                      
+        <table class="table">            
+          <tbody>          
+            <tr *ngFor="let menuDetail of menuDetailsList | namecommonfilter:textFilterModel, let i =index" class='clickable-row' (dblclick)="MenuDetailsItem(menuDetail);MenuDetailsClosePopup();
+            ">     
+              <!-- setFocus(table,$event.target,4); -->
+              <td>{{menuDetail.code}} </td>
+              <td> {{menuDetail.nameL1}}  </td>                                                     
+            </tr>     
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" 
+                  (click)="MenuDetailsClosePopup()">
+                  {{'close'|translate}}
+          </button>
+         
+        </div>
+      </div>
+    </div>
+  </div>

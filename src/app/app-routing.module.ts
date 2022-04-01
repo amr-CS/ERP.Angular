@@ -13,6 +13,7 @@ import { VoucherPaymentComponent } from './voucherpayment/voucherpayment.compone
 import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/voucherJournalForCustomer.component';
 import { BranchsettingComponent } from './branchsetting/branchsetting.component';
 import { BankComponent } from './bank/bank.component';
+import { LookupComponent } from './lookup/lookup.component';
 
 
 
@@ -41,7 +42,7 @@ const routes: Routes = [
              { path: 'branchsetting', component: BranchsettingComponent },
 
              { path: 'bank', component: BankComponent },
-
+             { path: 'lookup', component: LookupComponent },
              { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
 
 

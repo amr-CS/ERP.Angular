@@ -7,6 +7,15 @@
     "home":"Home",
     "dashboard":"Dashboard",
     "link":"Link",
+    "type":"Type",
+    "menu":"Menu",
+    "menu_details":"Menu Details",
+    "group":"Group",
+    "note":"Note",
+    "isactive":"Status - Active",
+    "isdefault":"Is Default",
+    "value":"Value",
+    "seq":"Sequence",
     "demographic_info":"Demographic Info",
     "applications":"APPLICATIONS",
     "log_out":"Logout",
@@ -110,7 +119,12 @@
     "bank_actions":"Actions",
     "bank_banksaccounts":"Bank Accounts",
     "bank_branch":"Branch",
-    "bank_account":"Account"
+    "bank_account":"Account",
+
+    "lookup_details":"Lookup Details",
+    "lookup_typedetails":"Type Details",
+    "lookup_dtltype":"TypeDetails"
+    
     
     
 }

@@ -81,6 +81,8 @@ import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/
 import { BranchsettingComponent } from './branchsetting/branchsetting.component';
 import { BankComponent } from './bank/bank.component';
 import { BankfilterPipe } from './pipes/bankfilter.pipe';
+import { LookupComponent } from './lookup/lookup.component';
+import { LookupfilterPipe } from './pipes/lookupfilter.pipe';
 
 
 
@@ -119,7 +121,9 @@ export function HttpLoaderFactory(http:HttpClient){
       VoucherJournalForCustomerComponent,
       BranchsettingComponent,
       BankComponent,
-      BankfilterPipe
+      BankfilterPipe,
+      LookupComponent,
+      LookupfilterPipe
    ],
   imports: [
     BrowserModule,
