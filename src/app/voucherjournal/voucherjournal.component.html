@@ -279,11 +279,9 @@
                           <label class="small mx-1 pt-2">{{'voucher_diff' |translate}}</label>
                           <input class="form-control form-control-sm text-center disabled txtDiff font-weight-bold" name="txtTotalDifference" disabled type="text"  [(ngModel)]="totalDifference" />
                       </div>
-
                   </td>
               </tr>
           </tbody>
-
       </table>
   </div>
 </form>
@@ -330,7 +328,7 @@
               <thead>
                 <th>
                   <input type="checkbox" class="d-none"> 
-                <input type="checkbox" [(ngModel)]="masterSelected" name="list_name" value="m1"(change)="checkUncheckAll()" >
+                <input type="checkbox" >
                 </th>
                 <th>
                   {{'voucher_glvoucherno'|translate}}
@@ -356,8 +354,7 @@
                 <tr *ngFor="let vj of voucherJournalList | voucherjournalfilter:textFilterModel:dateFromFilterModel:dateToFilterModel:dateReferenceFilterModel:isDateFilter:isDateRefFilter"
                 (dblclick)="voucherJournalGetById(vj.id);closePopup()">
                 <td>
-                  <input  type="checkbox"     [(ngModel)]="vj.isSelected" name="list_name" value="{{vj.id}}"
-                  (change)="isAllSelected()" />
+                  <input  type="checkbox"    />
               
                 </td>            
                 <td>{{vj.id}}</td>

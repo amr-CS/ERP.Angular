@@ -1,0 +1,99 @@
+body {
+    font-family: Cairo;
+}
+
+.fullHeightInput {
+    height: 50px;
+}
+
+.errorClass {
+    border: 1px solid red;
+}
+
+.table th, .table td {
+    font-size: 12px;
+    text-align: center;
+}
+
+.table th {
+    margin: auto;
+    border: none !important;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.table {
+    padding: 0rem;
+}
+/*.table td {
+    margin-top: 0.5rem;
+    padding: 0rem !important;
+}*/
+
+.tblHead {
+    border-bottom: 1px solid #d4d4d4;
+    margin-bottom: 0.5rem;
+}
+
+input, select, textarea {
+    max-width: 100% !important;
+}
+
+textarea {
+    max-width: 100% !important;
+}
+
+.form-inline {
+    margin-top: 0.5rem;
+}
+
+.table td, .table th {
+    border-top: 0 !important;
+}
+
+.table th, .table td {
+    padding: 0rem !important;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Special Classes */
+.controlRow {
+    margin-top: 0.5rem;
+}
+
+.checkInput {
+    margin: auto;
+}
+
+.tblFooter {
+    border: 0 !important;
+}
+
+.tooltip > .tooltip-inner {
+    background-color: #2980b9;
+}
+
+.tooltip > .tooltip-arrow {
+    border-bottom-color: #2980b9;
+}
+
+.form-control:disabled, .form-control[disabled] {
+    background-color: #eef1f5;
+    opacity: 1;
+}
+
+.divGlVoucher {
+    max-height: 50vh !important;
+    overflow-y: scroll !important;
+    background-color: #FFF;
+}
+
+.txtDiscount {
+    height: 27px !important;
+    padding: 1px;
+}
+
+.error {
+    border: 1px solid red;
+}

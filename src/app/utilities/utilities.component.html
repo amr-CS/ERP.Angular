@@ -11,7 +11,7 @@
                     <!-- Save -->
                     <button (click)="save()"   [disabled]="IsUpdateFromParent" class="btn btnUtility btnSave" title="{{'save-all'|translate}}" ><i class="fa fa-save"></i></button>
                     <button class="btn btnUtility btnSearch" (click)="openPopup()" title="{{'search'|translate}}"><i class="fa fa-search"></i></button>
-                    <button class="btn btnUtility btnDeleteHead" title="@appResource.btnDelete"><i class="fa fa-trash"></i></button>
+                    <button class="btn btnUtility btnDeleteHead" (click)="deleteall()" title="@appResource.btnDelete"><i class="fa fa-trash"></i></button>
                     <button class="btn btnUtility "  (click)="isUpdateableToggle()" id="btnEdit" title="{{'update_status'|translate}}"><i class="fa fa-edit"></i></button>
                 <!-- Print -->
                 <button class="btn btnUtility btnPrint" (click)="print()" title="طباعة"><i class="fa fa-print"></i></button>

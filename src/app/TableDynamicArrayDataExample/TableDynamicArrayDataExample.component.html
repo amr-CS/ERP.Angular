@@ -1,7 +1,3 @@
-
-
-
-
 <div class="">
   <div class="d-flex bg-white border">
 
@@ -12,12 +8,9 @@
       <input type="text" class="form-control txtMainNo" #accountNumber  (change)="accountGetByAccountNo(accountNumber.value)" [(ngModel)]="mainAccountNo">
       <input type="text" disabled class="form-control txtMainName" [(ngModel)]="mainAccountNameL1" />
     </div>
-
   </div>
 </div>
 <form #myForm="ngForm" >
-  
- 
     <table #table id="table" class="table table-hover tblAccount">
       <!-- DataTable Header -->
       <thead>

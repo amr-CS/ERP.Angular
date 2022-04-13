@@ -83,6 +83,9 @@ import { BankComponent } from './bank/bank.component';
 import { BankfilterPipe } from './pipes/bankfilter.pipe';
 import { LookupComponent } from './lookup/lookup.component';
 import { LookupfilterPipe } from './pipes/lookupfilter.pipe';
+import { InvoicePipe } from './pipes/invoice.pipe';
+
+import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
 
 
 
@@ -94,7 +97,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [													
+  declarations: [														
     AppComponent,
     DemographicinfoComponent,
     DemographicfilterPipe,
@@ -123,7 +126,9 @@ export function HttpLoaderFactory(http:HttpClient){
       BankComponent,
       BankfilterPipe,
       LookupComponent,
-      LookupfilterPipe
+      LookupfilterPipe,
+      InvoicePipe,
+      InvoicePaymentOrderComponent
    ],
   imports: [
     BrowserModule,

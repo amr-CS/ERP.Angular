@@ -315,9 +315,6 @@ id:number=0
     this.newAccountDetail.accountReportName=this.accountFromParent.accountReportName;
     this.newAccountDetail.accountTypeId=this.accountFromParent.accountTypeId;
     this.newAccountDetail.accountTypeName=this.accountFromParent.accountTypeName;
-
-
-
     if(i == undefined)
     {     
       this.accountMain.accountDetail.push(this.newAccountDetail);
@@ -329,7 +326,7 @@ id:number=0
     this.newAccountDetailOld = this.newAccountDetail;   
     this.newAccountDetail = {
       id: 0,
-    code:0,
+      code:0,
 
       nameL1: '',
       nameL2: '',
@@ -359,17 +356,13 @@ id:number=0
       lastUpdatedOn: '',
      // currency:{}
     };
-
-   
   }
-
   removeData(id:any,index:any) {
-   
     this.alertify.confirm('هل انت متأكد من مسح هذا الحساب',() =>{
       this.Delete(id,index)
     })
- 
   }
+
    Delete(id:any,index:any){
     if(id!=0){
       this.alertify.confirm('هل انت متأكد من مسح هذا الحساب',() =>{
@@ -383,11 +376,8 @@ id:number=0
     }
   }
 
-
   // <----- currency modal ----->
-
   currencyIndex:number = -1;
-
 setFocusCurrencyNo(t:any,index:number){
   var tbodyRows = t.childNodes[1].children.length;    
   t.childNodes[1].children[tbodyRows-1].childNodes[index].childNodes[0].focus()       

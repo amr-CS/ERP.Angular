@@ -33,19 +33,15 @@ export class VoucherPaymentComponent {
   dateFromFilterModel: Date;
   dateToFilterModel: Date;
   dateReferenceFilterModel: Date;
-
   totalDebit = 0;
   totalCredit = 0;
   totalDifference = 0;
-
   totalCreditReceipt = 0;
   totalDifferenceReceipt = 0;
   totalReceipt = 0;
-
   totalCash = 0;
   totalCheck = 0;
   totalCreditCard = 0;
-
   currentFinancialYear = '';
   isCurrentFinancialYear = true;
   selectedTab = 'home';
@@ -467,7 +463,6 @@ export class VoucherPaymentComponent {
         e.bankAccount.nameL2 = e.bankAccount?.bank?.nameL2;
         e.bankAccount.code = e.bankAccount?.bank?.code
       }
-
     });
 
 
@@ -511,7 +506,6 @@ export class VoucherPaymentComponent {
           }, error => console.error(error));
       }
       else {
-
         // empty list if corresponding checkbox is false
         if (!this.voucherReceipt.isCash)
           this.voucherReceipt.receiptVoucherCash = [];

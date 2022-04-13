@@ -7,7 +7,8 @@ export interface NameCommon {
     nameL1?:string,
     nameL2?:string ,
     accountId?:number,
-    accountNo?:string,    
+    accountNo?:string, 
+    currencyExchange?:number,      
     bankAccount?:[],
     bank?:BankAccount,
     boxDetails?:[{account:Account}]

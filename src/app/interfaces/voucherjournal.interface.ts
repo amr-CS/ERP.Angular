@@ -84,7 +84,6 @@ export interface VoucherJournalChequeDetails {
   currencyEquivalent?: number;
   costCenterId?: number;
   notes: string;
-
   costCenter?: NameCommon;
   bankAccount?: NameCommon;
   bankBranch?: NameCommon;

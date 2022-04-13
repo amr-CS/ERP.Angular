@@ -11,6 +11,8 @@ export class UtilitiesComponent implements OnInit {
 @Output() UpdateableToggle = new EventEmitter();
 @Output() reload = new EventEmitter();
 @Output() printReport = new EventEmitter();
+@Output() delete = new EventEmitter();
+
 
 @Output() getFirst = new EventEmitter();
 @Output() getLast = new EventEmitter();
@@ -63,6 +65,9 @@ next(){
 prev(){
   this.getPrev.emit();
   
+}
+deleteall(){
+this.delete.emit()
 }
 
 }

@@ -14,6 +14,7 @@ import { VoucherJournalForCustomerComponent } from './voucherJournalForCustomer/
 import { BranchsettingComponent } from './branchsetting/branchsetting.component';
 import { BankComponent } from './bank/bank.component';
 import { LookupComponent } from './lookup/lookup.component';
+import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
 
 
 
@@ -36,14 +37,15 @@ const routes: Routes = [
              { path: 'voucherjournal', component: VoucherJournalComponent },
              { path: 'voucherreceipt', component: VoucherReceiptComponent },
              { path: 'voucherpayment', component: VoucherPaymentComponent },
-
              { path: 'ChartOfAccount', component: ChartOfAccountComponent}, 
              { path: 'voucherjournalForCustomer', component: VoucherJournalForCustomerComponent },
              { path: 'branchsetting', component: BranchsettingComponent },
-
              { path: 'bank', component: BankComponent },
              { path: 'lookup', component: LookupComponent },
-             { path: 'ChartOfAccount', component: ChartOfAccountComponent},                     
+             { path: 'ChartOfAccount', component: ChartOfAccountComponent},
+             { path: 'InvoicePaymentOrder', component: InvoicePaymentOrderComponent},
+
+                                  
 
 
           ]

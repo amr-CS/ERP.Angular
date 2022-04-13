@@ -22,7 +22,7 @@ export class AreaComponent {
       } 
       else
       {
-        this.pageDirection = 'ltr';
+        this.pageDirection = 'rtl';
       }
     });
   }

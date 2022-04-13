@@ -21,6 +21,7 @@ export class VoucherJournalService {
   }
 
 
+
   voucherJournalGetById(id: number) {
     return this.http.get<VoucherJournal>(Constants.ApiUrl +'/api/JournalVoucher/' + id);
   }
