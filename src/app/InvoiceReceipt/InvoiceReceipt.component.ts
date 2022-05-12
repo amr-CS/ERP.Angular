@@ -15,13 +15,13 @@ import { ItemService } from '../services/item.service';
 import { LookupService } from '../services/lookup.service';
 import { UtilityService } from '../services/utility.service';
 @Component({
-  selector: 'app-InvoicePaymentOrder',
-  templateUrl: './InvoicePaymentOrder.component.html',
-  styleUrls: ['./InvoicePaymentOrder.component.css']
+  selector: 'app-InvoiceReceipt',
+  templateUrl: './InvoiceReceipt.component.html',
+  styleUrls: ['./InvoiceReceipt.component.css']
 })
-export class InvoicePaymentOrderComponent  {
+export class InvoiceReceiptComponent  {
   selectedTab='generalData'
-  public pageName="امر توريد مخزني"
+  public pageName="فاتورة شراء"
 public costCenterList:CostCenter[] = [];
 public invoiceList:any[] = [];
 
@@ -975,8 +975,3 @@ removeDtl(index: number) {
 
 
 }
- 
-  
-
-
-

@@ -7,7 +7,7 @@ export interface Invoice {
 	invtype:number,
 	year:number,
 	invRef:string,
-	invDate:string,
+	invDate:Date,
 	sellerId:number,
 
 
@@ -32,7 +32,7 @@ export interface Invoice {
 	saleTax2:number,
 	person:string,
 	invSeq:number,
-	invRefDate:string,
+	invRefDate:Date,
 	invCurValue:number,
 	invCur:number,
 	invDisc:number,

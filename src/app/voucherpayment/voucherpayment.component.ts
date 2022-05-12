@@ -115,14 +115,12 @@ export class VoucherPaymentComponent {
     creditDefaultCurrency: 0, notes: '', account: {}, currency: {}, costCenter: {}
   };
 
-
-  constructor(private service: VoucherJournalService, private transactionSourceService: TransactionSourceService,
+    constructor(private service: VoucherJournalService, private transactionSourceService: TransactionSourceService,
     private transactionTypeService: TransactionTypeService, public datePipe: DatePipe, public utilityService: UtilityService,
     private alertify: AlertifyService, private accountService: AccountService, private costCenterService: CostCenterService,
     private financialYearService: FinancialYearService, private customerService: CustomerService,
     private currencyService: CurrencyService, private boxService: BoxService, private bankService: BankService,
     private ePaymentTypeService: EPaymentTypeService) {
-
     //this.transactionSourceGet();
     this.transactionSourceGetAll()
     this.transactionTypeGet();
@@ -134,19 +132,14 @@ export class VoucherPaymentComponent {
     this.boxGetAll();
     this.bankGetAll();
     this.ePaymentTypeGetAll();
-
-
     this.textFilterModel = '';
     this.dateFromFilterModel = new Date();
     this.dateToFilterModel = new Date();
     this.dateReferenceFilterModel = new Date();
-
     this.voucherReceiptRows = ['accountNo', 'debit', 'credit', 'costCenterId', 'notes'];
-
     for (let index = 0; index < Constants.inputsCount; index++) {
       this.addItemDetail();
     }
-
   }
 
   ngOnInit(): void {
@@ -1061,7 +1054,6 @@ export class VoucherPaymentComponent {
       }
       else {
         this.addNewAccount(result, source);
-
         //Focus on debit of index 4
         // var t = this.detailsTable.nativeElement;
         // setTimeout(() => { this.setFocusAccountNo(t, 4); }, 0);

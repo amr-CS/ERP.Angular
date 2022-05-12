@@ -7,7 +7,6 @@
     min-height: 50px;
     background: #1e293b;
     margin: 0 -1rem;
-    font-size: 36px;
 }
 
 .page__content {
@@ -17,3 +16,9 @@
     background: white;
 color: black;
 }
+.right{
+   width:40% ; 
+}
+.left{
+    width:30% ; 
+ }

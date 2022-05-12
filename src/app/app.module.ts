@@ -86,6 +86,7 @@ import { LookupfilterPipe } from './pipes/lookupfilter.pipe';
 import { InvoicePipe } from './pipes/invoice.pipe';
 
 import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
+import { InvoiceReceiptComponent } from './InvoiceReceipt/InvoiceReceipt.component';
 
 
 
@@ -97,7 +98,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [														
+  declarations: [															
     AppComponent,
     DemographicinfoComponent,
     DemographicfilterPipe,
@@ -128,7 +129,8 @@ export function HttpLoaderFactory(http:HttpClient){
       LookupComponent,
       LookupfilterPipe,
       InvoicePipe,
-      InvoicePaymentOrderComponent
+      InvoicePaymentOrderComponent,
+      InvoiceReceiptComponent
    ],
   imports: [
     BrowserModule,

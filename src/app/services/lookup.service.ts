@@ -22,6 +22,9 @@ export class LookupService {
   GetlookupDetailsById(id:number){    
     return this.http.get<any>(Constants.ApiUrl + '/api/lookup/GetLookupDetails?lookupId=' + id);
   }
+  GetlookupDetailsByIdforItems(id:number){    
+    return this.http.get<any>(Constants.ApiUrl + '/api/lookup/GetLookupDetailsForItem?lookupId=108&itemid=' + id);
+  }
 
 
   lookupGetById(id:number){    
