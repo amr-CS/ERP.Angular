@@ -1,0 +1,320 @@
+<div class="container">
+  <app-utilities
+  (clickSave)="invoiceCreateUpdate(myForm)"
+  (clickPopup)="openPopup()"
+  (delete)="invoiceDelete(invoice.invId)"
+  [name]="pageName"
+  ></app-utilities>
+  <nav class="nav nav-pills nav-fill">
+    <button class="nav-link active"  aria-current="page" (click)="swapPage(1)">امر صرف</button>
+    <button class="nav-link" (click)="swapPage(2)">امر توريد</button>
+  </nav>
+
+  <form #myForm="ngForm"  class="page__content shadow p-3 page__content-data">
+
+    <div class="container-fluid">
+        <!-- Head -->
+      <div class="bg-white border rounded p-3">
+          <!-- Main Inputs -->
+          <div class="row">
+              <!-- 1st Row Input -->
+              <div class="col-md-8">
+                  <!-- Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-1">
+                          <label class="small float-right pt-2">كود المخزن</label>
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="d-flex txtStore">
+
+                             <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" [(ngModel)]="invoice.storeId"  name="txtStoreId"  />
+                              <input type="text" class="form-control form-control-sm w-25 txtStoreCode" (dblclick)="storeOpenPopup()" (change)="storeGetById(invoice.storeCode)"
+                              [ngClass]="{'is-invalid': (!invoice.storeCode) && (invoice.storeCode==0)&& (store.touched || store.dirty)}"
+                              #store="ngModel"
+                              [(ngModel)]="invoice.storeCode"  name="txtStoreCode" required/>
+                              <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly  [(ngModel)]="invoice.storeName"  name="txtStoreName" required/>
+                          </div>
+                      </div>
+                      <div class="col-sm-4">
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input chkIsPosted" disabled id="chkIsPosted" [(ngModel)]="invoice.isPosted" name="chkisPosted" >
+                                <label class="custom-control-label small" for="chkIsPosted">مرحل</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Is Canceld -->
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input chkIsCancel"  [(ngModel)]="invoice.invIsCancel" name="chkInvIsCancel">
+                                <label class="custom-control-label small" for="chkIsCancel">ملغي</label>
+                            </div>
+                        </div>
+                    </div>
+
+                  </div>
+                  <!-- Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-1">
+                          <label class="small float-right pt-2">المورد</label>
+                      </div>
+                      <div class="col-sm-4">
+                          <div class="d-flex txtCustomer">
+                              <input type="text" class="form-control form-control-sm w-25 d-none " [(ngModel)]="invoice.salesId" name="txtsalesId" />
+                              <input type="text" class="form-control form-control-sm w-25 txtCustomerCode" (dblclick)="CustomerOpenPopup()"
+                               [(ngModel)]="invoice.salesCode" name="txtsalescode" #sales="ngModel"
+                               (change)="customerGetByCode(invoice.salesCode)"
+                               required
+                               />
+                              <input type="text" id="start" class="form-control form-control-sm txtCustomerName" [(ngModel)]="invoice.salesName" name="txtsalesName" disabled    />
+                          </div>
+                      </div>
+                  </div>
+                  <!-- Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-1">
+                          <label class="small float-right pt-2">ملاحظات</label>
+                      </div>
+                      <div class="col-sm-10">
+                          <div class="d-flex">
+
+                              <input type="text" id="start" class="form-control form-control-sm txthNote" [(ngModel)]="invoice.notes" name="txtNotes"  />
+                          </div>
+                      </div>
+                  </div>
+              </div> <!-- End of 1st Row of Main Inputs -->
+              <!-- Left Controls [Doc No, Ref, ..] -->
+              <div class="col-md-4 mt-3">
+                  <!-- Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">رقم الفاتورة</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm d-none" [(ngModel)]="invoice.invId" name="invId" disabled />
+                          <input type="text" class="form-control form-control-sm " [(ngModel)]="invoice.invCode" name="invCode" disabled />
+
+                        </div>
+                  </div>
+                  <!-- Doc Date -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">تاريخ الفاتورة</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="date" class="form-control form-control-sm dtpInvDate" [ngModel]="invoice.invDate | date:'yyyy-MM-dd'" (ngModelChange)="invoice.invDate = $event"  name="txtInvDate" required  />
+                      </div>
+                  </div>
+
+                  <!-- Ref Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">رقم المرجع</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm txtDocRefNo" [(ngModel)]="invoice.invRef" name="txtinvRef"/>
+                      </div>
+                  </div>
+                  <!-- Ref Doc No -->
+                  <div class="row controlRow d-none">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">تاريخ المرجع</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="date" class="form-control form-control-sm txtDocRefDate" [ngModel]="invoice.invRefDate | date:'yyyy-MM-dd'" (ngModelChange)="invoice.invRefDate = $event"   name="txtinvRefDate"  />
+                      </div>
+                  </div>
+
+              </div>
+          </div> <!-- End of Main Inputs -->
+      </div>
+      <!-- Details Main -->
+  <div class="bg-white border rounded p-3 mt-3 divGlVoucher">
+    <!-- Details -->
+    <table class="table table-sm table-responsive-sm">
+        <thead>
+            <tr class="tblHead">
+                <th class=""></th>
+                <th class="" width="7%">
+                    <div>رقم الحساب </div>
+                </th>
+                <th class="" width="15%">
+                    <div>اسم الحساب</div>
+                </th>
+                <th class="" width="20%">
+                    <div class="d-flex">
+
+                        <div class="col-sm-3">
+                            <div>مركز التكلفة</div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div>اسم المركز </div>
+                        </div>
+                    </div>
+                </th>
+
+                <th class="" width="10%">
+                  <div>المبلغ</div>
+
+              </th>
+                <th class="" width="10%">
+                    <div>سعر الصرف</div>
+
+                </th>
+                <th class="" width="10%">
+                    <div>المبلغ بعملة الاساس</div>
+                </th>
+
+                <th class="">
+                    <div>ملاحظات</div>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody class="tblLaterBody">
+            <tr class="trBaseRow tblLaterRow" *ngFor="let acc of this.invoice.payment; let i = index;trackBy:trackByIndex;" data-id="0">
+                <td class="">
+                    <button class="btn btn-primary btn-sm border btnAddLaterRow" (click)="addAccountDetail()" type="button">
+                        <i class="fa fa-plus-circle"></i>
+                    </button>
+
+                </td>
+                <td class="txtAccount">
+                    <input class="form-control form-control-sm text-center  d-none txtAccountId" [(ngModel)]="acc.accountId" name="{{'accountId'+i}}" type="text"  />
+                    <input class="form-control form-control-sm text-center  d-none  txtAccountIsCostCenter"  type="text"  required/>
+                    <input class="form-control form-control-sm text-center  txtAccountCode"  *ngIf="acc.account"
+                    [ngClass]="{'is-invalid': ((!acc.account.accountNo) || (acc.account.accountNo==''))&& (account.touched || account.dirty)}"
+                        #account="ngModel"
+                    [(ngModel)]="acc.account.accountNo" name="{{'accountNo'+i}}" (dblclick)="AccountOpenPopup(i)" (change)="addAccountItemByAccountNo(acc.accountNo,i)" type="text" />
+                </td>
+                <td class="">
+                    <input class="form-control form-control-sm text-center    txtAccountName" *ngIf="acc.account" [(ngModel)]="acc.account.nameL1" name="{{'accountName'+i}}" type="text"  disabled />
+                </td>
+                <td class="">
+                    <div class="d-flex">
+                        <div class="col-sm-4 p-0">
+                            <input class="form-control form-control-sm text-center  d-none txtCostCenterId"    name="{{'costCenterId'+i}}" type="text"  />
+                            <input class="form-control form-control-sm text-center  txtCostCenterCode"   name="{{'costCenterCode'+i}}" (dblclick)="CostCenterOpenPopup(acc.accountId,i)"  type="text"  />
+                        </div>
+                        <div class="col-sm-8 p-0">
+                            <input class="form-control form-control-sm text-center  txtCostCenterName" name="{{'costCenterName'+i}}" type="text"  disabled />
+                        </div>
+                    </div>
+                </td>
+                <td class="">
+                    <input class="form-control form-control-sm text-center font-weight-bold " [(ngModel)]="acc.amount" name="{{'amount'+i}}"
+                    [ngClass]="{'is-invalid': ((!acc.amount) || (acc.amount==0))&& (amount.touched || amount.dirty)}"
+                    #amount="ngModel"
+                    *ngIf="acc.currency" (change)="changeCredit(acc.amount,acc.currency.currencyExchange,i)" (change)="calculateTotalCash()"  type="text" min=0  required/>
+                </td>
+                <td class="">
+                    <input class="form-control form-control-sm text-center font-weight-bold " *ngIf="acc.currency" [(ngModel)]="acc.currency.currencyExchange" name="{{'currencyExchange'+i}}" type="text" min=0  disabled />
+                </td>
+                <td class="">
+                    <input class="form-control form-control-sm text-center font-weight-bold txtBaseCredit" [(ngModel)]="acc.amountDefaultCurrency" name="{{'amountDefaultCurrency'+i}}"  type="text" min=0  />
+                </td>
+                <td class="">
+                    <input class="form-control form-control-sm text-center font-weight-bold txtLaterNote" [(ngModel)]="acc.notes" name="{{'notes'+i}}" type="text" min=0  />
+                </td>
+                <td><button class="btn btn-danger btn-sm btnInvLaterDelete" (click)="removeItempayment(i) " data-id="0"><i class="fa fa-trash"></i></button></td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Details Footer -->
+    <table class="table table-sm tblFooter border-0">
+        <tbody class="">
+            <tr class="d-flex">
+                <td class="col-sm-3">
+                    <div class="d-flex">
+                    </div>
+                </td>
+                <td class="col-sm-5">
+                    <label class="small float-right mx-1 pt-2">الاجمالي</label>
+                </td>
+                <td class="col-sm-2">
+                    <input class="form-control form-control-sm text-center disabled font-weight-bold  txtTotalCredit" [(ngModel)]="totalCash" name="totalCash" disabled type="number" min=0  />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+      </div>
+      </form>
+
+
+      <!-----------------------------------------Modal Store------------------------------------------>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displaystoreStyle}">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content modal-inside-scroll">
+      <div class="modal-header">
+        <h4 class="modal-title" style="color: black;">المخازن</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+          (click)="storeClosePopup()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+            class="form-control col-md-6">
+        </p>
+
+        <table class="table">
+          <tbody>
+            <tr *ngFor="let item of storeList | namecommonfilter:textFilterModel , let i =index"
+              class='clickable-row' (dblclick)="addstoreItem(item);storeClosePopup();">
+              <td>{{item.code}} </td>
+              <td> {{item.nameL1}} </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="storeClosePopup();">
+          {{'close'|translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!---->
+
+    <!-----------------------------------------Modal Customers------------------------------------------>
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCustomerStyle}">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content modal-inside-scroll">
+          <div class="modal-header">
+            <h4 *ngIf="!isCustomer" class="modal-title" style="color: black;">{{'voucher_salesman'|translate}}</h4>
+            <h4 *ngIf="isCustomer" class="modal-title" style="color: black;">{{'voucher_customer'|translate}}</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CustomerClosePopup()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>
+              <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+                class="form-control col-md-6">
+            </p>
+
+            <table class="table">
+              <tbody>
+                <tr *ngFor="let item of customerSalesList | namecommonfilter:textFilterModel , let i =index"
+                  class='clickable-row' (dblclick)="addCustomerItem(item);CustomerClosePopup();">
+                  <td> {{item.code}} </td>
+                  <td> {{item.nameL1}} </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" (click)="CustomerClosePopup();">
+              {{'close'|translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        </div>
+

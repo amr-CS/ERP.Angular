@@ -16,6 +16,7 @@ import { BankComponent } from './bank/bank.component';
 import { LookupComponent } from './lookup/lookup.component';
 import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
 import { InvoiceReceiptComponent } from './InvoiceReceipt/InvoiceReceipt.component';
+import { InvoiceOrderComponent } from './invoice-order/invoice-order.component';
 
 
 
@@ -24,10 +25,10 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'demographicinfo', component: DemographicinfoComponent }*/
- 
-  
 
-  
+
+
+
   { path: '', component: LoginComponent},
   { path: 'Area', component: AreaComponent,
     canActivate:[AuthGuard],
@@ -38,7 +39,7 @@ const routes: Routes = [
              { path: 'voucherjournal', component: VoucherJournalComponent },
              { path: 'voucherreceipt', component: VoucherReceiptComponent },
              { path: 'voucherpayment', component: VoucherPaymentComponent },
-             { path: 'ChartOfAccount', component: ChartOfAccountComponent}, 
+             { path: 'ChartOfAccount', component: ChartOfAccountComponent},
              { path: 'voucherjournalForCustomer', component: VoucherJournalForCustomerComponent },
              { path: 'branchsetting', component: BranchsettingComponent },
              { path: 'bank', component: BankComponent },
@@ -46,9 +47,10 @@ const routes: Routes = [
              { path: 'ChartOfAccount', component: ChartOfAccountComponent},
              { path: 'InvoicePaymentOrder', component: InvoicePaymentOrderComponent},
              { path: 'InvoiceReceipt', component: InvoiceReceiptComponent},
+             { path: 'InvoiceOrder', component: InvoiceOrderComponent},
 
 
-                                  
+
 
 
           ]

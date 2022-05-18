@@ -87,6 +87,7 @@ import { InvoicePipe } from './pipes/invoice.pipe';
 
 import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
 import { InvoiceReceiptComponent } from './InvoiceReceipt/InvoiceReceipt.component';
+import { InvoiceOrderComponent } from './invoice-order/invoice-order.component';
 
 
 
@@ -130,7 +131,8 @@ export function HttpLoaderFactory(http:HttpClient){
       LookupfilterPipe,
       InvoicePipe,
       InvoicePaymentOrderComponent,
-      InvoiceReceiptComponent
+      InvoiceReceiptComponent,
+      InvoiceOrderComponent
    ],
   imports: [
     BrowserModule,
