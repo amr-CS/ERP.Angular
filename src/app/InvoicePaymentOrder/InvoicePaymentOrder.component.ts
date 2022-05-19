@@ -28,13 +28,13 @@ public invoiceList:any[] = [];
 
   constructor(private service:InvoiceService,private alertify:AlertifyService,private storeService:LookupService,private customerService:CustomerService,private itemService:ItemService
     , private accountService: AccountService, private costCenterService: CostCenterService
-   ,private lookupService:LookupService ,public utilityService: UtilityService) { 
+   ,private lookupService:LookupService ,public utilityService: UtilityService) {
 this.storeGetAll()
 this.accountGetAll();
 this.customersGetAllByType()
 this.ItemsGetAll();
 this.getall();
-  /*  for (let index = 0; index < Constants.inputsCount; index++) {      
+  /*  for (let index = 0; index < Constants.inputsCount; index++) {
       this.addItemDetail();
     }*/
     this.addAccountDetail()
@@ -87,7 +87,7 @@ this.getall();
   totalCashItem =0;
 
 
-  
+
   public customerSalesList: NameCommon[] = [];
 
   public invoice: Invoice={
@@ -333,7 +333,7 @@ this.getall();
     trackByIndex(index: number, obj: any): any {
       return index;
     }
-//Undefined the object properties not needed to be mapped on Create and Update 
+//Undefined the object properties not needed to be mapped on Create and Update
 undefineObjectProperties() {
   this.invoice.payment.forEach(e => {
     e.account = undefined;
@@ -365,7 +365,7 @@ isDetailsEmpty = false;
 Validate(myForm:NgForm) {
   this.isDetailsEmpty = false;
   if(!myForm.valid){
-    this.alertify.error('يجب ملء الحقول الالزامية');    
+    this.alertify.error('يجب ملء الحقول الالزامية');
       return false;
   }
 
@@ -375,8 +375,8 @@ Validate(myForm:NgForm) {
       return false;
     }
 
-  
-        
+
+
  return true;
 }
 
@@ -398,9 +398,9 @@ invoiceCreateUpdate(myForm:NgForm) {
        e.item = undefined;
         e.unit = undefined;
       });
-       if(this.invoice.invId == 0){ 
+       if(this.invoice.invId == 0){
       this.invoice.invtype=7
-      
+
 
       console.log(this.invoice)
          this.service.invoiceCreate(this.invoice).
@@ -413,20 +413,20 @@ invoiceCreateUpdate(myForm:NgForm) {
           this.successCreateUpdate(result);
       },  error => console.error(error));
 
-      }  
+      }
     }
     }
-    addItemDetail(i?:number) {         
+    addItemDetail(i?:number) {
       if (this.invoice.invoiceDtl === null) {
         this.invoice.invoiceDtl = [];
       }
-      
+
       if(i == undefined)
-      {     
+      {
         this.invoice.invoiceDtl.push(this.invoiceDtl);
       }
-      else{      
-        this.invoice.invoiceDtl.splice(i + 1, 0, this.invoiceDtl);     
+      else{
+        this.invoice.invoiceDtl.splice(i + 1, 0, this.invoiceDtl);
       }
       this.invoiceDtl={
         invDTLId:0,
@@ -525,22 +525,22 @@ invoiceCreateUpdate(myForm:NgForm) {
         unit:{},
         item:{}
         }
-      
-      
-     
-  
+
+
+
+
     }
-    addAccountDetail(i?:number) {         
+    addAccountDetail(i?:number) {
       if (this.invoice.payment === null) {
         this.invoice.payment = [];
       }
-      
+
       if(i == undefined)
-      {     
+      {
         this.invoice.payment.push(this.accountDetail);
       }
-      else{      
-        this.invoice.payment.splice(i + 1, 0, this.accountDetail);     
+      else{
+        this.invoice.payment.splice(i + 1, 0, this.accountDetail);
       }
       this.accountDetail={
         id: 0,
@@ -556,21 +556,21 @@ invoiceCreateUpdate(myForm:NgForm) {
       notes: '',
       account:{},
       currency:{},
-      costCenter:{}  
-        
+      costCenter:{}
+
         }
-      
-      
-     
-  
+
+
+
+
     }
     successCreateUpdate(result:any){
       this.alertify.success('تم الحفظ بنجاح');
       this.invoice = result;
       this.setCustomerAndStore()
       //this.invoiceGetByTransactionTypeId();
-  
-     // this.isUpdate = true;      
+
+     // this.isUpdate = true;
     }
 
 
@@ -588,13 +588,13 @@ invoiceCreateUpdate(myForm:NgForm) {
       this.invoice.storeName = item.nameL1;
 
     }
-  
+
     emptystoreItem() {
       this.invoice.storeId = 0;
       this.invoice.storeCode = 0;
       this.invoice.storeName = '';
     }
-  
+
     storeOpenPopup(): void {
       this.displaystoreStyle = "block";
     }
@@ -617,11 +617,11 @@ invoiceCreateUpdate(myForm:NgForm) {
     storeClosePopup(): void {
       this.displaystoreStyle = "none";
     }
-  
+
     storeGetById(code: number) {
-    
+
         this.storeService.lookupGetByCode(117,code).subscribe(result => {
-          
+
           if (result) {
             this.addstoreItem(result);
           }
@@ -630,19 +630,19 @@ invoiceCreateUpdate(myForm:NgForm) {
             this.emptystoreItem();
           }
         });
-    
+
     }
      // <----- Customer modal ----->
 
   displayCustomerStyle = "none";
   isCustomer = false;
   addCustomerItem(item: any) {
- 
+
 
       this.invoice.salesId = item.id;
       this.invoice.salesCode = item.code;
       this.invoice.salesName = item.nameL1;
-    
+
 
   }
 
@@ -657,16 +657,16 @@ invoiceCreateUpdate(myForm:NgForm) {
   }
 
   emptyCustomerItem() {
- 
+
       this.invoice.salesId = 0;
       this.invoice.salesCode = 0;
       this.invoice.salesName = '';
-    
+
   }
 
   CustomerOpenPopup(): void {
     this.displayCustomerStyle = "block";
-  
+
   }
 
   CustomerClosePopup(): void {
@@ -698,17 +698,17 @@ invoiceCreateUpdate(myForm:NgForm) {
   Index:number = -1;
   addItemItem(item: any) {
     var product=this.invoice.invoiceDtl[this.Index].item
-    if(this.Index != -1&&product)    
-    { 
+    if(this.Index != -1&&product)
+    {
       this.invoice.invoiceDtl[this.Index].itemId=item.id;
       product.id = item.id;
       product.code = item.code;
       product.nameL1= item.nameL1;
 this.GetUnit(item.id);
-    
+
     }
   this.Index = -1;
- 
+
 }
 
   ItemsGetAll() {
@@ -716,7 +716,7 @@ this.GetUnit(item.id);
       this.itemList = result;
     });
 
-    
+
   }
 
   emptyItemItem() {
@@ -748,23 +748,23 @@ this.GetUnit(item.id);
         }
 
       });
-    
+
   }
   // <----- Account modal ----->
   displayAccountStyle = "none";
   AccountOpenPopup(i?: number): void {
-    
-    this.displayAccountStyle = "block"; 
+
+    this.displayAccountStyle = "block";
      if(i != undefined)
         {this.accountIndex = i;
-        
+
         }
-    
+
   }
 
   AccountClosePopup(): void {
-    this.displayAccountStyle = "none"; 
-      
+    this.displayAccountStyle = "none";
+
   }
 
 accountIndex:number = -1;
@@ -802,59 +802,59 @@ changeCreditItem(qty:number=1,credit :number=1,i: number=0 ){
 }
 
 
-addAccountItemById(id:number){   
-  this.accountService.accountGetById(id).subscribe(result=>{    
-    if(this.accountIndex != -1)    
+addAccountItemById(id:number){
+  this.accountService.accountGetById(id).subscribe(result=>{
+    if(this.accountIndex != -1)
     {
       this.addOldAccount(this.accountIndex,result);
     }
-       
+
   this.accountIndex = -1;
-  });  
+  });
 
 }
 
-addAccountItemByAccountNo(accountNo:string, i?:number){  
- 
-  this.accountService.accountGetByAccountNo(accountNo).subscribe(result=>{  
-      if(result){        
-        if(i !== undefined)    
-        {     
+addAccountItemByAccountNo(accountNo:string, i?:number){
+
+  this.accountService.accountGetByAccountNo(accountNo).subscribe(result=>{
+      if(result){
+        if(i !== undefined)
+        {
           this.addOldAccount(i,result);
         }
       }
       })
-    } 
+    }
 
 
 
 // <----- Cost Center modal ----->
 displayCostCenterStyle = "none";
 costCenterGetByAccountId(accountId:number)
-{    
+{
   this.costCenterService.costCenterGetByAccountId(accountId).subscribe(result=>{
     this.costCenterList = result;
     if(this.costCenterList.length > 0)
-    this.displayCostCenterStyle = "block";     
+    this.displayCostCenterStyle = "block";
   else
     this.alertify.error('لا يوجد مركز تكاليف لهذا الحساب');
   });
 }
 
-CostCenterOpenPopup(accountId:number ,i?: number): void {     
+CostCenterOpenPopup(accountId:number ,i?: number): void {
   if(accountId && accountId != 0 )
-     this.costCenterGetByAccountId(accountId);       
+     this.costCenterGetByAccountId(accountId);
   else
-     this.alertify.error('اختر حساب اولا');                    
-  
+     this.alertify.error('اختر حساب اولا');
+
    if(i != undefined)
-      this.costCenterIndex = i;    
+      this.costCenterIndex = i;
 }
 
 
 CostCenterClosePopup(): void {
-  this.displayCostCenterStyle = "none"; 
- 
+  this.displayCostCenterStyle = "none";
+
 }
 
 costCenterIndex:number = -1;
@@ -864,13 +864,13 @@ addCostCenterItem(id:number){
       this.invoice.payment[this.costCenterIndex].costCenterName = result.nameL1;
       this.invoice.payment[this.costCenterIndex].costCenterCode = result.code;
   this.costCenterIndex = -1;
-  });  
+  });
 
 
 }
 
 //Unit Modal
-GetUnit(id:number){    
+GetUnit(id:number){
   this.lookupService.GetlookupDetailsByIdforItems(id).subscribe(result=>{
     if(result!=undefined){
     this.UnitList = result;
@@ -881,7 +881,7 @@ UnitIndex:number = -1;
 
 addUnitItem(id:number,Unit:any){
   var unit=this.invoice.invoiceDtl[this.UnitIndex].unit
-    if(this.UnitIndex != -1&&unit)    
+    if(this.UnitIndex != -1&&unit)
     {
       this.invoice.invoiceDtl[this.UnitIndex].unitId=Unit.id;
       unit.id = Unit.id;
@@ -898,16 +898,16 @@ displayUnitStyle = "none";
 
 
 UnitOpenPopup(i?: number): void {
-  this.displayUnitStyle = "block"; 
+  this.displayUnitStyle = "block";
    if(i != undefined)
       this.UnitIndex = i;
 }
 
 UnitClosePopup(): void {
-  this.displayUnitStyle = "none";    
+  this.displayUnitStyle = "none";
 }
 
-    
+
 // <----- modal ----->
 displayStyle = "none";
 openPopup(): void {
@@ -951,7 +951,7 @@ setCustomerAndStore(){
       }
   }
 }
-invoiceDelete(id: number) {    
+invoiceDelete(id: number) {
   var isSuccess = false;
   if (id) {
     this.alertify.confirm('are you sure to delete journal Voucher ' + id,()=>{
@@ -960,9 +960,9 @@ invoiceDelete(id: number) {
         this.utilityService.reloadComponent();
         this.alertify.success('تم الحذف');
       }, error => alert('Not Found'));
-      
+
     });
-    
+
   }
   return isSuccess;
 }
@@ -975,8 +975,3 @@ removeDtl(index: number) {
 
 
 }
- 
-  
-
-
-

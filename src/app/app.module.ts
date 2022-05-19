@@ -88,6 +88,10 @@ import { InvoicePipe } from './pipes/invoice.pipe';
 import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
 import { InvoiceReceiptComponent } from './InvoiceReceipt/InvoiceReceipt.component';
 import { InvoiceOrderComponent } from './invoice-order/invoice-order.component';
+import { AccountCategoryComponent } from './account-category/account-category.component';
+import { ModalModule, BsModalService } from 'ngx-bootstrap/modal';
+import{LookupCategoryFilterPipe} from './pipes/lookupCategoryFilter.pipe';
+import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 
 
 
@@ -99,8 +103,9 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [															
+  declarations: [
     AppComponent,
+    LookupCategoryFilterPipe,
     DemographicinfoComponent,
     DemographicfilterPipe,
       HeaderComponent,
@@ -118,7 +123,7 @@ export function HttpLoaderFactory(http:HttpClient){
       AccountfilterPipe,
       CostcenterfilterPipe,
       VoucherReceiptComponent,
-      NameCommonfilterPipe,       
+      NameCommonfilterPipe,
       CurrencyfilterPipe,
       SecurityGradePipe,
       UtilitiesComponent,
@@ -132,9 +137,11 @@ export function HttpLoaderFactory(http:HttpClient){
       InvoicePipe,
       InvoicePaymentOrderComponent,
       InvoiceReceiptComponent,
-      InvoiceOrderComponent
+      InvoiceOrderComponent,
+      AccountCategoryComponent,
    ],
   imports: [
+    ModalModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -187,7 +194,7 @@ export function HttpLoaderFactory(http:HttpClient){
     OverlayModule,
     PortalModule,
     ScrollingModule,
-
+    NgxBootstrapIconsModule,
     TranslateModule.forRoot({
       defaultLanguage:'ar-AR',
       loader:{
@@ -199,7 +206,7 @@ export function HttpLoaderFactory(http:HttpClient){
   ],
   providers: [DatePipe,
     AuthGuard,
-  
+    BsModalService
   ],
   bootstrap: [
     AppComponent,

@@ -17,6 +17,7 @@ import { LookupComponent } from './lookup/lookup.component';
 import { InvoicePaymentOrderComponent } from './InvoicePaymentOrder/InvoicePaymentOrder.component';
 import { InvoiceReceiptComponent } from './InvoiceReceipt/InvoiceReceipt.component';
 import { InvoiceOrderComponent } from './invoice-order/invoice-order.component';
+import { AccountCategoryComponent } from './account-category/account-category.component';
 
 
 
@@ -44,6 +45,7 @@ const routes: Routes = [
              { path: 'branchsetting', component: BranchsettingComponent },
              { path: 'bank', component: BankComponent },
              { path: 'lookup', component: LookupComponent },
+             { path: 'AccountCategory', component: AccountCategoryComponent},
              { path: 'ChartOfAccount', component: ChartOfAccountComponent},
              { path: 'InvoicePaymentOrder', component: InvoicePaymentOrderComponent},
              { path: 'InvoiceReceipt', component: InvoiceReceiptComponent},
