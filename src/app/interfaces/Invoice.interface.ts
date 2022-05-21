@@ -145,7 +145,7 @@ export interface InvoiceCashDetails {
 	costCenter?: NameCommon;
 	currency?: NameCommon;
   }
-  
+
 export interface InvoiceDtl {
 	invDTLId:number,
 	branchId:number,
@@ -165,7 +165,7 @@ export interface InvoiceDtl {
 	itemPrice:number,
 	itemCurValue:number,
 	itemQty:number,
-    guaranteeDate:Date,
+  guaranteeDate:Date,
 	totalItemCredit:number,
 	totalItemDebit:number,
 	totalBaseItemCredit:number,
