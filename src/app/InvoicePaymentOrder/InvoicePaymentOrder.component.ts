@@ -85,8 +85,6 @@ this.getall();
   public UnitList:NameCommon[] = [];
   totalCash =0;
   totalCashItem =0;
-
-
   
   public customerSalesList: NameCommon[] = [];
 
@@ -339,6 +337,7 @@ undefineObjectProperties() {
     e.account = undefined;
     e.currency = undefined;
     e.costCenter = undefined;
+    
   });
   this.invoice.invoiceDtl.forEach(e => {
     e.item = undefined;
@@ -374,12 +373,8 @@ Validate(myForm:NgForm) {
       this.alertify.error('يجب ان يكون مجموع النقدية والتفاصيل يساوي صفر');
       return false;
     }
-
-  
-        
  return true;
 }
-
 invoiceCreateUpdate(myForm:NgForm) {
   myForm.form.markAllAsTouched();
       if (this.Validate(myForm)) {
@@ -400,8 +395,6 @@ invoiceCreateUpdate(myForm:NgForm) {
       });
        if(this.invoice.invId == 0){ 
       this.invoice.invtype=7
-      
-
       console.log(this.invoice)
          this.service.invoiceCreate(this.invoice).
             subscribe(result => {
@@ -420,7 +413,6 @@ invoiceCreateUpdate(myForm:NgForm) {
       if (this.invoice.invoiceDtl === null) {
         this.invoice.invoiceDtl = [];
       }
-      
       if(i == undefined)
       {     
         this.invoice.invoiceDtl.push(this.invoiceDtl);
@@ -938,6 +930,9 @@ this.calculateTotalCash()
 setCustomerAndStore(){
   if (this.invoice.salesId) {
     var currentCustomer = this.customerSalesList.filter(c => c.id == this.invoice.salesId);
+    console.log(this.customerSalesList)
+    console.log(this.invoice.salesId)
+
       if(currentCustomer[0].nameL1&&currentCustomer[0].code){
         this.invoice.salesName=currentCustomer[0].nameL1;
         this.invoice.salesCode=parseInt(currentCustomer[0].code);
