@@ -1,5 +1,6 @@
 <div class="container">
-  <app-utilities (clickSave)="invoiceCreateUpdate(myForm)" (clickPopup)="openPopup()" (delete)="invoiceDelete(id)"
+  <app-utilities (clickSave)="SaveChanges()"
+   (clickPopup)="openPopup()" (delete)="invoiceDelete(id)"
     [name]="pageName"></app-utilities>
 
   <form #myForm="ngForm" class="page__content shadow p-3 page__content-data">
@@ -34,75 +35,136 @@
     </div>
   </form>
   <!-- Button trigger modal -->
-
+  <br/>
+<h1>ارقام حساب الفئات</h1>
   <table class="table table-striped table-inverse table-responsive">
     <thead class="thead-inverse">
       <tr>
+        <th>#</th>
         <th>إضافة</th>
         <th class="indexStyle">العمله</th>
         <th>اسم العمله</th>
         <th>حساب المبيعات</th>
         <th>حساب مردود المبيعات</th>
         <th>حساب الخصم المكتسب</th>
-        <th>حساب الخصم المسموح به</th>
-        <th>حساب الضريبه ضريبه المبيعات</th>
+        <th>حساب الخصم المسموح</th>
+        <th>حساب ضريبه المبيعات</th>
+        <th>حساب ضريبة المدين</th>
+        <th>حساب ضريبة الدائن</th>
         <th>حذف</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
+      <tr *ngFor="let item of list;let indexOfelement=index;">
+        <td>{{indexOfelement+1}}</td>
         <td>
-          <button type="button" name="" id="" class="btn btn-outline-primary btn-sm" (click)="addNewRoow()"><i class="fa fa-plus"></i></button>
+          <button type="button" name="" id="" class="btn btn-outline-primary btn-sm" (click)="addNewRow()"><i class="fa fa-plus"></i></button>
         </td>
         <td>
-          <input type="text" class="form-control form-control-sm indexStyle" (dblclick)="openModal(currencyTemplete)"
-            (change)="lookupDetailsGetBylookupId(currencyItem.code)"
-            [ngClass]="{'is-invalid': (!currencyItem.code) && (currencyItem.code==0)&& (currencyItm.touched || currencyItm.dirty)}"
-            #currencyItm="ngModel" [(ngModel)]="currencyItem.code" name="txtStoreCode" required placeholder="0" />
+          <input type="text" class="form-control form-control-sm indexStyle" (dblclick)="openModal(currencyTemplete,0,indexOfelement)"
+            (change)="lookupDetailsGetBylookupId(list[indexOfelement].curCode)"
+            [ngClass]="{'is-invalid': (!list[indexOfelement].curCode) && (list[indexOfelement].curCode==0)&& (currencyItm.touched || currencyItm.dirty)}"
+            #currencyItm="ngModel" [(ngModel)]="list[indexOfelement].curCode" name="txtStoreCode" required placeholder="0" />
         </td>
-        <td>
-          <input type="text" class="form-control form-control-sm" disabled="true" [(ngModel)]="currencyItem.nameL1"
+         <td>
+          <input  type="text" class="form-control form-control-sm"
+           disabled="true" [(ngModel)]="item.curName"
             name="currencyName" placeholder="أسم العملة" />
         </td>
         <td>
-          <input type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,1)"
-            [ngClass]="{'is-invalid': (!accountItem1.accountNo) && (accountItem1.accountNo=='')&& (accountItm1.touched || accountItm1.dirty)}"
-            #accountItm1="ngModel" [(ngModel)]="accountItem1.accountNo" name="txtStoreCode" required
-            placeholder="انقر مرتين للاختيار" />
+        <!-- حساب المبيعات -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,1,indexOfelement)"
+            [ngClass]="{'is-invalid': (!list[indexOfelement].catSellAccNumber) && (item.catSellAccNumber=='')&& (accountItm1.touched || accountItm1.dirty)}"
+            #accountItm1="ngModel" [(ngModel)]="list[indexOfelement].catSellAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
         </td>
         <td>
-          <input type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,2)"
-            [ngClass]="{'is-invalid': (!accountItem1.accountNo) && (accountItem1.accountNo=='')&& (accountItm2.touched || accountItm2.dirty)}"
-            #accountItm2="ngModel" [(ngModel)]="accountItem2.accountNo" name="txtStoreCode" required
-            placeholder="انقر مرتين للاختيار" />
+          <!--  حساب مردود المبيعات -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,2,indexOfelement)"
+            [ngClass]="{'is-invalid': (!item.catBackBuyAccNumber) && (item.catBackBuyAccNumber=='')&& (accountItm2.touched || accountItm2.dirty)}"
+            #accountItm2="ngModel" [(ngModel)]="item.catBackBuyAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
         </td>
         <td>
-          <input type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,3)"
-            [ngClass]="{'is-invalid': (!accountItem1.accountNo) && (accountItem1.accountNo=='')&& (accountItm3.touched || accountItm3.dirty)}"
-            #accountItm3="ngModel" [(ngModel)]="accountItem3.accountNo" name="txtStoreCode" required
-            placeholder="انقر مرتين للاختيار" />
+          <!-- حساب الخصم المكتسب -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,3,indexOfelement)"
+            [ngClass]="{'is-invalid': (!item.catDiscAccNumber) && (item.catDiscAccNumber=='')&& (accountItm3.touched || accountItm3.dirty)}"
+            #accountItm3="ngModel" [(ngModel)]="item.catDiscAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
         </td>
         <td>
-          <input type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,4)"
-            [ngClass]="{'is-invalid': (!accountItem1.accountNo) && (accountItem1.accountNo=='')&& (accountItm4.touched || accountItm4.dirty)}"
-            #accountItm4="ngModel" [(ngModel)]="accountItem4.accountNo" name="txtStoreCode" required
-            placeholder="انقر مرتين للاختيار" />
+          <!-- حساب الخصم المسموح به -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,4,indexOfelement)"
+            [ngClass]="{'is-invalid': (!item.catInDiscAccNumber) && (item.catInDiscAccNumber=='')&& (accountItm4.touched || accountItm4.dirty)}"
+            #accountItm4="ngModel" [(ngModel)]="item.catInDiscAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
         </td>
         <td>
-          <input type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,5)"
-            [ngClass]="{'is-invalid': (!accountItem1.accountNo) && (accountItem1.accountNo=='')&& (accountItm5.touched || accountItm5.dirty)}"
-            #accountItm5="ngModel" [(ngModel)]="accountItem5.accountNo" name="txtStoreCode" required
-            placeholder="انقر مرتين للاختيار" />
+          <!-- حساب ضريبه المبيعات -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,5,indexOfelement)"
+            [ngClass]="{'is-invalid': (!item.catTaxAccNumber) && (item.catTaxAccNumber=='')&& (accountItm5.touched || accountItm5.dirty)}"
+            #accountItm5="ngModel" [(ngModel)]="item.catTaxAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
         </td>
         <td>
-          <button type="button" name="" id="" class="btn btn-outline-danger btn-sm"><i class="fa fa-trash"></i></button>
+          <!-- حساب ضريبه المدين -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,6,indexOfelement)"
+            [ngClass]="{'is-invalid': (!item.vatDebitAccNumber) && (item.vatDebitAccNumber=='')&& (accountItm9.touched || accountItm9.dirty)}"
+            #accountItm9="ngModel" [(ngModel)]="item.vatDebitAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
+        </td>
+       <td>
+         <!-- حساب ضريبه الدائن -->
+          <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,7,indexOfelement)"
+            [ngClass]="{'is-invalid': (!item.vatCreditAccNumber) && (item.vatCreditAccNumber=='')&& (accountItm10.touched || accountItm10.dirty)}"
+            #accountItm10="ngModel" [(ngModel)]="item.vatCreditAccNumber" name="txtStoreCode" required
+            placeholder="انقر مرتين " />
+        </td>
+
+        <td>
+          <button type="button" name="" id="" class="btn btn-outline-danger btn-sm" (click)="DeleteRow(item.catAccId,indexOfelement)"><i class="fa fa-trash"></i></button>
         </td>
       </tr>
+
+
 
     </tbody>
   </table>
 
 
+  <h2>حساب بعمله المخزون</h2>
+
+  <div class="container-fluid">
+    <div class="bg-white border rounded p-3">
+      <div class="row">
+        <div class="row">
+          <div class="col">
+              <label class="small float-right pt-2">حساب المجموعه</label>
+              <div class="d-flex txtStore">
+                <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,8)"
+            [ngClass]="{'is-invalid': (!catGroupAcc.accountNo) && (catGroupAcc.accountNo=='')&& (accountItm6.touched || accountItm6.dirty)}"
+            #accountItm6="ngModel" [(ngModel)]="catGroupAcc.accountNo" name="txtStoreCode" required
+            placeholder="انقر مرتين للاختيار" />
+              </div>
+          </div>
+          <div class="col">
+              <label class="small float-right pt-2">حساب مردود المشتريات  </label>
+              <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,9)"
+            [ngClass]="{'is-invalid': (!catBackSellAcc.accountNo) && (catBackSellAcc.accountNo=='')&& (accountItm7.touched || accountItm7.dirty)}"
+            #accountItm7="ngModel" [(ngModel)]="catBackSellAcc.accountNo" name="txtStoreCode" required
+            placeholder="انقر مرتين للاختيار"/>
+          </div>
+          <div class="col">
+              <label class="small float-right pt-2">حساب تكلفة المبيعات</label>
+              <input readonly type="text" class="form-control form-control-sm " (dblclick)="openModal(AccountTemplete,10)"
+            [ngClass]="{'is-invalid': (!catCostAcc.accountNo) && (catCostAcc.accountNo=='')&& (accountItm8.touched || accountItm8.dirty)}"
+            #accountItm8="ngModel" [(ngModel)]="catCostAcc.accountNo" name="txtStoreCode" required
+            placeholder="انقر مرتين للاختيار" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 

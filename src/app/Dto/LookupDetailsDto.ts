@@ -1,5 +1,6 @@
 import { LookupDetails } from "../interfaces/lookup.interface";
 import { NameCommon } from "../interfaces/namecommon.interface";
+import { AddEditCategoriesAccDto } from "./AddEditCategoriesAccDto";
 
 export class lookupDetailsDto implements LookupDetails{
   id: number=0;
@@ -30,4 +31,5 @@ export class lookupDetailsDto implements LookupDetails{
   value3?: number | undefined;
   date1?: Date | undefined;
   date2?: Date | undefined;
+  categoriesAcc:AddEditCategoriesAccDto[]=[];
 }
