@@ -1,0 +1,40 @@
+import { CategoriesAccListDto } from "../interfaces/CategoriesAccListDto";
+
+export class CategoriesAcclistDto implements CategoriesAccListDto{
+  compId: number =0;
+  catId: number=0;
+  curId: number=0;
+  branchId: number=0;
+  catAccId: number=0;
+  catTaxAccId?: number;
+  catSellAccId?: number;
+  catBackBuyAccId?: number;
+  catBackSellAccId?: number;
+  catCostAccId?: number;
+  catDiscAccId?: number;
+  catInDiscAccId?: number;
+  vatDebitAccId?: number;
+  vatCreditAccId?: number;
+  catGroupAccId?:number;
+  vatCreditAccNumber?: string;
+  vatDebitAccNumber?: string;
+  catCode?: number;
+  curCode?: number;
+  curName?: string;
+  branchNumber?: string;
+  catTaxAccNumber?: string;
+  catSellAccNumber?: string;
+  catGroupAccNumber?:string;
+  catBackBuyAccNumber?: string;
+  catBackSellAccNumber?: string;
+  catCostAccNumber?: string;
+  catDiscAccNumber?: string;
+  catInDiscAccNumber?: string;
+  username?: string;
+  timestamp?: Date;
+  createdOn?: Date;
+  lastUpdatedOn?: Date;
+  createdBy?: number;
+  lastUpdatedBy?: number;
+  isDeleted:boolean=false;
+}
