@@ -14,9 +14,9 @@ import { AccountService } from '../services/account.service';
 import { Account } from '../interfaces/account.interface';
 import { AccountDto } from '../Dto/AccountDto';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { AddEditCategoriesAccDto } from '../Dto/AddEditCategoriesAccDto';
 import { CategoriesAcclistDto } from '../Dto/CategoriesAcclistDto';
 import { CategoriesAccService } from '../services/CategoriesAcc.service';
+import { AddEditCategoriesAccDto } from '../Dto/AddEditCategoriesAccDto';
 //#endregion
 @Component({
   selector: 'app-account-category',
