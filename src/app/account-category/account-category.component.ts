@@ -13,11 +13,10 @@ import { CurrencyDto } from '../Dto/CurrencyDto';
 import { AccountService } from '../services/account.service';
 import { Account } from '../interfaces/account.interface';
 import { AccountDto } from '../Dto/AccountDto';
-import { AddEditCategoriesAccDto } from '../Dto/AddEditCategoriesAccDto';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
-import { CategoriesAccService } from '../services/CategoriesAcc.service';
+import { AddEditCategoriesAccDto } from '../Dto/AddEditCategoriesAccDto';
 import { CategoriesAcclistDto } from '../Dto/CategoriesAcclistDto';
-import { CategoriesAccListDto } from '../interfaces/CategoriesAccListDto';
+import { CategoriesAccService } from '../services/CategoriesAcc.service';
 //#endregion
 @Component({
   selector: 'app-account-category',
@@ -39,6 +38,7 @@ export class AccountCategoryComponent implements OnInit {
     catCostAccId: new FormControl(null),
     catDiscAccId: new FormControl(null),
     catInDiscAccId: new FormControl(null),
+    catGroupAccId: new FormControl(null),
     username: new FormControl(null),
     timestamp: new FormControl(new Date()),
     createdOn: new FormControl(new Date()),
@@ -77,11 +77,12 @@ export class AccountCategoryComponent implements OnInit {
   catBackSellAcc: AccountDto = new AccountDto();
   vatDebitAcc: AccountDto = new AccountDto();
   vatCreditAcc: AccountDto = new AccountDto();
-  catGroupAcc:AccountDto=new AccountDto();
+  catGroupAcc: AccountDto = new AccountDto();
   typeId: number = 0;
   list: CategoriesAcclistDto[] = [];
   itemId: number = 0;
-  index: number =0;
+  index: number = 0;
+  rowIndex: number | undefined;
   //#endregion
   constructor(
     private lookupServ: LookupService,
@@ -93,7 +94,7 @@ export class AccountCategoryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-   this.addNewRow();
+    this.addNewRow();
     forkJoin([
       this.lookupServ.lookupDetailsGetById(114).subscribe(
         (res) => {
@@ -113,17 +114,44 @@ export class AccountCategoryComponent implements OnInit {
   }
   //#region  using in utilities
   openPopup() {}
+
   SaveChanges() {
-    console.log("heba");
-    console.log(this.list);
-    this.categoriesAccServ.AddEditCategoriesAcc(this.list).subscribe(
-      (res)=>{console.log(res),this.alertify.success(" تم الحفظ بنجاح")},
-      (err)=>console.log(err)
-    )
+    debugger
+    if (this.list.length==1&&this.list[0].catId==0&&this.list[0].curId==0) {
+      this.alertify.error('برجاء اضافة عنصر واحد علي الاقل');
+    }else if(this.list.length==1&&this.list[0].catId!==0&&this.list[0].curId==0){
+      this.alertify.error('برجاء اضافة عنصر واحد علي الاقل');
+
+    } else {
+      this.list.forEach((element) => {
+        if (element.catAccId == 0) {
+          element.createdOn = new Date(Date.now());
+        }
+      });
+      this.categoriesAccServ.AddEditCategoriesAcc(this.list).subscribe(
+        (res) => {
+          console.log(res),
+            this.categoriesAccServ
+              .GetCategoriesAccountByCatId(this.lookupItemDetails.id)
+              .subscribe(
+                (res) => {this.list = res;
+                  if(res.length==0){
+                    this.addNewRow();
+                  }
+                },
+                (err) => console.log(err)
+              );
+          console.log(this.list);
+          this.alertify.success(' تم الحفظ بنجاح');
+        },
+        (err) => console.log(err)
+      );
+    }
   }
   invoiceDelete(id: any) {}
   //#endregion
-  openModal(template: TemplateRef<any>, type?: number) {
+  openModal(template: TemplateRef<any>, type?: number, index?: number) {
+    this.rowIndex = index == undefined ? 0 : index;
     this.modalRef = this.modalService.show(template, {
       class: 'modal-dialog-centered modal-dialog-scrollable',
     });
@@ -133,8 +161,8 @@ export class AccountCategoryComponent implements OnInit {
     this.textFilterModel = '';
     this.isDateFilter = false;
   }
-  lookupDetailsGetBylookupId(code: any,index?:number) {
-    this.index=index!=undefined?index:0;
+  lookupDetailsGetBylookupId(code: any, index?: number) {
+    this.index = index != undefined ? index : 0;
     debugger;
     let item = this.lookupDetailsList.find((s) => s.code == code);
     console.log(item);
@@ -161,8 +189,10 @@ export class AccountCategoryComponent implements OnInit {
         this.lookupItemDetails = item;
         //this.addNewRow();
         this.form.get('catId')?.setValue(this.lookupItemDetails.id);
-        this.list[this.list.length-1].catId=item.id;
-        this.list[this.list.length-1].catCode=item.code;
+        this.list[this.rowIndex == undefined ? 0 : this.rowIndex].catId =
+          item.id;
+        this.list[this.rowIndex == undefined ? 0 : this.rowIndex].catCode =
+          item.code;
         this.getCategoriesAccounByCatId();
         break;
       case 2:
@@ -170,84 +200,105 @@ export class AccountCategoryComponent implements OnInit {
         this.form.get('curId')?.setValue(item.id);
         this.form.get('branchId')?.setValue(1);
         this.form.get('compId')?.setValue(1);
-        this.list[this.list.length-1].curCode=item.code;
-        this.list[this.list.length-1].curName=item.nameL1;
-        this.list[this.list.length-1].curId=item.id;
-       // this.list[this.list.length-1].branchId=1;
+        this.list[this.rowIndex == undefined ? 0 : this.rowIndex].curCode =
+          item.code;
+        this.list[this.rowIndex == undefined ? 0 : this.rowIndex].curName =
+          item.nameL1;
+        this.list[this.rowIndex == undefined ? 0 : this.rowIndex].curId =
+          item.id;
+        // this.list[this.list.length-1].branchId=1;
 
         break;
       case 3:
         if (this.typeId == 0) {
           this.catAcc = item;
           this.form.get('catId')?.setValue(this.catAcc.id);
-
-
         } else if (this.typeId == 1) {
           this.catSellAcc = item;
           this.form.get('catSellAccId')?.setValue(this.catSellAcc.id);
-        this.list[this.list.length-1].catSellAccNumber=item.accountNo;
-        this.list[this.list.length-1].catSellAccId=item.id;
-
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catSellAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catSellAccId = item.id;
         } else if (this.typeId == 2) {
           this.catBackBuyAcc = item;
           this.form.get('catBackBuyAccId')?.setValue(this.catBackBuyAcc.id);
-        this.list[this.list.length-1].catBackBuyAccNumber=item.accountNo;
-        this.list[this.list.length-1].catBackBuyAccId=item.id;
-
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catBackBuyAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catBackBuyAccId = item.id;
         } else if (this.typeId == 3) {
           this.catDiscAcc = item;
           this.form.get('catDiscAccId')?.setValue(this.catDiscAcc.id);
-        this.list[this.list.length-1].catDiscAccNumber=item.accountNo;
-        this.list[this.list.length-1].catDiscAccId=item.id;
-
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catDiscAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catDiscAccId = item.id;
         } else if (this.typeId == 4) {
           this.catInDiscAcc = item;
           this.form.get('catInDiscAccId')?.setValue(this.catInDiscAcc.id);
-        this.list[this.list.length-1].catInDiscAccNumber=item.accountNo;
-        this.list[this.list.length-1].catInDiscAccId=item.id;
-
-
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catInDiscAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catInDiscAccId = item.id;
         } else if (this.typeId == 5) {
           this.catTaxAcc = item;
           this.form.get('catTaxAccId')?.setValue(this.catTaxAcc.id);
-        this.list[this.list.length-1].catTaxAccNumber=item.accountNo;
-        this.list[this.list.length-1].catTaxAccId=item.id;
-
-
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catTaxAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].catTaxAccId = item.id;
         } else if (this.typeId == 10) {
-        this.catCostAcc = item;
-        this.form.get('catCostAccId')?.setValue(this.catCostAcc.id);
-        this.list[this.list.length-1].catCostAccNumber=item.accountNo;
-        this.list[this.list.length-1].catCostAccId=item.id;
-
-
+          this.catCostAcc = item;
+          this.form.get('catCostAccId')?.setValue(this.catCostAcc.id);
+          this.list[this.list.length - 1].catCostAccNumber = item.accountNo;
+          this.list[this.list.length - 1].catCostAccId = item.id;
         } else if (this.typeId == 9) {
           this.catBackSellAcc = item;
           this.form.get('catBackSellAccId')?.setValue(this.catBackSellAcc.id);
-        this.list[this.list.length-1].catBackSellAccNumber=item.accountNo;
-        this.list[this.list.length-1].catBackSellAccId=item.id;
-
-
+          this.list[this.list.length - 1].catBackSellAccNumber = item.accountNo;
+          this.list[this.list.length - 1].catBackSellAccId = item.id;
         } else if (this.typeId == 6) {
           this.vatDebitAcc = item;
           this.form.get('vatDebitAccId')?.setValue(this.vatDebitAcc.id);
-        this.list[this.list.length-1].vatDebitAccNumber=item.accountNo ;
-        this.list[this.list.length-1].vatDebitAccId=item.id;
-
-
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].vatDebitAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].vatDebitAccId = item.id;
         } else if (this.typeId == 7) {
           this.vatCreditAcc = item;
           this.form.get('vatCreditAccId')?.setValue(this.vatCreditAcc.id);
-        this.list[this.list.length-1].vatCreditAccNumber=item.accountNo;
-        this.list[this.list.length-1].vatCreditAccId=item.id;
-
-
-        }else if (this.typeId == 8) {
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].vatCreditAccNumber = item.accountNo;
+          this.list[
+            this.rowIndex == undefined ? 0 : this.rowIndex
+          ].vatCreditAccId = item.id;
+        } else if (this.typeId == 8) {
           this.catGroupAcc = item;
-          this.form.get('catGroupAccId')?.setValue(this.catGroupAcc.id);
-        this.list[this.list.length-1].catGroupAccNumber=this.catGroupAcc.accountNo;
-        this.list[this.list.length-1].catGroupAccId=item.id;
-
+          if(this.catGroupAcc.id!=0){
+            this.form.get('catGroupAccId')?.setValue(this.catGroupAcc.id);
+            this.list[this.list.length - 1].catGroupAccNumber =
+              this.catGroupAcc.accountNo;
+            this.list[this.list.length - 1].catGroupAccId = item.id;
+          }else{
+            this.form.get('catGroupAccId')?.setValue(null );
+            this.list[this.list.length - 1].catGroupAccNumber =
+              this.catGroupAcc.accountNo;
+            this.list[this.list.length - 1].catGroupAccId = item.id;
+          }
 
         }
 
@@ -260,43 +311,73 @@ export class AccountCategoryComponent implements OnInit {
   getCategoriesAccounByCatId() {
     this.categoriesAccServ.GetCategoriesAccountByCatId(this.itemId).subscribe(
       (res) => {
-        if(res.length>0){
+        if (res.length > 0) {
           this.list = res;
-          this.catCostAcc.accountNo=res[0].catCostAccNumber;
-          this.catGroupAcc.accountNo=res[0].catGroupAccNumber;
-          this.catBackSellAcc.accountNo=res[0].catBackSellAccNumber;
-          this.catGroupAcc.id=res[0].catGroupAccId;
-          this.catCostAcc.id=res[0].catCostAccId;
-          this.catBackSellAcc.id=res[0].catBackSellAccId;
-         console.log(res);
-        }else{
-          this.list=[];
+          this.catCostAcc.accountNo = res[0].catCostAccNumber;
+          this.catGroupAcc.accountNo = res[0].catGroupAccNumber;
+          this.catBackSellAcc.accountNo = res[0].catBackSellAccNumber;
+          this.catGroupAcc.id = res[0].catGroupAccId;
+          this.catCostAcc.id = res[0].catCostAccId;
+          this.catBackSellAcc.id = res[0].catBackSellAccId;
+          console.log(res);
+        } else {
+          this.list = [];
           this.addNewRow();
+          this.catCostAcc.accountNo = '';
+          this.catGroupAcc.accountNo = '';
+          this.catBackSellAcc.accountNo = '';
+          this.catGroupAcc.id = 0;
+          this.catCostAcc.id = 0;
+          this.catBackSellAcc.id = 0;
           // this.addNewRow();
         }
-
       },
       (err) => console.log(err)
-    );  }
-  addNewRow() {
-   var dto: CategoriesAcclistDto = new CategoriesAcclistDto();
-    dto.catAccId = 0;
-    dto.branchId=1;
-    dto.compId=1;
-    dto.catGroupAccId=12;
-    //dto.catGroupAccId=this.catGroupAcc.id;
-    dto.catCostAccId=this.catCostAcc.id;
-    dto.catBackSellAccId=this.catBackSellAcc.id;
-    dto.catCostAccNumber=this.catCostAcc.accountNo;
-    dto.catGroupAccNumber="1.1.1.7";
-    dto.catId=this.lookupItemDetails.id;
-    //dto.catGroupAccNumber=this.catGroupAcc.accountNo;
-
-    dto.catBackSellAccNumber=this.catBackSellAcc.accountNo;
-      this.list.push(dto);
-      console.log(this.list.length)
-     // this.list[]
-
-
+    );
   }
+  addNewRow() {
+    var dto: CategoriesAcclistDto = new CategoriesAcclistDto();
+    dto.catAccId = 0;
+    dto.branchId = 1;
+    dto.compId = 1;
+    dto.catGroupAccId = this.catGroupAcc.id;
+    dto.catCostAccId = this.catCostAcc.id;
+    dto.catBackSellAccId = this.catBackSellAcc.id;
+    dto.catCostAccNumber = this.catCostAcc.accountNo;
+    dto.catGroupAccNumber = this.catGroupAcc.accountNo;
+    dto.catId = this.lookupItemDetails.id;
+    dto.catBackSellAccNumber = this.catBackSellAcc.accountNo;
+    this.list.push(dto);
+    console.log(this.list.length);
+  }
+  DeleteRow(id: number, index: number) {
+    if (id) {
+      this.alertify.confirm('هل تريد حذف حساب رقم : ' + index, () => {
+        this.categoriesAccServ.deleteCategoiesAccount(id).subscribe(
+          (result) => {
+            this.categoriesAccServ
+              .GetCategoriesAccountByCatId(this.lookupItemDetails.id)
+              .subscribe(
+                (res) => {this.list = res;
+                  if(res.length==0){
+                    this.addNewRow();
+                  }
+                },
+                (err) => console.log(err)
+              );
+            this.alertify.success('تم الحذف');
+          },
+          (error) => alert('Not Found')
+        );
+      });
+    } else {
+      this.list.splice(index);
+      this.alertify.error('خطأ في الحذف ');
+    }
+  }
+  // CheckValidation(list:any){
+  //   list.forEach(element => {
+  //     if(element)
+  //   });
+  // }
 }
