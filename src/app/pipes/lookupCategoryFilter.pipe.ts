@@ -1,12 +1,13 @@
+
 import { Pipe, PipeTransform } from '@angular/core';
-import { Lookup } from '../interfaces/lookup.interface';
+import {  LookupDetails } from '../interfaces/lookup.interface';
 
 @Pipe({
-  name: 'lookupfilter'
+  name: 'lookupCategoryFilter'
 })
-export class LookupfilterPipe implements PipeTransform {
+export class LookupCategoryFilterPipe implements PipeTransform {
 
-  transform(lookUpList: Lookup[], textFilterModel:string) {
+  transform(lookUpList: LookupDetails[], textFilterModel:string) {
     if (textFilterModel)
     {
       return lookUpList.filter(d=>(d.code != null && String(d.code).startsWith(textFilterModel))
