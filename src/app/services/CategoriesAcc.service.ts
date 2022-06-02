@@ -28,6 +28,7 @@ updateCategoiesAccount(input:any) {
 deleteCategoiesAccount(id:any) {
   return this.http.delete<any>(Constants.ApiUrl + `/api/CategoriesAcc/${id}`);
 }
+
 GetCategoriesAccountByCatId(id:any) {
   return this.http.get<any[]>(Constants.ApiUrl + `/api/CategoriesAcc/GetCategoriesAccountByCatId?catId=${id}`);
 }
