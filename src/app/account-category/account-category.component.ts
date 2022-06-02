@@ -148,7 +148,20 @@ export class AccountCategoryComponent implements OnInit {
       );
     }
   }
-  invoiceDelete(id: any) {}
+  invoiceDelete(id: any) {
+    this.alertify.confirm('هل تريد حذف الحسابات المربوطه بفئة : ' + this.lookupItemDetails.nameL1, () => {
+      if(this.list.length==0){
+        this.alertify.success("لا يوجد عناصر");
+      }else{
+        this.list.forEach(element => {
+          element.isDeleted=true;
+        });
+        this.SaveChanges();
+      }
+    });
+
+
+  }
   //#endregion
   openModal(template: TemplateRef<any>, type?: number, index?: number) {
     this.rowIndex = index == undefined ? 0 : index;
@@ -358,7 +371,8 @@ export class AccountCategoryComponent implements OnInit {
             this.categoriesAccServ
               .GetCategoriesAccountByCatId(this.lookupItemDetails.id)
               .subscribe(
-                (res) => {this.list = res;
+                (res) => {
+                  this.list = res;
                   if(res.length==0){
                     this.addNewRow();
                   }
@@ -371,13 +385,18 @@ export class AccountCategoryComponent implements OnInit {
         );
       });
     } else {
-      this.list.splice(index);
-      this.alertify.error('خطأ في الحذف ');
+      this.list.splice(index,1);
+      if(this.list.length==0){
+        this.addNewRow();
+      }
+      this.alertify.success('تم الحذف');
     }
   }
-  // CheckValidation(list:any){
-  //   list.forEach(element => {
-  //     if(element)
-  //   });
-  // }
+
+  CheckValidation(list:any){
+    // list.forEach(element => {
+    //   if(element){}
+    //  }
+    // );
+  }
 }
