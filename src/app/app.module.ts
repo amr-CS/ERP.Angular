@@ -142,6 +142,7 @@ export function HttpLoaderFactory(http:HttpClient){
    ],
   imports: [
     ModalModule,
+    NgxBootstrapIconsModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
@@ -194,7 +195,6 @@ export function HttpLoaderFactory(http:HttpClient){
     OverlayModule,
     PortalModule,
     ScrollingModule,
-    NgxBootstrapIconsModule,
     TranslateModule.forRoot({
       defaultLanguage:'ar-AR',
       loader:{

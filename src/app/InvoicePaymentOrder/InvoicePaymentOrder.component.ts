@@ -86,8 +86,6 @@ this.getall();
   totalCash =0;
   totalCashItem =0;
 
-
-
   public customerSalesList: NameCommon[] = [];
 
   public invoice: Invoice={
@@ -255,7 +253,7 @@ this.getall();
     taxDebit:0,
     taxBaseDebit:0,
     itemCost:0,
-    taxBaseCredit:0,
+    taxBaseCredit:0,    
     taxCredit:0,
     backSellAccId:'',
     backBuyAccId:'',
@@ -339,6 +337,7 @@ undefineObjectProperties() {
     e.account = undefined;
     e.currency = undefined;
     e.costCenter = undefined;
+    
   });
   this.invoice.invoiceDtl.forEach(e => {
     e.item = undefined;
@@ -376,10 +375,8 @@ Validate(myForm:NgForm) {
     }
 
 
-
  return true;
 }
-
 invoiceCreateUpdate(myForm:NgForm) {
   myForm.form.markAllAsTouched();
       if (this.Validate(myForm)) {
@@ -400,8 +397,6 @@ invoiceCreateUpdate(myForm:NgForm) {
       });
        if(this.invoice.invId == 0){
       this.invoice.invtype=7
-
-
       console.log(this.invoice)
          this.service.invoiceCreate(this.invoice).
             subscribe(result => {
@@ -420,6 +415,7 @@ invoiceCreateUpdate(myForm:NgForm) {
       if (this.invoice.invoiceDtl === null) {
         this.invoice.invoiceDtl = [];
       }
+
 
       if(i == undefined)
       {
@@ -447,7 +443,7 @@ invoiceCreateUpdate(myForm:NgForm) {
         itemPrice:0,
         itemCurValue:0,
         itemQty:0,
-      guaranteeDate:new Date,
+        guaranteeDate:new Date,
         totalItemCredit:0,
         totalItemDebit:0,
         totalBaseItemCredit:0,
@@ -525,16 +521,11 @@ invoiceCreateUpdate(myForm:NgForm) {
         unit:{},
         item:{}
         }
-
-
-
-
     }
     addAccountDetail(i?:number) {
       if (this.invoice.payment === null) {
         this.invoice.payment = [];
       }
-
       if(i == undefined)
       {
         this.invoice.payment.push(this.accountDetail);
@@ -557,24 +548,15 @@ invoiceCreateUpdate(myForm:NgForm) {
       account:{},
       currency:{},
       costCenter:{}
-
         }
-
-
-
-
     }
     successCreateUpdate(result:any){
       this.alertify.success('تم الحفظ بنجاح');
       this.invoice = result;
       this.setCustomerAndStore()
       //this.invoiceGetByTransactionTypeId();
-
      // this.isUpdate = true;
     }
-
-
-
     ////Modal Store
     storeGetAll() {
       this.storeService.lookupDetailsGetById(117).subscribe(result => {
@@ -586,15 +568,12 @@ invoiceCreateUpdate(myForm:NgForm) {
       this.invoice.storeId = item.id;
       this.invoice.storeCode = item.code;
       this.invoice.storeName = item.nameL1;
-
     }
-
     emptystoreItem() {
       this.invoice.storeId = 0;
       this.invoice.storeCode = 0;
       this.invoice.storeName = '';
     }
-
     storeOpenPopup(): void {
       this.displaystoreStyle = "block";
     }
@@ -617,11 +596,8 @@ invoiceCreateUpdate(myForm:NgForm) {
     storeClosePopup(): void {
       this.displaystoreStyle = "none";
     }
-
     storeGetById(code: number) {
-
         this.storeService.lookupGetByCode(117,code).subscribe(result => {
-
           if (result) {
             this.addstoreItem(result);
           }
@@ -630,70 +606,58 @@ invoiceCreateUpdate(myForm:NgForm) {
             this.emptystoreItem();
           }
         });
-
     }
-     // <----- Customer modal ----->
-
+  // <----- Customer modal ----->
   displayCustomerStyle = "none";
   isCustomer = false;
   addCustomerItem(item: any) {
-
-
       this.invoice.salesId = item.id;
       this.invoice.salesCode = item.code;
       this.invoice.salesName = item.nameL1;
-
-
   }
-
   customersGetAllByType() {
     this.customerService.customerGetAllByType(true).subscribe(result => {
       this.customerSalesList = result;
     });
-
     this.customerService.customerGetAllByType(false).subscribe(result => {
       this.customerSalesList = result;
     });
   }
-
   emptyCustomerItem() {
-
       this.invoice.salesId = 0;
       this.invoice.salesCode = 0;
       this.invoice.salesName = '';
-
   }
-
   CustomerOpenPopup(): void {
     this.displayCustomerStyle = "block";
-
   }
-
   CustomerClosePopup(): void {
     this.displayCustomerStyle = "none";
   }
 
   customerGetByCode(code: number) {
     if (code != undefined && code && Number.isInteger(Number(code))) {
-      this.customerService.customerGetByCode(this.isCustomer, Number(code)).subscribe(result => {
-        if (result) {
+          this.customerService.customerGetByCode(this.isCustomer, Number(code)).subscribe(result => {
+        if (result) 
+        {
 
           this.addCustomerItem(result);
         }
-        else {
+        else 
+        {
           var errorMsg = this.isCustomer ? 'لا يوجد مندوبين لهذا الرقم' : 'لا يوجد عملاء لهذا الرقم';
           this.alertify.error(errorMsg);
           this.emptyCustomerItem();
         }
-
       });
-    } else {
+    } 
+    else
+    {
       this.emptyCustomerItem();
     }
   }
-//item modal
+  //item modal
   // <----- Item modal ----->
-
   displayItemStyle = "none";
   Index:number = -1;
   addItemItem(item: any) {
@@ -786,6 +750,7 @@ addOldAccount(i:number, result:any){
     cost.code= result.accountCostCenter[0].costCenter.code;
     cost.nameL1 = result.accountCostCenter[0].costCenter.nameL1;
    }
+
    if(currency){
    currency.id = result.currencyId;
    this.invoice.payment[i].currencyId=result.currencyId
@@ -938,6 +903,9 @@ this.calculateTotalCash()
 setCustomerAndStore(){
   if (this.invoice.salesId) {
     var currentCustomer = this.customerSalesList.filter(c => c.id == this.invoice.salesId);
+    console.log(this.customerSalesList)
+    console.log(this.invoice.salesId)
+
       if(currentCustomer[0].nameL1&&currentCustomer[0].code){
         this.invoice.salesName=currentCustomer[0].nameL1;
         this.invoice.salesCode=parseInt(currentCustomer[0].code);

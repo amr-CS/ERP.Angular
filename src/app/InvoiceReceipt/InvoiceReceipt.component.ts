@@ -21,7 +21,7 @@ import { UtilityService } from '../services/utility.service';
 })
 export class InvoiceReceiptComponent  {
   selectedTab='generalData'
-  public pageName="فاتورة شراء"
+  public pageName="امر صرف مخزني"
 public costCenterList:CostCenter[] = [];
 public invoiceList:any[] = [];
 
@@ -399,7 +399,7 @@ invoiceCreateUpdate(myForm:NgForm) {
         e.unit = undefined;
       });
        if(this.invoice.invId == 0){ 
-      this.invoice.invtype=7
+      this.invoice.invtype=6
       
 
       console.log(this.invoice)

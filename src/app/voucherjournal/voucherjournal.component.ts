@@ -341,7 +341,8 @@ export class VoucherJournalComponent implements OnInit {
 
   addItemDetail(i?:number) {         
     this.newVoucherJournalDetail.journalVoucherId = this.voucherJournal.id;
-    if (this.voucherJournal.journalVoucherDetails === null) {
+    if (this.voucherJournal.journalVoucherDetails === null)
+    {
       this.voucherJournal.journalVoucherDetails = [];
     }
     
@@ -352,8 +353,6 @@ export class VoucherJournalComponent implements OnInit {
     else{      
       this.voucherJournal.journalVoucherDetails.splice(i + 1, 0, this.newVoucherJournalDetail);     
     }
-    
-    
     this.itemDetailOld = this.newVoucherJournalDetail;   
     this.newVoucherJournalDetail = {
       id: 0,
