@@ -1,6 +1,8 @@
 <div class="container">
-  <app-utilities (clickSave)="SaveChanges()"
-   (clickPopup)="openPopup()" (delete)="invoiceDelete(id)"
+  <app-utilities Foo
+  (clickSave)="SaveChanges()"
+   (clickPopup)="openPopup()" (delete)="CategoryAccountDelete()"
+   (UpdateableToggle)="x()"
     [name]="pageName"></app-utilities>
 
   <form #myForm="ngForm" class="page__content shadow p-3 page__content-data">
