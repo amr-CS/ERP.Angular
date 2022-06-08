@@ -1,0 +1,19 @@
+.container{
+  height:600px;
+}
+.small{
+  font-size: 1.25em;
+}
+.container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+  width: 100%;
+  padding-right: var(--bs-gutter-x,.75rem);
+  padding-left: var(--bs-gutter-x,.75rem);
+  margin-right: auto;
+  margin-left: auto;
+  height: 100px;
+}
+.small, .float-right{
+  margin-left: -110px;
+
+}
+
