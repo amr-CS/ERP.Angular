@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./items-card.component.css']
 })
 export class ItemsCardComponent implements OnInit {
-
+  pageName:string='بطاقة الاصناف';
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  SaveChanges(){}
+  openPopup(){}
 }

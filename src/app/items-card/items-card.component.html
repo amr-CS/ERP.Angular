@@ -1,1 +1,616 @@
-<p>items-card works!</p>
+<div class="container">
+  <app-utilities (clickSave)="SaveChanges()" (clickPopup)="openPopup()" [name]="pageName"></app-utilities>
+
+  <form #myForm="ngForm" class="page__content shadow p-3 page__content-data mt-3">
+    <div class="container-fluid">
+      <div class="bg-white border rounded p-3">
+        <div class="row">
+          <div class="col">
+            <div class="col-md-12">
+              <div class="row controlRow">
+                <div class="col-sm-2.5">
+                  <label class="small float-right">اسم الفرع</label>
+                </div>
+                <div class="col-sm-8">
+                  <div class="d-flex txtStore">
+                    <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" name="txtStoreId" />
+
+                    <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode"
+                      required placeholder="0" />
+
+                    <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                      name="txtStoreName" required />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="col-md-12">
+              <div class="row controlRow">
+                <div class="col-sm-2.5">
+                  <label class="small float-right">رقم الفئة</label>
+                </div>
+                <div class="col-sm-8">
+                  <div class="d-flex txtStore">
+                    <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" name="txtStoreId" />
+                    <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode"
+                      required placeholder="0" />
+                    <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                      name="txtStoreName" required />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="col-md-12">
+              <div class="row controlRow">
+                <div class="col-sm-2.5">
+                  <label class="small float-right">استعلام عن الباركود</label>
+                </div>
+                <div class="col-sm-8">
+                  <div class="d-flex txtStore">
+                    <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" name="txtStoreId" />
+                    <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode"
+                      required placeholder="0" />
+                    <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                      name="txtStoreName" required />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <form #myForm="ngForm">
+    <div class="container-fluid mt-3">
+      <div class="bg-white border rounded p-3">
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم الصنف</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                    name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اسم الصنف - ع</label>
+              </div>
+              <div class="col-md-7 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">الرقم الأصلي</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اسم الصنف - E</label>
+              </div>
+              <div class="col-md-7 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم المصنع</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">حد الطلب</label>
+              </div>
+              <div class="col-md-3 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رمز الصنف</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">عملة الصنف</label>
+              </div>
+
+              <div class="col-md-1 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">قياس الصنف</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اخر تكلفة للصنف</label>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">تاريخ الانتاج</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">بلد المنشأ </label>
+              </div>
+              <div class="col-md-3 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="background-color: darkgray;" class="border">
+          <div class="card"
+            style="background-color:lightgrey; width: 200px; height:168px; margin-top:-174px;margin-right: 950px;">
+            <img src="..." class="rounded float-start" alt="...">
+
+          </div>
+        </div>
+
+        <div class="card" style="width: 9rem; margin-top:-175px ;margin-right:765px;height:168px">
+          <div class="card-body">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              <label class="form-check-label" for="flexCheckDefault">
+                له تاريخ انتهاء
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+              <label class="form-check-label" for="flexCheckChecked">
+                صنف مركب
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                قابل للبيع؟
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+              <label class="form-check-label" for="flexCheckChecked">
+                صنف خدمي
+              </label>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </form>
+
+  <form #myForm="ngForm" style="margin-top: 220px;">
+    <div class="container-fluid">
+      <div class="bg-white border rounded p-3">
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">حد منح خصم</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                    name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">حد منح مجاني</label>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اقل كمية للصنف</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1 ">
+                <label class="small float-right  ">الكمية باكبر وحده</label>
+              </div>
+              <div class="col-md-2  col-sm-1 ">
+                <div class="d-flex txtStore mb-1 ">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName ml-10" readonly
+                    name="txtStoreName" required />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">اخر شراء</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                    name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">نسبة الخصم</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">الكميه المجانيه</label>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اكبر كمية للصنف</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1 ">
+                <label class="small float-right  ">الكمية باصغر وحده</label>
+              </div>
+              <div class="col-md-2  col-sm-1 ">
+                <div class="d-flex txtStore mb-1 ">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName ml-10" readonly
+                    name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اخر بيع</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                    name="txtStoreName" required />
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </form>
+
+  <div style="margin-top: 90px;">
+  </div>
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
+        aria-controls="home" aria-selected="true">وحدات الاصناف</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
+        aria-controls="profile" aria-selected="false">اعدادات الاصناف</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button"
+        role="tab" aria-controls="messages" aria-selected="false">بدائل الاصناف</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button"
+        role="tab" aria-controls="settings" aria-selected="false">اسعار وحدات الصنف</button>
+    </li>
+  </ul>
+  <div class="tab-content mt-3">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab"
+      style="margin-right: 30px;">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:75%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>رقم الوحده</th>
+                    <th>اسم الوحده</th>
+                    <th colspan="2" style="text-align:center;">الوحده الرئيسية</th>
+                    <th>عداد الوحدات</th>
+                    <th>تكلفة الوحدة</th>
+                    <th>العملة</th>
+                    <th>اسم العملة</th>
+                    <th>سعر الوحدة</th>
+                    <th><b>حد الطلب</b></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm" disabled="true" /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"/></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                  </tr>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm" disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm" disabled="true" /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"/></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div style="width:25%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center ;">
+                  <tr>
+                    <th>الباركود</th>
+                 </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm"/></td>
+                  </tr>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm"/></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:100%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>رقم الاعداد</th>
+                    <th>اسم الاعداد</th>
+                    <th>ملاحظات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    </tr>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm" disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:100%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>رقم الصنف</th>
+                    <th>اسم الصنف البديل</th>
+                    <th>ملاحظات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    </tr>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm" disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:100%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th colspan="2">نوع السعر</th>
+                    <th>السعر</th>
+                    <th>ملاحظات</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    </tr>
+                  <tr>
+                    <td scope="row"><input type="text" class="form-control form-control-sm" /></td>
+                    <td><input type="text" class="form-control form-control-sm" disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  disabled="true"></td>
+                    <td><input type="text" class="form-control form-control-sm"  /></td>
+                    </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <ul class="nav nav-tabs" style="margin-top: 90px;">
+    <li class="nav-item">
+      <a class="nav-link " aria-current="page" href="#">وحدات الاصناف</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">اعدادات الاصناف</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">بدائل الصنف</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="#">اسعار وحدات الصنف</a>
+    </li>
+  </ul> -->
+</div>
