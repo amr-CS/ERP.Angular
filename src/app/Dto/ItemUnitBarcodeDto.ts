@@ -1,0 +1,11 @@
+import { ItemUnitBarcode } from "../interfaces/ItemUnitBarcode";
+import { ItemUnitDto } from "./ItemUnitDto";
+
+export class ItemUnitBarcodeDto implements ItemUnitBarcode{
+  id: number=0;
+  itemUnitId: number=0;
+  barcode: string='';
+  //itemUnit: ItemUnitDto=new ItemUnitDto();
+
+
+}

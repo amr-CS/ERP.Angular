@@ -61,7 +61,7 @@ export interface LookupDetails {
   value2?:string;
   value3?:number;
   date1?:Date;
-  date2?:Date; 
+  date2?:Date;
 }
 
 
