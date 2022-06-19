@@ -87,8 +87,8 @@ export class AccountCategoryComponent implements OnInit {
   rowIndex: number | undefined;
   //#endregion
   constructor(
-    private lookupServ: LookupService,
     private modalService: BsModalService,
+    private lookupServ: LookupService,
     private alertify: AlertifyService,
     private currencyServ: CurrencyService,
     private accountServ: AccountService,

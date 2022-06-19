@@ -6,8 +6,8 @@ export class lookupDetailsDto implements LookupDetails{
   id: number=0;
   code?: number | undefined;
   companyId?: number | undefined;
-  nameL1?: string | undefined;
-  nameL2?: string | undefined;
+  nameL1?: string="";
+  nameL2?: string ="";
   lookupId: number=0;
   ord?: number | undefined;
   valLink: number=0;
