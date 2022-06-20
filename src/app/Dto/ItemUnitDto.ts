@@ -9,7 +9,7 @@ import { lookupDetailsDto } from "./LookupDetailsDto";
 
 export class ItemUnitDto implements ItemUnit{
   unit: lookupDetailsDto=new lookupDetailsDto();
-  UnitParent: lookupDetailsDto=new lookupDetailsDto();
+  unitParent: lookupDetailsDto=new lookupDetailsDto();
   priceCurrency: number=0;
   invItemUnitId: number=0;
   companyId: number=0;
@@ -21,7 +21,7 @@ export class ItemUnitDto implements ItemUnit{
   sellUnit: boolean=false;
   isDecreasable: boolean=false;
   unitOrderLimit: number=0;
-  unitCode: string='';
+  unitCode?: string='';
   unitNameL1: string='';
   unitNameL2: string='';
   branchId: number=0;
@@ -51,8 +51,9 @@ export class ItemUnitDto implements ItemUnit{
 
   //unitCode:number=0;
   unitName?:string;
+  unitItemCode?:number;
   unitParentCode?:number;
   unitParentName?:string;
-  currencyCode:number=0;
+  currencyCode?:number=0;
   currencyName?:string;
 }
