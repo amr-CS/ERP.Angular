@@ -26,4 +26,7 @@ AddEditItemBulk(input:ItemDto[]) {
     }
   );
 }
+itemGetByBarcodeofUnit(barcode:string) {
+  return this.http.get<any>(Constants.ApiUrl + '/api/item/GetItemByBarcodeUnit/'+barcode);
+}
 }

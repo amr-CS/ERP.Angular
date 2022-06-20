@@ -37,7 +37,7 @@ export interface ItemUnit {
         sellUnit    :boolean;
         isDecreasable  :boolean;
         unitOrderLimit :number;
-        unitCode  :string;
+        unitCode  ?:string;
         unitNameL1:string;
         unitNameL2:string;
         branchId    :number;
@@ -45,7 +45,7 @@ export interface ItemUnit {
 
         currency:CurrencyDto;
         unit:lookupDetailsDto;
-        UnitParent:lookupDetailsDto;
+        unitParent:lookupDetailsDto;
         item:ItemDto;
         itemUnitBarcode:ItemUnitBarcodeDto[]
         //unit :Unit

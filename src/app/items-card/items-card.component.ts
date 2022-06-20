@@ -171,7 +171,7 @@ export class ItemsCardComponent implements OnInit {
   }
 
   GetItemByCode(code: any) {
-    this.itemServ.itemGetByCode(code).subscribe(
+    this.itemServ.itemGetByBarcodeofUnit(code).subscribe(
       (res) => {
         if(res==null){
           this.alertify.success("لا يوجد عنصر بهذا الباركود");
@@ -226,8 +226,8 @@ export class ItemsCardComponent implements OnInit {
     });
     this.itemUnitList = Item.tblInvItemUnit;
     this.itemUnitList.forEach(element => {
-      if(element.UnitParent==null){
-        element.UnitParent=new lookupDetailsDto();
+      if(element.unitParent==null){
+        element.unitParent=new lookupDetailsDto();
       }
       if(element.unit==null){
         element.unit=new lookupDetailsDto();
@@ -235,8 +235,11 @@ export class ItemsCardComponent implements OnInit {
       if(element.currency==null){
         element.currency=new CurrencyDto();
       }
+      element.unitItemCode=element.unit.code;
+      element.unitParentCode=element.unitParent.code;
+      element.currencyCode=element.currency.code;
       element.unitName=element.unit.nameL1;
-      element.unitParentName=element?.UnitParent?.nameL1;
+      element.unitParentName=element?.unitParent?.nameL1;
       element.currencyName=element?.currency?.nameL1;
       console.log(element)
     });
@@ -273,11 +276,11 @@ export class ItemsCardComponent implements OnInit {
         }
       });
 
-  //  item.tblInvItemUnit = this.itemUnitList;
-    // // item.tblInvItemUnit.
-    // item.tblInvItemReplace = this.tblInvItemReplaceList;
-    // item.tblInvItemEquipment = this.invItemEquipmentList;
-    // item.tblInvItemsUnitsPrices = this.itemsUnitsPricesList;
+   item.tblInvItemUnit = this.itemUnitList;
+    // item.tblInvItemUnit.
+    item.tblInvItemReplace = this.tblInvItemReplaceList;
+    item.tblInvItemEquipment = this.invItemEquipmentList;
+    item.tblInvItemsUnitsPrices = this.itemsUnitsPricesList;
     let ListOfItems: ItemDto[] = [];
     ListOfItems.push(item);
     console.log(ListOfItems);
@@ -431,8 +434,10 @@ export class ItemsCardComponent implements OnInit {
 
   tableRowClicked(no: any) {
     this.RowNumberInItemUnitList = no;
-    this.itemUnitList[this.RowNumberInItemUnitList].itemUnitBarcode =
-      this.itemUnitBarcodeList;
+    this.itemUnitBarcodeList=this.itemUnitList[this.RowNumberInItemUnitList].itemUnitBarcode ;
+    if(this.itemUnitList[this.RowNumberInItemUnitList].itemUnitBarcode.length==0){
+      this.addNewBarcodeRow();
+    }
     this.ItemUnitId = this.itemUnitList[no].id;
     // console.log(no);
   }

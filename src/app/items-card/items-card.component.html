@@ -472,8 +472,8 @@
                       <td>
                         <input type="text" class="form-control form-control-sm   txtStoreCode"
                           (dblclick)="openModal(UnitTemplate,0,indexOfelement)" (change)="UnitByCode(currencyItem.code)"
-                          [ngClass]="{'is-invalid': (!item.unitCode) &&  (unitItm.touched || unitItm.dirty)}"
-                          #unitItm="ngModel" [(ngModel)]="item.unitCode" [ngModelOptions]="{standalone: true}"
+                          [ngClass]="{'is-invalid': (!item.unitItemCode) &&  (unitItm.touched || unitItm.dirty)}"
+                          #unitItm="ngModel" [(ngModel)]="item.unitItemCode" [ngModelOptions]="{standalone: true}"
                           name="txtStoreCode" required placeholder="0" />
                       </td>
                       <td>
