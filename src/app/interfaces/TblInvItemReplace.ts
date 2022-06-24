@@ -1,6 +1,6 @@
 export interface TblInvItemReplace {
   invItemReplaceId:number;
-  invItemReplaceCode  :string;
+  invItemReplaceCode  ?:string;
   itemId   :number;
   replaceItemId :number;
   notes   :string;

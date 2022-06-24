@@ -1,6 +1,5 @@
 <div class="container">
-  <app-utilities (clickSave)="save()" [name]="pageName"></app-utilities>
-
+  <app-utilities (clickSave)="save()" (clickPopup)="openModal(SearchTemplate,0,0)" [name]="pageName"></app-utilities>
   <div [formGroup]="form">
     <div class="page__content shadow p-3 page__content-data mt-3">
       <div class="container-fluid">
@@ -67,7 +66,7 @@
                       <!-- <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" name="txtStoreId" />
                     <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode"
                       required placeholder="0" /> -->
-                      <input type="text" formControlName="barcode" id="start" [(ngModel)]="ItemCode"
+                      <input type="text" id="start" [(ngModel)]="ItemCode" [ngModelOptions]="{standalone: true}"
                       class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
                   </div>
                   </div>
@@ -178,10 +177,10 @@
                 </div>
                 <div class="col-sm-3">
                   <div class="d-flex txtStore">
-                    <!--
-                  <input type="text" id="start" class="form-control form-control-sm w-25 txtStoreName" readonly
-                  formControlName="CurrencyId" [(ngModel)]="currencyItem.code" s name="txtStoreName" required placeholder="أسم العمله" /> -->
 
+                    <input type="text" formControlName="currencyId"
+                    class="form-control form-control-sm w-25 d-none txtStoreId" [(ngModel)]="currencyItem.id"
+                    name="txtStoreId" />
                     <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
                       (dblclick)="openModal(currencyTemplete,0,0)" (change)="currencyByCode(currencyItem.code)"
                       [ngClass]="{'is-invalid': (!currencyItem.code) && (currencyItem.code==0)&& (currencyItm.touched || currencyItm.dirty)}"
@@ -459,6 +458,7 @@
                       <th>اسم العملة</th>
                       <th>سعر الوحدة</th>
                       <th><b>حد الطلب</b></th>
+                      <th>حذف</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -472,7 +472,7 @@
                       <td>
                         <input type="text" class="form-control form-control-sm   txtStoreCode"
                           (dblclick)="openModal(UnitTemplate,0,indexOfelement)" (change)="UnitByCode(currencyItem.code)"
-                          [ngClass]="{'is-invalid': (!item.unitItemCode) &&  (unitItm.touched || unitItm.dirty)}"
+                          [ngClass]="{'is-invalid': (!item.unitItemCode) && (item.unitItemCode==0)  && (unitItm.touched || unitItm.dirty)}"
                           #unitItm="ngModel" [(ngModel)]="item.unitItemCode" [ngModelOptions]="{standalone: true}"
                           name="txtStoreCode" required placeholder="0" />
                       </td>
@@ -511,6 +511,8 @@
                           class="form-control form-control-sm" /></td>
                       <td><input type="text" [(ngModel)]="itemUnitList[indexOfelement].orderLimit"
                           class="form-control form-control-sm" /></td>
+                      <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index)"><i class="fa fa-trash"></i></button></td>
                     </tr>
 
                   </tbody>
@@ -553,6 +555,7 @@
                       <th>رقم الاعداد</th>
                       <th>اسم الاعداد</th>
                       <th>ملاحظات</th>
+                      <th>حذف</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -571,7 +574,8 @@
                           [value]="item.equipName" name="txtStoreName" required placeholder="المعدات" disabled />
                       </td>
                       <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.notes" /></td>
-
+                      <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index)"><i class="fa fa-trash"></i></button></td>
                     </tr>
 
 
@@ -595,6 +599,7 @@
                       <th>رقم الصنف</th>
                       <th>اسم الصنف البديل</th>
                       <th>ملاحظات</th>
+                      <th>حذف</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -612,7 +617,9 @@
                         <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
                           [value]="item.invItemReplaceName" name="txtStoreName" required placeholder="البديل" disabled />
                       </td>
-                      <td><input type="text" class="form-control form-control-sm" /></td>
+                      <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.notes"/></td>
+                      <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index)"><i class="fa fa-trash"></i></button></td>
                     </tr>
 
 
@@ -636,6 +643,7 @@
                       <th colspan="2">نوع السعر</th>
                       <th>السعر</th>
                       <th>ملاحظات</th>
+                      <th>حذف</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -655,6 +663,8 @@
                         </td>
                       <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.price"></td>
                       <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.notes"/></td>
+                      <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index)"><i class="fa fa-trash"></i></button></td>
                     </tr>
 
                   </tbody>
@@ -882,7 +892,7 @@
 <ng-template #ItemUnitPrice>
   <div class="modal-content">
     <div class="modal-header">
-      <h4 class="modal-title" style="color: black;">hg</h4>
+      <h4 class="modal-title" style="color: black;">وحدات الاصناف</h4>
       <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
@@ -899,6 +909,72 @@
             (dblclick)="getItem(item,8);modalRef?.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #SearchTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">بحث</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <div class="row">
+            <div class="col-md-1">
+              <label class="small float-right">من</label>
+            </div>
+            <div class="col-md-4  col-sm-1">
+              <div class="d-flex txtStore mb-1">
+                <input type="date" id="start" [(ngModel)]="SearchFrom" [ngModelOptions]="{standalone: true}"
+                  class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+              </div>
+            </div>
+            <div class="col-md-1">
+              <label class="small float-right">الي</label>
+            </div>
+            <div class="col-md-4  col-sm-1">
+              <div class="d-flex txtStore mb-1">
+                <input type="date" id="start" [(ngModel)]="SearchTo" [ngModelOptions]="{standalone: true}"
+                  class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+              </div>
+            </div>
+
+            <div class="col-md-2  col-sm-1">
+            <!-- <button type="button" name="" id="" class="btn btn-outline-primary btn-sm" (click)="Search()">بحث</button> -->
+            <button mdbBtn class="btn btn-outline-primary btn-sm" color="primary" type="button" (click)="Search()">
+              <span class="spinner-grow spinner-grow-sm" role="status"  *ngIf="isload"></span>
+              بحث...
+            </button>
+            </div>
+      </div>
+      <table class="table mt-3 p-1">
+        <thead class="mb-1">
+          <th>رمز الصنف</th>
+          <th>اسم الصنف</th>
+          <th>تاريخ الاضافه</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of AllItemList | ItemFilter:textFilterModel,let i =index" class='clickable-row'
+            (dblclick)="getItem(item,9);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+            <td>{{item.createdOn|date:'short'}}</td>
           </tr>
         </tbody>
       </table>

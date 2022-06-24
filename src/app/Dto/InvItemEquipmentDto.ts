@@ -2,7 +2,7 @@ import { InvItemEquipment } from "../interfaces/InvItemEquipment";
 
 export class InvItemEquipmentDto implements InvItemEquipment{
   invItemEquipmentId : number=0;
-  invItemEquipmentCode: string='';
+  invItemEquipmentCode?: number=0;
   itemId : number=0;
   equipmentId : number=0;
   notes: string='';
@@ -12,5 +12,5 @@ export class InvItemEquipmentDto implements InvItemEquipment{
   createdOn: Date=new Date();
   lastUpdatedBy : number=0;
   lastUpdatedOn: Date=new Date();
-  equipName:string='';
+  equipName?:string='';
 }

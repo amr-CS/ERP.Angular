@@ -2,7 +2,7 @@ import { TblInvItemReplace } from "../interfaces/TblInvItemReplace";
 
 export class TblInvItemReplaceDto implements TblInvItemReplace{
   invItemReplaceId  : number=0;
-  invItemReplaceCode: string='';
+  invItemReplaceCode?: string='';
   itemId  : number=0;
   replaceItemId  : number=0;
   notes: string='';
@@ -14,6 +14,6 @@ export class TblInvItemReplaceDto implements TblInvItemReplace{
   lastUpdatedOn: Date=new Date();
 
 
-  invItemReplaceName: string='';
+  invItemReplaceName?: string='';
 
 }

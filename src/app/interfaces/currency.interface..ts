@@ -1,10 +1,10 @@
 import { NameCommon } from "./namecommon.interface";
 
-export interface Currency {  
+export interface Currency {
   id:number ;
-  nameL1:string;
-  nameL2:string;
-  code?:number ;  
+  nameL1?:string;
+  nameL2?:string;
+  code?:number ;
   currencyExchange?:number ;
   currencyDecimal?: number;
   currencyFactorId?:number ;
@@ -15,5 +15,4 @@ export interface Currency {
   currencyAbbr: string;
   isActive?:boolean ;
 }
-  
-  
+

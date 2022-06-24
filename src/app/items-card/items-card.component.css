@@ -27,7 +27,7 @@
   size: 20px;
 }
 tbody, td, tfoot, th, thead, tr {
-  line-height: .5;
+  line-height: .75;
 }
 .modal.show .modal-dialog {
   margin-right: 700px;
