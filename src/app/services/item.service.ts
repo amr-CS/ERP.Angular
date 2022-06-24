@@ -26,7 +26,18 @@ AddEditItemBulk(input:ItemDto[]) {
     }
   );
 }
+AddEditItem(input:ItemDto) {
+  return this.http.post<ItemDto>(Constants.ApiUrl + '/api/Item/AddEditItem',
+  JSON.stringify(input),
+    {
+      'headers': { 'content-type': 'application/json' }
+    }
+  );
+}
 itemGetByBarcodeofUnit(barcode:string) {
   return this.http.get<any>(Constants.ApiUrl + '/api/item/GetItemByBarcodeUnit/'+barcode);
+}
+itemGetById(id:number) {
+  return this.http.get<any>(Constants.ApiUrl + '/api/item/GetItemById/'+id);
 }
 }

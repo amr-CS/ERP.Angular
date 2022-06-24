@@ -4,7 +4,7 @@ export interface InvItemsUnitsPrices {
   priceCat :number;
   price :number;
   priceIsActive :boolean;
-  priceCode :string;
+  priceCode ?:number;
   sellCostType :number;
   notes :string;
   priceId :number;

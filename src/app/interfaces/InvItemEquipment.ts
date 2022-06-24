@@ -1,8 +1,8 @@
 export interface InvItemEquipment {
   invItemEquipmentId: number;
-  invItemEquipmentCode: string;
+  invItemEquipmentCode?: number;
   itemId: number;
-  equipmentId: number;
+  equipmentId?: number;
   notes: string;
   invItemEquipmentIsActive: boolean;
   isDeleted: boolean;

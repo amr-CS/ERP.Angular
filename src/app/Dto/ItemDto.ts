@@ -16,7 +16,7 @@ export class ItemDto implements Item{
   factoryId: number=0;
   orderLimit: number=0;
   symbol: string='';
-  CurrencyId: number=0;
+  currencyId: number=0;
   measurements: string='';
   lastCost: number=0;
   productDate: Date=new Date();
@@ -44,6 +44,8 @@ export class ItemDto implements Item{
   itemTypeId: number=0;
   isDetailsGroup: boolean=false;
   itemGroupId: number=0;
+  createdOn:Date=new Date();
+
   tblInvItemUnit:ItemUnitDto[]=[];
   tblInvItemReplace:TblInvItemReplaceDto[]=[];
   tblInvItemEquipment:InvItemEquipmentDto[]=[];

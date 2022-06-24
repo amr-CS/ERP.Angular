@@ -8,8 +8,6 @@ import { lookupDetailsDto } from "./LookupDetailsDto";
 
 
 export class ItemUnitDto implements ItemUnit{
-  unit: lookupDetailsDto=new lookupDetailsDto();
-  unitParent: lookupDetailsDto=new lookupDetailsDto();
   priceCurrency: number=0;
   invItemUnitId: number=0;
   companyId: number=0;
@@ -40,20 +38,15 @@ export class ItemUnitDto implements ItemUnit{
   createdOn: Date=new Date();
   lastUpdatedBy: number=0;
   lastUpdatedOn: Date=new Date();
-
+  unitName?:string="";
+  unitItemCode?:number;
+  unitParentCode?:number;
+  unitParentName?:string="";
+  currencyCode?:number=0;
+  currencyName?:string="";
   itemUnitBarcode:ItemUnitBarcodeDto[]=[];
   item:ItemDto=new ItemDto();
   currency:CurrencyDto=new CurrencyDto();
-
-  // currency: CurrencyDto=new CurrencyDto();
-  // item: ItemDto=new ItemDto();
-
-
-  //unitCode:number=0;
-  unitName?:string;
-  unitItemCode?:number;
-  unitParentCode?:number;
-  unitParentName?:string;
-  currencyCode?:number=0;
-  currencyName?:string;
+  unit: lookupDetailsDto=new lookupDetailsDto();
+  unitParent: lookupDetailsDto=new lookupDetailsDto();
 }

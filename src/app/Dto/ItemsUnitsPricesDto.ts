@@ -6,8 +6,8 @@ export class ItemsUnitsPricesDto implements InvItemsUnitsPrices{
   priceCat: number=0;
   price: number=0;
   priceIsActive: boolean=false;
-  priceCode: string='';
-  priceName:string='';
+  priceCode?: number=0;
+  priceName?:string='';
   sellCostType: number=0;
   notes: string='';
   priceId: number=0;
