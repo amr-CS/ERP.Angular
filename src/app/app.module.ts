@@ -94,8 +94,8 @@ import{LookupCategoryFilterPipe} from './pipes/lookupCategoryFilter.pipe';
 import { NgxBootstrapIconsModule } from 'ngx-bootstrap-icons';
 import { ToastrModule } from 'ngx-toastr';
 import { ItemsCardComponent } from './items-card/items-card.component';
+import { ItemUnitPipe } from './pipes/ItemUnit.pipe';
 import { ItemFilterPipe } from './pipes/ItemFilter.pipe';
-
 
 
 
@@ -108,6 +108,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
   declarations: [
     AppComponent,
+    ItemUnitPipe,
     ItemFilterPipe,
     LookupCategoryFilterPipe,
     DemographicinfoComponent,
