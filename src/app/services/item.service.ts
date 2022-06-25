@@ -40,4 +40,7 @@ itemGetByBarcodeofUnit(barcode:string) {
 itemGetById(id:number) {
   return this.http.get<any>(Constants.ApiUrl + '/api/item/GetItemById/'+id);
 }
+UnitBarcodeList() {
+  return this.http.get<any[]>(Constants.ApiUrl + '/api/item/GetItemUnitBarcode');
+}
 }

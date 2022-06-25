@@ -15,7 +15,7 @@ export interface Item {
   factoryId: number;
   orderLimit: number;
   symbol: string;
-  currencyId: number;
+  currencyId?: number;
   measurements: string;
   lastCost: number;
   productDate: Date;
@@ -44,6 +44,13 @@ export interface Item {
   isDetailsGroup: boolean;
   itemGroupId: number;
   createdOn:Date;
+  createdBy:number;
+  lastUpdatedBy:number;
+  lastUpdatedOn:Date;
+  itemMinQty:number;
+  itemMaxQty:number;
+
+
   tblInvItemUnit:ItemUnitDto[];
   tblInvItemReplace:TblInvItemReplaceDto[];
   tblInvItemEquipment:InvItemEquipmentDto[];

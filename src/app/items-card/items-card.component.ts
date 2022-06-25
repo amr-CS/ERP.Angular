@@ -1,3 +1,4 @@
+import { IfStmt } from '@angular/compiler';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import {
   FormBuilder,
@@ -65,6 +66,7 @@ export class ItemsCardComponent implements OnInit {
   ItemUnitPriceList: LookupDetails[] = [];
   ItemUnitId: number = 0;
   RowNumberInItemUnitList: any;
+  barcodeList: any[]=[];
   constructor(
     private modalService: BsModalService,
     private lookupServ: LookupService,
@@ -115,14 +117,10 @@ export class ItemsCardComponent implements OnInit {
       itemTypeId: new FormControl(null),
       isDetailsGroup: new FormControl(null),
       itemGroupId: new FormControl(null),
+      itemMinQty:new FormControl(null),
+      itemMaxQty:new FormControl(null),
     });
-  }
-  ngOnInit(): void {
-    this.addNewRow();
-    this.addNewEquipRow();
-    this.addNewReplaceRow();
-    this.addNewUnitPriceRow();
-    this.addNewBarcodeRow();
+
     forkJoin([
       this.lookupServ.lookupDetailsGetById(122).subscribe(
         (res) => {
@@ -158,11 +156,22 @@ export class ItemsCardComponent implements OnInit {
         (res) => (this.AllItemList = res),
         (err) => console.log(err)
       ),
+      this.itemServ.UnitBarcodeList().subscribe(
+        (res) => (this.barcodeList = res),
+        (err) => console.log(err)
+      ),
     ]);
+
+    for (let i = 1; i <= 5; i++) {
+      this.addNewRow(i);
+    }
   }
+
+  ngOnInit(): void {
+  }
+
   openModal(template: TemplateRef<any>, type?: number, index?: number) {
     this.rowIndex = index == undefined ? 0 : index;
-    // console.log(this.rowIndex);
     this.modalRef = this.modalService.show(template, {
       class: 'modal-dialog-centered modal-dialog-scrollable modal-lg',
     });
@@ -226,6 +235,8 @@ export class ItemsCardComponent implements OnInit {
       itemTypeId: [Item?.itemTypeId],
       isDetailsGroup: [Item?.isDetailsGroup],
       itemGroupId: [Item?.itemGroupId],
+      itemMinQty:[Item?.itemMinQty],
+      itemMaxQty:[Item?.itemMaxQty],
     });
     if (Item.categoryId != null) {
       var category = this.lookupDetailsList.find(
@@ -248,18 +259,19 @@ export class ItemsCardComponent implements OnInit {
     if (Item.tblInvItemUnit.length != 0) {
       Item.tblInvItemUnit.forEach((element) => {
       let unit = this.ItemUnits.find((x) => x.id == element.unitId);
-      element.unitItemCode = unit?.code;
-      element.unitName = unit?.nameL1;
+      element.unitItemCode = unit==null?0:unit.code;
+      element.unitName = unit==null?"":unit.nameL1;
+
       });
       Item.tblInvItemUnit.forEach((element) => {
         let unitParent = this.ItemUnits.find((x) => x.id == element.unitParentId);
-        element.unitParentCode = unitParent?.code;
-        element.unitParentName = unitParent?.nameL1;
+        element.unitParentCode = unitParent==null?0:unitParent.code;
+        element.unitParentName = unitParent==null?"":unitParent.nameL1;
         });
       Item.tblInvItemUnit.forEach((element) => {
         let currency = this.currencyList.find((x) => x.id == element.currencyId);
-        element.currencyCode = currency?.code;
-        element.currencyName = currency?.nameL1;
+        element.currencyCode = currency==null?0:currency.code;
+        element.currencyName = currency==null?"":currency.nameL1;
         });
 
         Item.tblInvItemUnit.forEach(element => {
@@ -296,29 +308,31 @@ export class ItemsCardComponent implements OnInit {
     });
 
     if (Item.tblInvItemUnit.length == 0) {
-      this.addNewRow();
+      this.addNewRow(1);
     }
     if (Item.tblInvItemEquipment.length == 0) {
-      this.addNewEquipRow();
+      this.addNewRow(3);
     }
     if (Item.tblInvItemReplace.length == 0) {
-      this.addNewReplaceRow();
+      this.addNewRow(4);
     }
     if (Item.tblInvItemsUnitsPrices.length == 0) {
-      this.addNewUnitPriceRow();
+      this.addNewRow(5);
     }
   }
   save() {
     let item: ItemDto = new ItemDto();
     item = this.form.value;
-    this.itemUnitList.forEach((element,index) => {
-      if (
-        element.unitId == 0 ||
-        element.unitParentId == 0
-      ) {
-        this.itemUnitList.splice(index,1);
-      }
-    });
+    if(this.itemUnitList.length>1){
+      this.itemUnitList.forEach((element,index) => {
+        if (
+          element.unitId == 0
+        ) {
+          this.itemUnitList.splice(index,1);
+        }
+      });
+    }
+
     this.tblInvItemReplaceList.forEach((element,index) => {
       if (element.replaceItemId == 0) {
         this.tblInvItemReplaceList.splice(index,1);
@@ -339,17 +353,23 @@ export class ItemsCardComponent implements OnInit {
     item.tblInvItemReplace = this.tblInvItemReplaceList;
     item.tblInvItemEquipment = this.invItemEquipmentList;
     item.tblInvItemsUnitsPrices = this.itemsUnitsPricesList;
-    // let ListOfItems: ItemDto[] = [];
-    // ListOfItems.push(item);
-    // console.log(ListOfItems);
-    this.itemServ.AddEditItem(item).subscribe(
-      (res) => {
-        this.buildForm(res);
-        this.alertify.success('تم الحفظ بنجاح');
-      },
-      (err) => console.log(err)
-    );
+
+    if(item.categoryId!=0&&item.nameL1!=""&&item.nameL2!=""&&item.tblInvItemUnit[0].unitId!=0){
+      this.itemServ.AddEditItem(item).subscribe(
+        (res) => {
+          console.log(res);
+           this.getItemById(res.id);
+          this.alertify.success('تمت العمليه بنجاح');
+        },
+        (err) => console.log(err)
+      );
+
+      }else{
+          this.alertify.error("برجاء ملء البيانات المطلوبه واضافه عنصر علي الاقل ف جدول وحدات الاصناف")
+      }
   }
+
+
   private formatDate(date: any) {
     const d = new Date(date);
     let month = '' + (d.getMonth() + 1);
@@ -375,27 +395,73 @@ export class ItemsCardComponent implements OnInit {
     this.index = index != undefined ? index : 0;
     debugger;
     let item = this.lookupDetailsList.find((s) => s.code == code);
-    //console.log(item);
-    this.lookupItemDetails.code = item?.code;
-    this.lookupItemDetails.nameL1 = item?.nameL1;
-    if (item?.id !== null) {
-      let itmId = item?.id == null ? 0 : item.id;
-      this.lookupItemDetails.id = itmId;
-    } else {
-      this.alertify.error('لا يوجد فئة بذلك الرقم');
+    if(item!=null){
+      this.lookupItemDetails.id = item.id;
+      this.lookupItemDetails.code = item.code;
+      this.lookupItemDetails.nameL1 = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد فئة بذلك الكود');
     }
   }
   currencyByCode(code: any) {
     debugger;
     let item = this.currencyList.find((s) => s.code == code);
-    //console.log(item);
-    this.currencyItem.code = item?.code;
-    this.currencyItem.nameL1 == undefined ? null : item?.nameL1;
-    if (item?.id !== null) {
-      let itmId = item?.id == null ? 0 : item.id;
-      this.currencyItem.id = itmId;
-    } else {
-      this.alertify.error('لا يوجد عمله بذلك الرقم');
+    if(item!=null){
+      this.currencyItem.id = item.id;
+      this.currencyItem.code = item.code;
+      this.currencyItem.nameL1 = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد عمله بذلك الكود');
+    }
+  }
+  itemUnitByCode(code:any,index:number){
+    let item = this.ItemUnits.find((s) => s.code == code);
+    if(item!=null){
+      this.itemUnitList[index].unitId = item.id;
+      this.itemUnitList[index].unitItemCode = item.code;
+      this.itemUnitList[index].unitName = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد وحدة بذلك الكود');
+    }
+  }
+  currencyUnitByCode(code:any,index:number){
+    let item = this.currencyList.find((s) => s.code == code);
+    if(item!=null){
+      this.itemUnitList[index].currencyId = item.id;
+      this.itemUnitList[index].currencyCode = item.code;
+      this.itemUnitList[index].currencyName = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد وحدة بذلك الكود');
+    }
+  }
+  EquipByCode(code:any,index:number){
+    let item = this.EquipList.find((s) => s.code == code);
+    if(item!=null){
+      this.invItemEquipmentList[index].equipmentId = item.id;
+      this.invItemEquipmentList[index].invItemEquipmentCode = item.code;
+      this.invItemEquipmentList[index].equipName = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد معدات بذلك الكود');
+    }
+  }
+  ReplaceItemByCode(code:any,index:number){
+    let item = this.AllItemList.find((s) => s.code == code);
+    if(item!=null){
+      this.tblInvItemReplaceList[index].invItemReplaceId = item.id;
+      this.tblInvItemReplaceList[index].invItemReplaceCode = item.code;
+      this.tblInvItemReplaceList[index].invItemReplaceName = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد عنصر بذلك الكود');
+    }
+  }
+  priceItemByCode(code:any,index:number){
+    let item = this.ItemUnitPriceList.find((s) => s.code == code);
+    if(item!=null){
+      this.itemsUnitsPricesList[index].sellCostType = item.id;
+      this.itemsUnitsPricesList[index].priceCode = item.code;
+      this.itemsUnitsPricesList[index].priceName = item.nameL1;
+    }else{
+      this.alertify.error('لا يوجد سعر بذلك الكود');
     }
   }
   UnitByCode(code: any) {
@@ -411,31 +477,59 @@ export class ItemsCardComponent implements OnInit {
       this.alertify.error('لا يوجد صنف بذلك الرقم');
     }
   }
-  addNewRow() {
-    var dto: ItemUnitDto = new ItemUnitDto();
-    this.ItemUnitMain = new lookupDetailsDto();
-    this.ItemUnitDetails = new lookupDetailsDto();
-    this.currencyUnitItem = new CurrencyDto();
-    this.itemUnitList.push(dto);
+  addNewRow(type:number,index?:number) {
+    debugger
+    switch(type){
+      case 1:
+        if(index!=null){
+          if(this.itemUnitList[index].unitId!=0){
+            var itemUnitDto: ItemUnitDto = new ItemUnitDto();
+            if(index!=null||index!=undefined){
+           itemUnitDto.unitParentId=this.itemUnitList[index].unitId;
+           itemUnitDto.unitParentCode=this.itemUnitList[index].unitItemCode;
+           itemUnitDto.unitParentName=this.itemUnitList[index].unitName;
+            }
+            this.itemUnitList.push(itemUnitDto);
+          }else{
+            this.alertify.error("برجاء ادخال الوحدة ")
+          }
+        }else{
+          var itemUnitDto: ItemUnitDto = new ItemUnitDto();
+          this.itemUnitList.push(itemUnitDto);
+        }
+
+
+        break;
+      case 2:
+        if(index!=null){
+            var result=this.barcodeList.find(x=>x.barcode==this.itemUnitBarcodeList[index].barcode)
+              if(result==null){
+                var itemUnitBarcodeDto: ItemUnitBarcodeDto = new ItemUnitBarcodeDto();
+                this.itemUnitBarcodeList.push(itemUnitBarcodeDto);
+                }else{
+                  this.alertify.error("عفوا..الباركود مستخدم من قبل")
+                }
+        }else{
+          var itemUnitBarcodeDto: ItemUnitBarcodeDto = new ItemUnitBarcodeDto();
+                this.itemUnitBarcodeList.push(itemUnitBarcodeDto);
+        }
+        break;
+      case 3:
+        var invItemEquipmentDto: InvItemEquipmentDto = new InvItemEquipmentDto();
+        this.invItemEquipmentList.push(invItemEquipmentDto);
+        break;
+      case 4:
+        var tblInvItemReplaceDto: TblInvItemReplaceDto = new TblInvItemReplaceDto();
+        this.tblInvItemReplaceList.push(tblInvItemReplaceDto);
+        break;
+      case 5:
+        var itemsUnitsPricesDto: ItemsUnitsPricesDto = new ItemsUnitsPricesDto();
+        this.itemsUnitsPricesList.push(itemsUnitsPricesDto);
+        break;
+    }
+
   }
-  addNewEquipRow() {
-    var dto: InvItemEquipmentDto = new InvItemEquipmentDto();
-    this.invItemEquipmentList.push(dto);
-  }
-  addNewReplaceRow() {
-    var dto: TblInvItemReplaceDto = new TblInvItemReplaceDto();
-    this.tblInvItemReplaceList.push(dto);
-  }
-  addNewUnitPriceRow() {
-    var dto: ItemsUnitsPricesDto = new ItemsUnitsPricesDto();
-    this.itemsUnitsPricesList.push(dto);
-  }
-  addNewBarcodeRow() {
-    var dto: ItemUnitBarcodeDto = new ItemUnitBarcodeDto();
-    dto.itemUnitId = 50;
-    //dto.itemUnitId=this.ItemUnitId;
-    this.itemUnitBarcodeList.push(dto);
-  }
+
   getItem(item: any, type: number, col?: number) {
     debugger;
     this.itemId = item.id;
@@ -448,10 +542,31 @@ export class ItemsCardComponent implements OnInit {
         this.currencyItem = item;
         break;
       case 3:
-        this.itemUnitList[this.rowIndex].unit = item;
-        this.itemUnitList[this.rowIndex].unitId = item.id;
-        this.itemUnitList[this.rowIndex].unitItemCode = item.code;
-        this.itemUnitList[this.rowIndex].unitName = item.nameL1;
+        var found=false;
+        this.itemUnitList.forEach(element => {
+          if(item.id==element.unitId){
+            found=true;
+          }
+        });
+        if(found){
+          this.alertify.error("لا يمكن اختيار تلك الوحده");
+          break;
+        }else{
+          if(this.itemUnitList[this.rowIndex].unitParentId==item.id){
+            this.alertify.error("لا يمكن ان تكون الوحده مساوية للوحده الرئيسيه");
+          }else{
+            this.itemUnitList[this.rowIndex].unit = item;
+            this.itemUnitList[this.rowIndex].unitId = item.id;
+            this.itemUnitList[this.rowIndex].unitItemCode = item.code;
+            this.itemUnitList[this.rowIndex].unitName = item.nameL1;
+
+            if(this.rowIndex<this.itemUnitList.length-1){
+              this.itemUnitList[this.rowIndex+1].unitParentId = item.id;
+              this.itemUnitList[this.rowIndex+1].unitParentCode = item.code;
+              this.itemUnitList[this.rowIndex+1].unitParentName = item.nameL1;
+            }
+          }
+        }
         break;
       case 4:
         this.itemUnitList[this.rowIndex].unitParent=item;
@@ -488,24 +603,26 @@ export class ItemsCardComponent implements OnInit {
         break;
       case 9:
         this.getItemById(item.id);
-        //this.itemServ.itemGetById(item.id).subscribe()
-        //this.GetItemByCode(item.barcode);
+        break;
+      default:
+        console.log('No such type exists!');
         break;
     }
   }
+
   getItemById(id: number) {
     this.isload = true;
     this.itemServ.itemGetById(id).subscribe(
       (res) => {
         this.isload = false;
         this.buildForm(res);
-        this.alertify.success('تم استدعاء البيانات بنجاح');
       },
       (err) => {
         this.alertify.error('حدث خطأ ما');
       }
     );
   }
+
   tableRowClicked(no: any) {
     this.RowNumberInItemUnitList = no;
     this.itemUnitBarcodeList =
@@ -514,7 +631,7 @@ export class ItemsCardComponent implements OnInit {
       this.itemUnitList[this.RowNumberInItemUnitList].itemUnitBarcode.length ==
       0
     ) {
-      this.addNewBarcodeRow();
+      this.addNewRow(2);
     }
     this.ItemUnitId = this.itemUnitList[no].id;
     // console.log(no);
@@ -530,12 +647,74 @@ export class ItemsCardComponent implements OnInit {
     }
   }
 
-  DeleteRow(index:any){
-    this.alertify.confirm("are you sure you want delete",()=>{
-      this.itemUnitList[index].isDeleted=true;
-      this.itemUnitList.splice(index,1);
-    }
-   );
-    ;
+  DeleteRow(index:any,type:number){
+    debugger
+  switch(type){
+    case 1:
+        if(this.itemUnitList[index].id!=0){
+          this.alertify.confirm("are you sure you want delete",()=>{
+            this.itemUnitList[index].isDeleted=true;
+            //this.itemUnitList.splice(index,1);
+            this.save();
+          });
+        }else{
+          this.itemUnitList.splice(index,1);
+          if(this.itemUnitList.length==0){
+            this.addNewRow(1);
+          }
+        }
+
+      break;
+    case 2:
+        this.alertify.confirm("are you sure you want delete",()=>{
+          if(this.invItemEquipmentList[index].invItemEquipmentId!=0){
+            this.invItemEquipmentList[index].isDeleted=true;
+            this.save();
+            this.getItemById(this.invItemEquipmentList[index].itemId);
+            //this.invItemEquipmentList.splice(index,1);
+          }else{
+            this.invItemEquipmentList.splice(index,1);
+            if(this.invItemEquipmentList.length==0){
+              this.addNewRow(3);
+            }
+          }
+        });
+      break;
+    case 3:
+        this.alertify.confirm("are you sure you want delete",()=>{
+          if(this.tblInvItemReplaceList[index].invItemReplaceId!=0){
+            this.tblInvItemReplaceList[index].isDeleted=true;
+            this.save();
+            this.getItemById(this.tblInvItemReplaceList[index].itemId);
+            //this.tblInvItemReplaceList.splice(index,1);
+          }else{
+            this.tblInvItemReplaceList.splice(index,1);
+            if(this.tblInvItemReplaceList.length==0){
+              this.addNewRow(4);
+            }
+          }
+        });
+      break;
+    case 4:
+        this.alertify.confirm("are you sure you want delete",()=>{
+          if(this.itemsUnitsPricesList[index].sellCostType!=0){
+            this.itemsUnitsPricesList[index].isDeleted=true;
+            this.save();
+            this.getItemById(this.itemsUnitsPricesList[index].itemId);
+
+            //this.itemsUnitsPricesList.splice(index,1);
+          }else{
+            this.itemsUnitsPricesList.splice(index,1);
+            if(this.itemsUnitsPricesList.length==0){
+              this.addNewRow(5);
+            }
+          }
+
+        });
+      break;
+    default:
+          console.log('No such type exists!');
+          break;
+  }
   }
 }

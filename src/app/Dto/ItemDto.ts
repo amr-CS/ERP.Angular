@@ -6,6 +6,9 @@ import { ItemUnitDto } from "./ItemUnitDto";
 import { TblInvItemReplaceDto } from "./TblInvItemReplaceDto";
 
 export class ItemDto implements Item{
+  createdBy: number=0;
+  lastUpdatedBy: number=0;
+  lastUpdatedOn: Date=new Date();
   id: number=0;
   code: string='';
   itemNo: string='';
@@ -16,7 +19,7 @@ export class ItemDto implements Item{
   factoryId: number=0;
   orderLimit: number=0;
   symbol: string='';
-  currencyId: number=0;
+  currencyId?: number;
   measurements: string='';
   lastCost: number=0;
   productDate: Date=new Date();
@@ -45,7 +48,8 @@ export class ItemDto implements Item{
   isDetailsGroup: boolean=false;
   itemGroupId: number=0;
   createdOn:Date=new Date();
-
+  itemMinQty:number=0;
+  itemMaxQty:number=0;
   tblInvItemUnit:ItemUnitDto[]=[];
   tblInvItemReplace:TblInvItemReplaceDto[]=[];
   tblInvItemEquipment:InvItemEquipmentDto[]=[];
