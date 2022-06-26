@@ -2,8 +2,8 @@ import { Currency } from "../interfaces/currency.interface.";
 
 export class CurrencyDto implements Currency{
   id: number=0;
-  nameL1: string='';
-  nameL2: string='';
+  nameL1?: string="";
+  nameL2: string| undefined;
   code?: number | undefined;
   currencyExchange?: number | undefined;
   currencyDecimal?: number | undefined;

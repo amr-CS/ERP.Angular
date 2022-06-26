@@ -17,6 +17,8 @@ import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CategoriesAcclistDto } from '../Dto/CategoriesAcclistDto';
 import { CategoriesAccService } from '../services/CategoriesAcc.service';
 import { AddEditCategoriesAccDto } from '../Dto/AddEditCategoriesAccDto';
+import Swal from 'sweetalert2';
+
 //#endregion
 @Component({
   selector: 'app-account-category',
@@ -85,12 +87,12 @@ export class AccountCategoryComponent implements OnInit {
   rowIndex: number | undefined;
   //#endregion
   constructor(
-    private lookupServ: LookupService,
     private modalService: BsModalService,
+    private lookupServ: LookupService,
     private alertify: AlertifyService,
     private currencyServ: CurrencyService,
     private accountServ: AccountService,
-    private categoriesAccServ: CategoriesAccService
+    private categoriesAccServ: CategoriesAccService,
   ) {}
 
   ngOnInit(): void {
@@ -148,7 +150,73 @@ export class AccountCategoryComponent implements OnInit {
       );
     }
   }
-  invoiceDelete(id: any) {}
+x(){
+  Swal.fire({
+    title: 'جاري الحفظ...',
+    html: 'برجاء الانتظار حتي يتم حفظ البيانات',
+    allowEscapeKey: false,
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading()
+    }
+  });
+  setTimeout(() => {
+    Swal.close();
+  }, 2000);
+}
+
+  CategoryAccountDelete() {
+  if(this.lookupItemDetails.nameL1==undefined){
+    this.alertify.error("برجاء اختيار الفئة المراد حذفها")
+  }else{
+    Swal.fire({
+      title:`هل تريد حذف الحسابات المربوطه بفئة : ${this.lookupItemDetails.nameL1} `,
+     // text: "You won't be able to revert this!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'نعم',
+      cancelButtonText: 'لا',
+    }).then((result) => {
+      if(this.list.length==1&&this.list[0].curId==0){
+        this.alertify.error("لا يوجد حسابات ليتم حذفها");
+      }else{
+        this.list.forEach(element => {
+          element.isDeleted=true;
+        });
+        this.list.forEach((element,index) => {
+          if(element.catAccId==0){
+            this.list.splice(index,1)
+          }
+        });
+        this.categoriesAccServ.AddEditCategoriesAcc(this.list).subscribe(
+          (res) => {
+            console.log(res),
+              this.categoriesAccServ
+                .GetCategoriesAccountByCatId(this.lookupItemDetails.id)
+                .subscribe(
+                  (res) => {this.list = res;
+                    if(res.length==0){
+                      this.addNewRow();
+                    }
+                  },
+                );
+          },
+        );
+        this.catGroupAcc.accountNo='';
+        this.catBackSellAcc.accountNo='';
+        this.catCostAcc.accountNo='';
+        Swal.fire(
+              'تم الحذف بنجاح',
+              `تم حذف جميع الحسابات الخاصة بفئة :${this.lookupItemDetails.nameL1}`,
+              'success',
+            )
+      }
+    })
+  }
+
+  }
   //#endregion
   openModal(template: TemplateRef<any>, type?: number, index?: number) {
     this.rowIndex = index == undefined ? 0 : index;
@@ -358,7 +426,8 @@ export class AccountCategoryComponent implements OnInit {
             this.categoriesAccServ
               .GetCategoriesAccountByCatId(this.lookupItemDetails.id)
               .subscribe(
-                (res) => {this.list = res;
+                (res) => {
+                  this.list = res;
                   if(res.length==0){
                     this.addNewRow();
                   }
@@ -371,13 +440,18 @@ export class AccountCategoryComponent implements OnInit {
         );
       });
     } else {
-      this.list.splice(index);
-      this.alertify.error('خطأ في الحذف ');
+      this.list.splice(index,1);
+      if(this.list.length==0){
+        this.addNewRow();
+      }
+      this.alertify.success('تم الحذف');
     }
   }
-  // CheckValidation(list:any){
-  //   list.forEach(element => {
-  //     if(element)
-  //   });
-  // }
+
+  CheckValidation(list:any){
+    // list.forEach(element => {
+    //   if(element){}
+    //  }
+    // );
+  }
 }

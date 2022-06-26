@@ -1,0 +1,987 @@
+<div class="container">
+  <app-utilities (clickSave)="save()" (clickPopup)="openModal(SearchTemplate,0,0)" [name]="pageName"></app-utilities>
+  <div [formGroup]="form">
+    <div class="page__content shadow p-3 page__content-data mt-3">
+      <div class="container-fluid">
+        <div class="bg-white border rounded p-3">
+          <div class="row">
+            <div class="col">
+              <div class="col-md-12">
+                <div class="row controlRow">
+                  <div class="col-sm-2.5">
+                    <label class="small float-right">اسم الفرع</label>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="d-flex txtStore">
+                      <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId"
+                        name="txtStoreId" />
+
+                      <input type="text" formControlName="branchId"
+                        class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode" required
+                        placeholder="13" />
+
+                      <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                        name="txtStoreName" value="وليمة السلطان - الدرعية - طريق الملك عبد العزيز" required />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="col-md-12">
+                <div class="row controlRow">
+                  <div class="col-sm-2.5">
+                    <label class="small float-right">رقم الفئة <strong class="text-danger">* </strong></label>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="d-flex txtStore">
+                      <input type="text" formControlName="categoryId"
+                        class="form-control form-control-sm w-25 d-none txtStoreId" [(ngModel)]="lookupItemDetails.id"
+                        name="txtStoreId" />
+
+                      <input type="text" class="form-control form-control-sm w-25 txtStoreCode"
+                        (dblclick)="openModal(templateCategories)"
+                        (change)="lookupDetailsGetBylookupId(lookupItemDetails.code)"
+                        [ngClass]="{'is-invalid': (!lookupItemDetails.code) && (lookupItemDetails.code==0)&& (lookupItm.touched || lookupItm.dirty)}"
+                        #lookupItm="ngModel" [(ngModel)]="lookupItemDetails.code" name="txtStoreCode" required
+                        [ngModelOptions]="{standalone: true}" placeholder="0" />
+
+                      <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                        [value]="lookupItemDetails.nameL1" name="txtStoreName" required placeholder="أسم الفئة" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="col-md-12">
+                <div class="row controlRow">
+                  <div class="col-sm-2.5">
+                    <label class="small float-right">استعلام عن الباركود</label>
+                  </div>
+                  <div class="col-sm-8">
+                    <div class="d-flex txtStore">
+                      <!-- <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" name="txtStoreId" />
+                    <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode"
+                      required placeholder="0" /> -->
+                      <input type="text" id="start" [(ngModel)]="ItemCode" [ngModelOptions]="{standalone: true}"
+                        class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <button type="button" name="" id="" class="btn btn-primary btn-sm col-sm-1"
+              (click)="GetItemByCode(ItemCode)">ابحث</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt-3">
+      <div class="bg-white border rounded p-3">
+
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم الصنف</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" formControlName="code" id="start" class="form-control form-control-sm txtStoreName"
+                    readonly name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اسم الصنف - ع <strong class="text-danger">* </strong> </label>
+              </div>
+              <div class="col-md-7 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" formControlName="nameL1" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">الرقم الأصلي</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="itemNo"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اسم الصنف - E  <strong class="text-danger">* </strong>  </label>
+              </div>
+              <div class="col-md-7 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="nameL2"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم المصنع</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="factoryId"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">حد الطلب</label>
+              </div>
+              <div class="col-md-3 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="orderLimit" placeholder="0"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رمز الصنف</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="symbol"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">عملة الصنف</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex txtStore">
+
+                  <input type="text" formControlName="currencyId"
+                    class="form-control form-control-sm w-25 d-none txtStoreId" [(ngModel)]="currencyItem.id"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+                    (dblclick)="openModal(currencyTemplete,0,0)" (change)="currencyByCode(currencyItem.code)"
+                    [ngClass]="{'is-invalid': (!currencyItem.code) && (currencyItem.code==0)&& (currencyItm.touched || currencyItm.dirty)}"
+                    #currencyItm="ngModel" [(ngModel)]="currencyItem.code" [ngModelOptions]="{standalone: true}"
+                    name="txtStoreCode" required placeholder="0" />
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    [value]="currencyItem.nameL1" name="txtStoreName" required placeholder="أسم العملة" />
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">قياس الصنف</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" formControlName="measurements" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اخر تكلفة للصنف</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex txtStore">
+
+                  <input type="text" id="start" formControlName="lastCost"
+                    class="form-control form-control-sm txtStoreName" readonly name="txtStoreName"
+                    placeholder="0000.00" />
+
+                  <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode" required
+                    [(ngModel)]="currencyItem.nameL1" [ngModelOptions]="{standalone: true}" />
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">تاريخ الانتاج</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="date" id="start" formControlName="productDate"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">بلد المنشأ </label>
+              </div>
+              <div class="col-md-3 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="madeIn"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="image-card-style">
+          <div class="card"
+            style="background-color:lightgrey; width: 200px; height:168px; margin-top:-174px;margin-right: 950px;">
+            <img *ngIf="imageUrl" [src]="imageUrl" class="image">
+            <input #Image type="file" (change)="handleFileInput($event)" />
+          </div>
+
+          <div class="card" style="width: 9rem; margin-top:-169px ;margin-right:765px;height:168px">
+            <div class="card-body">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="hasExpiryDate" id="flexCheckDefault"
+                  formControlName="hasExpiryDate">
+                <label class="form-check-label" for="flexCheckDefault">
+                  له تاريخ انتهاء
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="isCompound" id="flexCheckChecked"
+                  formControlName="isCompound">
+                <label class="form-check-label" for="flexCheckChecked">
+                  صنف مركب
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="isSelling" id="flexCheckChecked" checked
+                  formControlName="isSelling">
+                <label class="form-check-label" for="flexCheckChecked">
+                  قابل للبيع؟
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="isService" id="flexCheckChecked"
+                  formControlName="isService">
+                <label class="form-check-label" for="flexCheckChecked">
+                  صنف خدمي
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">حد منح خصم</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="discountLimit"
+                    class="form-control form-control-sm txtStoreName" placeholder="0" name="txtStoreName" required />
+
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">حد منح مجاني</label>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="bonusLimit" placeholder="0"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اقل كمية للصنف</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="itemMinQty" placeholder="0" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+              <div class="col-md-1 ">
+                <label class="small float-right  ">الكمية باكبر وحده</label>
+              </div>
+              <div class="col-md-2  col-sm-1 ">
+                <div class="d-flex txtStore mb-1 ">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName ml-10" readonly
+                    name="txtStoreName" placeholder="0" required />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">اخر شراء</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="lastBuy"
+                    class="form-control form-control-sm txtStoreName" readonly placeholder="0" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">نسبة الخصم</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="discountPercentage"
+                    class="form-control form-control-sm txtStoreName" placeholder="0" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">الكميه المجانيه</label>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required formControlName="bonusAmount" placeholder="0"/>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اكبر كمية للصنف</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" placeholder="0" formControlName="itemMaxQty" class="form-control form-control-sm txtStoreName" name="txtStoreName"
+                    required />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1 ">
+                <label class="small float-right  ">الكمية باصغر وحده</label>
+              </div>
+              <div class="col-md-2  col-sm-1 ">
+                <div class="d-flex txtStore mb-1 ">
+                  <input type="text" id="start" class="form-control form-control-sm txtStoreName ml-10" readonly
+                    name="txtStoreName" required placeholder="0"/>
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اخر بيع</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start" formControlName="lastSell" placeholder="0"
+                    class="form-control form-control-sm txtStoreName" readonly name="txtStoreName" required />
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<div class="page__content shadow p-3 page__content-data mt-3">
+  <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-top: 160px;">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
+        aria-controls="home" aria-selected="true">وحدات الاصناف</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
+        aria-controls="profile" aria-selected="false">اعدادات الاصناف</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button"
+        role="tab" aria-controls="messages" aria-selected="false">بدائل الاصناف</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button"
+        role="tab" aria-controls="settings" aria-selected="false">اسعار وحدات الصنف</button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab" style="margin-right: 30px;">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:75%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>جديد</th>
+                    <th>رقم الوحده</th>
+                    <th>اسم الوحده</th>
+                    <th colspan="2" style="text-align:center;">الوحده الرئيسية</th>
+                    <th>عداد الوحدات</th>
+                    <th>تكلفة الوحدة</th>
+                    <th>العملة</th>
+                    <th>اسم العملة</th>
+                    <th>سعر الوحدة</th>
+                    <th><b>حد الطلب</b></th>
+                    <th>حذف</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of itemUnitList ;let indexOfelement=index; "
+                    (click)="tableRowClicked(indexOfelement)">
+                    <td scope="row" ><button type="button" name="" id="" class="btn btn-outline-primary btn-sm"
+                        (click)="addNewRow(1,indexOfelement)"><i class="fa fa-plus"></i></button></td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm   txtStoreCode"
+                        (dblclick)="openModal(UnitTemplate,0,indexOfelement)" (change)="itemUnitByCode(item.unitItemCode,indexOfelement)"
+                        [ngClass]="{'is-invalid': (!item.unitItemCode) && (item.unitItemCode==0)  && (unitItm.touched || unitItm.dirty)}"
+                        #unitItm="ngModel" [(ngModel)]="item.unitItemCode" [ngModelOptions]="{standalone: true}"
+                        name="txtStoreCode" required placeholder="0" />
+                    </td>
+                    <td>
+                      <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                        [value]="item.unitName" name="txtStoreName" required placeholder="الوحده" disabled />
+                    </td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm   txtStoreCode" [disabled]="indexOfelement==0"
+                        (dblclick)="openModal(UnitMain,0,indexOfelement)" (change)="UnitByCode(currencyItem.code)"
+                        [ngClass]="{'is-invalid': (!item.unitParentCode) && (item.unitParentCode==0)&& (unitItmMain.touched || unitItmMain.dirty)}"
+                        #unitItmMain="ngModel" [(ngModel)]="item.unitParentCode" [ngModelOptions]="{standalone: true}"
+                        name="txtStoreCode" required placeholder="0" disabled/>
+                    </td>
+                    <td>
+                      <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                        [value]="item.unitParentName" name="txtStoreName" required placeholder="الوحده" disabled />
+                    </td>
+                    <td><input type="text" [(ngModel)]="itemUnitList[indexOfelement].partsInParents" [disabled]="indexOfelement==0"
+                        class="form-control form-control-sm" /></td>
+                    <td><input type="text" [(ngModel)]="itemUnitList[indexOfelement].unitCost" [disabled]="indexOfelement==0"
+                        class="form-control form-control-sm" /></td>
+
+
+                    <td><input type="text" class="form-control form-control-sm   txtStoreCode" [disabled]="indexOfelement==0"
+                        (dblclick)="openModal(currencyUnitTemplete,0,indexOfelement)"
+                        (change)="currencyUnitByCode(item.currencyCode,indexOfelement)"
+                        [ngClass]="{'is-invalid': (!item.currencyCode) && (item.currencyCode==0)&& (currencyUnitItm.touched || currencyUnitItm.dirty)}"
+                        #currencyUnitItm="ngModel" [(ngModel)]="item.currencyCode" [ngModelOptions]="{standalone: true}"
+                        name="txtStoreCode" required placeholder="0" /></td>
+                    <td>
+                      <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                        [value]="item.currencyName" name="txtStoreName" required placeholder="العمله" disabled />
+                    </td>
+                    <td><input type="text" [(ngModel)]="itemUnitList[indexOfelement].unitPrice" [disabled]="indexOfelement==0"
+                        class="form-control form-control-sm" /></td>
+                    <td><input type="text" [(ngModel)]="itemUnitList[indexOfelement].unitOrderLimit" [disabled]="indexOfelement==0"
+                        class="form-control form-control-sm" /></td>
+                    <td>
+                      <button type="button" name="" id="" class="btn btn-outline-danger btn-sm" *ngIf="indexOfelement>0" [disabled]="indexOfelement==0"
+                        (click)="DeleteRow(indexOfelement,1)">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                        <button type="button" name="" id="" class="btn btn-outline-danger btn-sm" *ngIf="indexOfelement==0" [disabled]="indexOfelement==0"
+                        (click)="DeleteRow(indexOfelement,1)">
+                        <i class="fa fa-ban"></i>
+                         </button>
+                      </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+            <div style="width:25%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center ;">
+                  <tr>
+                    <th>جديد</th>
+                    <th>الباركود</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of itemUnitBarcodeList ;let indexOfelement=index;">
+                    <td scope="row"><button type="button" name="" id="" class="btn btn-outline-primary btn-sm"
+                        (click)="addNewRow(2,indexOfelement)"><i class="fa fa-plus"></i></button></td>
+                    <td scope="row"><input type="text" class="form-control form-control-sm"
+                        [(ngModel)]="item.barcode" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:100%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>جديد</th>
+                    <th>رقم الاعداد</th>
+                    <th>اسم الاعداد</th>
+                    <th>ملاحظات</th>
+                    <th>حذف</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of invItemEquipmentList ;let indexOfelement=index;">
+                    <td scope="row"><button type="button" name="" id="" class="btn btn-outline-primary btn-sm"
+                        (click)="addNewRow(3)"><i class="fa fa-plus"></i></button></td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm   txtStoreCode"
+                        (dblclick)="openModal(EquipTemplate,0,indexOfelement)" (change)="EquipByCode(item.invItemEquipmentCode,indexOfelement)"
+                        [ngClass]="{'is-invalid': (!item.invItemEquipmentCode) &&  (equpCode.touched || equpCode.dirty)}"
+                        #equpCode="ngModel" [(ngModel)]="item.invItemEquipmentCode"
+                        [ngModelOptions]="{standalone: true}" name="txtStoreCode" required placeholder="0" />
+                    </td>
+                    <td>
+                      <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                        [value]="item.equipName" name="txtStoreName" required placeholder="المعدات" disabled />
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.notes" /></td>
+                    <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index,2)"><i class="fa fa-trash"></i></button></td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:100%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>جديد</th>
+                    <th>رقم الصنف</th>
+                    <th>اسم الصنف البديل</th>
+                    <th>ملاحظات</th>
+                    <th>حذف</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of tblInvItemReplaceList ;let indexOfelement=index;">
+                    <td scope="row"><button type="button" name="" id="" class="btn btn-outline-primary btn-sm"
+                        (click)="addNewRow(4)"><i class="fa fa-plus"></i></button></td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm   txtStoreCode"
+                        (dblclick)="openModal(ItemTemplate,0,indexOfelement)" (change)="ReplaceItemByCode(item.invItemReplaceCode,indexOfelement)"
+                        [ngClass]="{'is-invalid': (!item.invItemReplaceCode) &&  (invItemRep.touched || invItemRep.dirty)}"
+                        #invItemRep="ngModel" [(ngModel)]="item.invItemReplaceCode"
+                        [ngModelOptions]="{standalone: true}" name="txtStoreCode" required placeholder="0" />
+                    </td>
+                    <td>
+                      <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                        [value]="item.invItemReplaceName" name="txtStoreName" required placeholder="البديل" disabled />
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.notes" /></td>
+                    <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index,3)"><i class="fa fa-trash"></i></button></td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      <div class="row">
+        <div class="col-md-12 ">
+          <div class="row controlRow">
+            <div style="width:100%">
+              <table class="table table-hover table-responsive-lg table-bordered">
+                <thead class="thead-inverse" style="text-align:center">
+                  <tr>
+                    <th>جديد</th>
+                    <th colspan="2">نوع السعر</th>
+                    <th>السعر</th>
+                    <th>ملاحظات</th>
+                    <th>حذف</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of itemsUnitsPricesList ;let indexOfelement=index;">
+                    <td scope="row"><button type="button" name="" id="" class="btn btn-outline-primary btn-sm"
+                        (click)="addNewRow(5)"><i class="fa fa-plus"></i></button></td>
+                    <td>
+                      <input type="text" class="form-control form-control-sm   txtStoreCode"
+                        (dblclick)="openModal(ItemUnitPrice,0,indexOfelement)" (change)="priceItemByCode(currencyItem.code,indexOfelement)"
+                        [ngClass]="{'is-invalid': (!item.priceCode) &&  (priceCod.touched || priceCod.dirty)}"
+                        #priceCod="ngModel" [(ngModel)]="item.priceCode" [ngModelOptions]="{standalone: true}"
+                        name="txtStoreCode" required placeholder="0" />
+                    </td>
+                    <td>
+                      <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                        [value]="item.priceName" name="txtStoreName" required placeholder="السعر" disabled />
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.price"></td>
+                    <td><input type="text" class="form-control form-control-sm" [(ngModel)]="item.notes" /></td>
+                    <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                        (click)="DeleteRow(index,4)"><i class="fa fa-trash"></i></button></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #templateCategories>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">مركز الفئات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of lookupDetailsList | lookupCategoryFilter:textFilterModel, let i =index"
+            class='clickable-row' (dblclick)="getItem(item,1);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #currencyTemplete>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">العملات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of currencyList | currencyfilter:textFilterModel, let i =index" class='clickable-row'
+            (dblclick)="getItem(item,2);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #UnitTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">الوحدات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of ItemUnits |ItemUnit:textFilterModel, let i =index" class='clickable-row'
+            (dblclick)="getItem(item,3);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #UnitMain>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">الوحدات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of ItemUnits |ItemUnit:textFilterModel, let i =index" class='clickable-row'
+            (dblclick)="getItem(item,4);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #currencyUnitTemplete>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">العملات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of currencyList | currencyfilter:textFilterModel, let i =index" class='clickable-row'
+            (dblclick)="getItem(item,5);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #EquipTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">المعدات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of EquipList|ItemUnit:textFilterModel ,let i =index" class='clickable-row'
+            (dblclick)="getItem(item,6);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #ItemTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">المعدات</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of AllItemList|ItemFilter:textFilterModel ,let i =index" class='clickable-row'
+            (dblclick)="getItem(item,7);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #ItemUnitPrice>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">وحدات الاصناف</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let item of ItemUnitPriceList|ItemUnit:textFilterModel ,let i =index" class='clickable-row'
+            (dblclick)="getItem(item,8);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #SearchTemplate>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" style="color: black;">بحث</h4>
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+
+    </div>
+    <div class="modal-body">
+      <p>
+        <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"
+          [ngModelOptions]="{standalone: true}" class="form-control col-md-6">
+      </p>
+      <div class="row">
+        <div class="col-md-1">
+          <label class="small float-right">من</label>
+        </div>
+        <div class="col-md-4  col-sm-1">
+          <div class="d-flex txtStore mb-1">
+            <input type="date" id="start" [(ngModel)]="SearchFrom" [ngModelOptions]="{standalone: true}"
+              class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+          </div>
+        </div>
+        <div class="col-md-1">
+          <label class="small float-right">الي</label>
+        </div>
+        <div class="col-md-4  col-sm-1">
+          <div class="d-flex txtStore mb-1">
+            <input type="date" id="start" [(ngModel)]="SearchTo" [ngModelOptions]="{standalone: true}"
+              class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+          </div>
+        </div>
+
+        <div class="col-md-2  col-sm-1">
+          <!-- <button type="button" name="" id="" class="btn btn-outline-primary btn-sm" (click)="Search()">بحث</button> -->
+          <button mdbBtn class="btn btn-outline-primary btn-sm" color="primary" type="button" (click)="Search()">
+            <span class="spinner-grow spinner-grow-sm" role="status" *ngIf="isload"></span>
+            بحث...
+          </button>
+        </div>
+      </div>
+      <table class="table mt-3 p-1">
+        <thead class="mb-1">
+          <th>رمز الصنف</th>
+          <th>اسم الصنف</th>
+          <th>تاريخ الاضافه</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of AllItemList | ItemFilter:textFilterModel,let i =index" class='clickable-row'
+            (dblclick)="getItem(item,9);modalRef?.hide()">
+            <td scope="row">{{item.code}}</td>
+            <td>{{item.nameL1}}</td>
+            <td>{{item.createdOn|date:'short'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+    </div>
+  </div>
+</ng-template>
