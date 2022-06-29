@@ -43,4 +43,7 @@ itemGetById(id:number) {
 UnitBarcodeList() {
   return this.http.get<any[]>(Constants.ApiUrl + '/api/item/GetItemUnitBarcode');
 }
+deleteItem(id:any) {
+  return this.http.delete<any>(Constants.ApiUrl + `/api/item/${id}`);
+}
 }

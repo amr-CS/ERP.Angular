@@ -4,5 +4,6 @@ export interface ItemUnitBarcode {
   id: number;
   itemUnitId: number;
   barcode: string;
+  isDeleted:boolean
   //itemUnit: ItemUnitDto;
 }
