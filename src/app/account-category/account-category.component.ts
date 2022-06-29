@@ -1,4 +1,3 @@
-//#region
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Lookup, LookupDetails } from '../interfaces/lookup.interface';
 import { LookupService } from '../services/lookup.service';
@@ -217,7 +216,6 @@ x(){
   }
 
   }
-  //#endregion
   openModal(template: TemplateRef<any>, type?: number, index?: number) {
     this.rowIndex = index == undefined ? 0 : index;
     this.modalRef = this.modalService.show(template, {
