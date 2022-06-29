@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Observable, Subscriber } from 'rxjs';
 import { CurrencyDto } from '../Dto/CurrencyDto';
 import { InvItemEquipmentDto } from '../Dto/InvItemEquipmentDto';
 import { ItemDto } from '../Dto/ItemDto';
@@ -24,6 +24,8 @@ import { AlertifyService } from '../services/alertify.service';
 import { CurrencyService } from '../services/currency.service';
 import { ItemService } from '../services/item.service';
 import { LookupService } from '../services/lookup.service';
+import Swal from 'sweetalert2';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-items-card',
@@ -31,6 +33,9 @@ import { LookupService } from '../services/lookup.service';
   styleUrls: ['./items-card.component.css'],
 })
 export class ItemsCardComponent implements OnInit {
+  ViewImage:boolean=false;
+  selectedIndex:number=0;
+  selectedItems:Array<number>=[];
   isload: boolean = false;
   SearchFrom: Date = new Date();
   SearchTo: Date = new Date();
@@ -67,6 +72,8 @@ export class ItemsCardComponent implements OnInit {
   ItemUnitId: number = 0;
   RowNumberInItemUnitList: any;
   barcodeList: any[]=[];
+  CurrentItem: ItemDto=new ItemDto();
+  imageSource: any;
   constructor(
     private modalService: BsModalService,
     private lookupServ: LookupService,
@@ -74,7 +81,8 @@ export class ItemsCardComponent implements OnInit {
     private currencyServ: CurrencyService,
     private accountServ: AccountService,
     private itemServ: ItemService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _sanitizer: DomSanitizer
   ) {
     this.SearchFrom = new Date(this.formatDate(new Date()));
     this.SearchTo = new Date(this.formatDate(new Date()));
@@ -119,6 +127,7 @@ export class ItemsCardComponent implements OnInit {
       itemGroupId: new FormControl(null),
       itemMinQty:new FormControl(null),
       itemMaxQty:new FormControl(null),
+      createdOn:new FormControl(null),
     });
 
     forkJoin([
@@ -168,6 +177,7 @@ export class ItemsCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   openModal(template: TemplateRef<any>, type?: number, index?: number) {
@@ -188,13 +198,20 @@ export class ItemsCardComponent implements OnInit {
           this.alertify.error('لا يوجد عنصر بهذا الباركود');
         } else {
           console.log(res);
+          this.CurrentItem=res;
           this.buildForm(res);
         }
       },
       (err) => console.log(err)
     );
   }
+  BindName(){
+   this.form.get("nameL2")?.setValue( this.form.get("nameL1")?.value);
+   }
   buildForm(Item: ItemDto) {
+    if(Item.image!=""){
+      this.ViewImage=true;
+    }
     debugger;
     this.form = this.fb.group({
       id:[Item.id],
@@ -237,7 +254,11 @@ export class ItemsCardComponent implements OnInit {
       itemGroupId: [Item?.itemGroupId],
       itemMinQty:[Item?.itemMinQty],
       itemMaxQty:[Item?.itemMaxQty],
+      createdOn:[Item?.createdOn]
     });
+    this.imageSource = this._sanitizer.bypassSecurityTrustResourceUrl(Item.image);
+    // this.imageSource = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${Item.image}`);
+
     if (Item.categoryId != null) {
       var category = this.lookupDetailsList.find(
         (x) => x.id == Item.categoryId
@@ -348,7 +369,7 @@ export class ItemsCardComponent implements OnInit {
         this.itemsUnitsPricesList.splice(index,1);
       }
     });
-
+    item.image=this.base64code;
     item.tblInvItemUnit = this.itemUnitList;
     item.tblInvItemReplace = this.tblInvItemReplaceList;
     item.tblInvItemEquipment = this.invItemEquipmentList;
@@ -360,6 +381,10 @@ export class ItemsCardComponent implements OnInit {
           console.log(res);
            this.getItemById(res.id);
           this.alertify.success('تمت العمليه بنجاح');
+          this.itemServ.itemGetAll().subscribe(
+            (res) => (this.AllItemList = res),
+            (err) => console.log(err)
+          )
         },
         (err) => console.log(err)
       );
@@ -615,6 +640,7 @@ export class ItemsCardComponent implements OnInit {
     this.itemServ.itemGetById(id).subscribe(
       (res) => {
         this.isload = false;
+        this.CurrentItem=res;
         this.buildForm(res);
       },
       (err) => {
@@ -712,9 +738,220 @@ export class ItemsCardComponent implements OnInit {
 
         });
       break;
+      case 5:
+        this.alertify.confirm("are you sure you want delete",()=>{
+          if(this.itemUnitBarcodeList[index].id!=0){
+            this.itemUnitBarcodeList[index].isDeleted=true;
+            this.save();
+            this.getItemById(this.itemUnitBarcodeList[index].id);
+
+            //this.itemsUnitsPricesList.splice(index,1);
+          }else{
+            this.itemUnitBarcodeList.splice(index,1);
+            if(this.itemUnitBarcodeList.length==0){
+              this.addNewRow(2);
+            }
+          }
+
+        });
+      break;
     default:
           console.log('No such type exists!');
           break;
   }
   }
+//
+
+
+
+  deleteItem() {
+    if(this.CurrentItem.id==0){
+      this.alertify.error("برجاء اختيار العنصر المراد حذفه")
+    }else{
+      Swal.fire({
+        title:`هل تريد حذف عنصر : ${this.CurrentItem.nameL1} `,
+       // text: "You won't be able to revert this!",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'نعم',
+        cancelButtonText: 'لا',
+      }).then((result) => {
+        this.CurrentItem.tblInvItemUnit.forEach((element,index) => {
+          if(element.invItemUnitId==0){
+            this.CurrentItem.tblInvItemUnit.splice(index,1)
+          }else{
+            element.isDeleted=true;
+            element.itemUnitBarcode.forEach((element2,index2) => {
+              if(element2.id==0){
+                this.CurrentItem.tblInvItemUnit[index].itemUnitBarcode.splice(index2,1);
+                this.CurrentItem.tblInvItemUnit.splice(index2,1)
+              }else{
+                element2.isDeleted=true;
+              }
+            });
+          }
+        });
+        this.CurrentItem.tblInvItemEquipment.forEach((element,index) => {
+          if(element.invItemEquipmentId==0){
+            this.CurrentItem.tblInvItemEquipment.splice(index,1)
+          }else{
+            element.isDeleted=true;
+          }
+        });
+        this.CurrentItem.tblInvItemReplace.forEach((element,index) => {
+          if(element.invItemReplaceId==0){
+            this.CurrentItem.tblInvItemReplace.splice(index,1)
+          }else{
+            element.isDeleted=true;
+          }
+        });
+        this.CurrentItem.tblInvItemsUnitsPrices.forEach((element,index) => {
+          if(element.sellCostType==0){
+            this.CurrentItem.tblInvItemsUnitsPrices.splice(index,1)
+          }else{
+            element.isDeleted=true;
+          }
+        });
+
+        this.CurrentItem.isDeleted=true;
+        console.log(this.CurrentItem);
+        this.itemServ.AddEditItem(this.CurrentItem).subscribe(
+          (res)=>{ Swal.fire(
+            'تم الحذف بنجاح',
+            `تم حذف عنصر :${this.CurrentItem.nameL1}`,
+            'success',
+          );
+          this.buildForm(new ItemDto());
+          this.itemServ.itemGetAll().subscribe(
+            (res) => (this.AllItemList = res),
+            (err) => console.log(err)
+          )
+        },
+          (err)=>{
+            Swal.fire(
+              'فشل ف حذف العنصر   :',
+              `${this.CurrentItem.nameL1}`,
+              'error',
+            )
+          }
+        )
+
+
+      })
+    }
+
+    }
+
+
+    isSelect(item:any,index:any){
+      var itemIsExist=this.selectedItems.find(x=>x==item.id);
+
+      if(itemIsExist==undefined){
+        this.selectedItems.push(item?.id);
+        this.AllItemList[index].isSelected=true;
+      }else{
+        this.selectedItems.forEach((element,index) => {
+          if(element==item?.id){
+            this.selectedItems.splice(index,1);
+            this.AllItemList[index].isSelected=false;
+
+          }
+        });
+      }
+      console.log(this.selectedItems)
+    }
+
+    getItemBySelectedIds(type:number){
+      var id=0;
+      var length=this.selectedItems.length;
+      if(length==0){
+        this.alertify.error("برجاء تحديد العناصر المراد عرضها");
+        return
+      }
+
+      if(length==0){
+        this.alertify.error("لا يوجد عناصر محددة للعرض")
+      }else{
+        switch(type){
+          case 1:
+            this.selectedIndex=0;
+             id=this.selectedItems[0];
+            break;
+          case 2:
+            this.selectedIndex=length-1;
+             id=this.selectedItems[length-1];
+            break;
+          case 3:
+            if(this.selectedIndex==length-1)
+              this.alertify.error("لا يوجد عناصر اخري لعرضها")
+            if(this.selectedIndex<length-1){
+              this.selectedIndex=this.selectedIndex+1;
+               id=this.selectedItems[this.selectedIndex];
+            }
+            break;
+          case 4:
+            if(this.selectedIndex==0)
+              this.alertify.error("لا يوجد عناصر اخري لعرضها")
+            if(this.selectedIndex>0){
+              this.selectedIndex=this.selectedIndex-1;
+               id=this.selectedItems[this.selectedIndex];
+            }
+            break;
+          case 5:
+           id=this.selectedItems[0];
+          break;
+        }
+        if(id!=0)
+          this.getItemById(id);
+      }
+      this.modalRef.hide();
+    }
+
+
+
+
+
+    title = 'imgtobase64';
+    myimage!: Observable<any>;
+    base64code!: any
+
+    onChange = ($event: Event) => {
+      const target = $event.target as HTMLInputElement;
+      const file: File = (target.files as FileList)[0];
+      console.log(file);
+      this.convertToBase64(file)
+    };
+
+    convertToBase64(file: File) {
+      const observable = new Observable((subscriber: Subscriber<any>) => {
+        this.readFile(file, subscriber);
+      });
+
+      observable.subscribe((d) => {
+        console.log(d)
+        this.myimage = d
+        this.base64code = d
+      })
+
+      console.log(this.base64code)
+    }
+
+    readFile(file: File, subscriber: Subscriber<any>) {
+      const filereader = new FileReader();
+      filereader.readAsDataURL(file);
+
+      filereader.onload = () => {
+        subscriber.next(filereader.result);
+        subscriber.complete();
+      };
+      filereader.onerror = (error) => {
+        subscriber.error(error);
+        subscriber.complete();
+      };
+    }
+
+
+
 }

@@ -1,5 +1,13 @@
 <div class="container">
-  <app-utilities (clickSave)="save()" (clickPopup)="openModal(SearchTemplate,0,0)" [name]="pageName"></app-utilities>
+  <app-utilities (clickSave)="save()"
+   (clickPopup)="openModal(SearchTemplate,0,0)"
+   (delete)="deleteItem()"
+   (getFirst)="getItemBySelectedIds(1)"
+   (getLast)="getItemBySelectedIds(2)"
+   (getNext)="getItemBySelectedIds(3)"
+   (getPrev)="getItemBySelectedIds(4)"
+    [name]="pageName">
+  </app-utilities>
   <div [formGroup]="form">
     <div class="page__content shadow p-3 page__content-data mt-3">
       <div class="container-fluid">
@@ -63,20 +71,12 @@
                   </div>
                   <div class="col-sm-8">
                     <div class="d-flex txtStore">
-                      <!-- <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId" name="txtStoreId" />
-                    <input type="text" class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode"
-                      required placeholder="0" /> -->
-                      <input type="text" id="start" [(ngModel)]="ItemCode" [ngModelOptions]="{standalone: true}"
-                        class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                      <input type="text" class="form-control form-control-sm txtStoreName" (change)="GetItemByCode(ItemCode)" [(ngModel)]="ItemCode" name="txtStoreCode" [ngModelOptions]="{standalone: true}"  />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-
-
-            <button type="button" name="" id="" class="btn btn-primary btn-sm col-sm-1"
-              (click)="GetItemByCode(ItemCode)">ابحث</button>
           </div>
         </div>
       </div>
@@ -103,7 +103,7 @@
               </div>
               <div class="col-md-7 col-sm-1">
                 <div class="d-flex txtStore mb-1">
-                  <input type="text" formControlName="nameL1" id="start"
+                  <input type="text" formControlName="nameL1" id="start" (change)="BindName()"
                     class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
                 </div>
               </div>
@@ -257,8 +257,14 @@
         <div class="image-card-style">
           <div class="card"
             style="background-color:lightgrey; width: 200px; height:168px; margin-top:-174px;margin-right: 950px;">
-            <img *ngIf="imageUrl" [src]="imageUrl" class="image">
-            <input #Image type="file" (change)="handleFileInput($event)" />
+
+            <input type="file" (change)="onChange($event)" />
+
+            <div *ngIf="myimage">
+              <img [src]="myimage" width="200px" height="200px" alt="" />
+            </div>
+            <!-- view image -->
+            <img *ngIf="ViewImage" [src]="imageSource">
           </div>
 
           <div class="card" style="width: 9rem; margin-top:-169px ;margin-right:765px;height:168px">
@@ -530,6 +536,7 @@
                   <tr>
                     <th>جديد</th>
                     <th>الباركود</th>
+                    <th>حذف</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -538,6 +545,11 @@
                         (click)="addNewRow(2,indexOfelement)"><i class="fa fa-plus"></i></button></td>
                     <td scope="row"><input type="text" class="form-control form-control-sm"
                         [(ngModel)]="item.barcode" /></td>
+                        <td><button type="button" name="" id="" class="btn btn-outline-danger btn-sm"
+                          (click)="DeleteRow(indexOfelement,5)">
+                          <i class="fa fa-trash"></i>
+                           </button>
+                        </td>
                   </tr>
                 </tbody>
               </table>
@@ -966,6 +978,7 @@
       </div>
       <table class="table mt-3 p-1">
         <thead class="mb-1">
+          <th>اختر للعرض</th>
           <th>رمز الصنف</th>
           <th>اسم الصنف</th>
           <th>تاريخ الاضافه</th>
@@ -973,6 +986,8 @@
         <tbody>
           <tr *ngFor="let item of AllItemList | ItemFilter:textFilterModel,let i =index" class='clickable-row'
             (dblclick)="getItem(item,9);modalRef?.hide()">
+            <td><input type="checkbox" (change)="isSelect(item,i)" [(ngModel)]="item.isSelected" id="ifLimitAccess" class="switch-input">
+            </td>
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
             <td>{{item.createdOn|date:'short'}}</td>
@@ -982,6 +997,16 @@
     </div>
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-danger" (click)="modalRef.hide()">اغلاق</button>
+      <button type="button" class="btn btn-outline-primary" (click)="getItemBySelectedIds(5)">اذهب للبحث</button>
     </div>
   </div>
 </ng-template>
+
+
+
+
+
+
+
+
+

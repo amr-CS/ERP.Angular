@@ -50,6 +50,7 @@ export interface Item {
   itemMinQty:number;
   itemMaxQty:number;
 
+  isSelected:boolean;
 
   tblInvItemUnit:ItemUnitDto[];
   tblInvItemReplace:TblInvItemReplaceDto[];

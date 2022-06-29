@@ -55,4 +55,5 @@ export class ItemDto implements Item{
   tblInvItemEquipment:InvItemEquipmentDto[]=[];
   tblInvItemsUnitsPrices:ItemsUnitsPricesDto[]=[];
 
+  isSelected:boolean=false;
 }
