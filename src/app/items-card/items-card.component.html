@@ -255,16 +255,22 @@
         </div>
 
         <div class="image-card-style">
-          <div class="card"
+
+          <div class="card imagee"
             style="background-color:lightgrey; width: 200px; height:168px; margin-top:-174px;margin-right: 950px;">
+<div class="imagebutton">
+  <input  type="file" (change)="onChange($event)" />
+</div>
+        <div [hidden]="imageAppear">
+          <div *ngIf="myimage" class="imagee">
+            <img [src]="myimage" width="200px" height="168px" alt="" />
+          </div>
+        </div>
+        <div [hidden]="!imageAppear">
+          <img class="imagee" width="200px" height="168px" *ngIf="ViewImage" [src]="imageSource">
+        </div>
 
-            <input type="file" (change)="onChange($event)" />
-
-            <div *ngIf="myimage">
-              <img [src]="myimage" width="200px" height="200px" alt="" />
-            </div>
             <!-- view image -->
-            <img *ngIf="ViewImage" [src]="imageSource">
           </div>
 
           <div class="card" style="width: 9rem; margin-top:-169px ;margin-right:765px;height:168px">

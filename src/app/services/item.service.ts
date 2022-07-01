@@ -46,4 +46,7 @@ UnitBarcodeList() {
 deleteItem(id:any) {
   return this.http.delete<any>(Constants.ApiUrl + `/api/item/${id}`);
 }
+checkBarcodeDuplicate(input:any[]){
+  return this.http.post<any[]>(Constants.ApiUrl + `/api/item/CheckDuplicatedBarcode`,input);
+}
 }

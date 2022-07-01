@@ -57,3 +57,14 @@ tbody, td, tfoot, th, thead, tr {
   margin-right: -15px;
 }
 
+.imagebutton{
+  z-index: 1000;
+  /* right: 956px;
+  position: relative;
+  bottom: 152px; */
+}
+
+
+.imagee{
+  z-index: 500;
+}

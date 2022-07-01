@@ -96,6 +96,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ItemsCardComponent } from './items-card/items-card.component';
 import { ItemUnitPipe } from './pipes/ItemUnit.pipe';
 import { ItemFilterPipe } from './pipes/ItemFilter.pipe';
+import { CustomersComponent } from './Customers/Customers.component';
 
 
 
@@ -106,7 +107,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [
+  declarations: [	
     AppComponent,
     ItemUnitPipe,
     ItemFilterPipe,
@@ -145,6 +146,7 @@ export function HttpLoaderFactory(http:HttpClient){
       InvoiceOrderComponent,
       AccountCategoryComponent,
       ItemsCardComponent,
+      CustomersComponent
    ],
   imports: [
     ModalModule,
