@@ -19,6 +19,7 @@ import { InvoiceReceiptComponent } from './InvoiceReceipt/InvoiceReceipt.compone
 import { InvoiceOrderComponent } from './invoice-order/invoice-order.component';
 import { AccountCategoryComponent } from './account-category/account-category.component';
 import { ItemsCardComponent } from './items-card/items-card.component';
+import { InvoiceComponent } from './Invoice/Invoice.component';
 
 
 
@@ -50,7 +51,7 @@ const routes: Routes = [
              { path: 'ChartOfAccount', component: ChartOfAccountComponent},
              { path: 'InvoicePaymentOrder', component: InvoicePaymentOrderComponent},
              { path: 'InvoiceReceipt', component: InvoiceReceiptComponent},
-             { path: 'InvoiceOrder', component: InvoiceOrderComponent},
+             { path: 'Invoice', component: InvoiceComponent},
              { path: 'ItemCard', component: ItemsCardComponent},
 
 

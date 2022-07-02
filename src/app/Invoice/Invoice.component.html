@@ -1,0 +1,97 @@
+<div class="bg-white border rounded p-3 mb-3">
+
+  <div class="row">
+      <!-- Main Inputs -->
+      <div class="col-sm-12">
+
+          <!-- 1st Row Input -->
+          <div class="row">
+
+              <div class="form-group">
+                  <input type="text" class="form-control form-control-sm w-25 txtInvId d-none" value="0" />
+              </div>
+              <!-- Right Controls [Doc No, Ref, ..] -->
+              <div class="col-sm-4 mt-3">
+                  <!-- Doc Date -->
+                  <div class="row mt-2">
+                      <div class="col-sm-2">
+                          <label class="small float-right pt-2">رقم المخزن </label>
+                      </div>
+                      <div class="col-sm-6 d-flex">
+                          <input type="text" class="form-control form-control-sm d-none w-25 txtStoreId" />
+                          <input type="text" class="form-control form-control-sm  w-25  txtStoreCode" />
+                          <input type="text" class="form-control form-control-sm w-75 txtStoreName" value="" disabled />
+                      </div>
+                  </div>
+                  <!-- Source -->
+                  <div class="row mt-2">
+                      <div class="col-sm-2 ">
+                          <label class="small float-right pt-2">المورد</label>
+                      </div>
+                      <div class="col-sm-6 d-flex">
+                          <input type="text" class="form-control form-control-sm w-25 d-none  txtCustomerId" />
+                          <input type="text" class="form-control form-control-sm w-25 txtCustomerCode" />
+                          <input type="text" class="form-control form-control-sm w-75 txtCustomerName" value="" disabled />
+                      </div>
+                  </div>
+
+                  <!-- Ref Doc Date -->
+              </div>
+              <div class="col-sm-3 mt-3 ">
+
+                  <div class="divCashBox PayTypeId mt-2">
+                      <div class="row m-1">
+                          <div class="form-check m-2 custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkIsBox" id="chkIsBox" value="1" checked>
+                              <label class="custom-control-label small" for="chkIsBox">نقدا</label>
+                          </div>
+                          <div class="form-check m-2  custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkIsCheck" id="chkIsCheck" value="2">
+                              <label class="custom-control-label small" for="chkIsCheck">شيك</label>
+                          </div>
+                          <div class="form-check m-2 custom-control custom-checkbox">
+                              <input type="checkbox" class="custom-control-input chkIsLater" id="chkIsLater" value="3">
+                              <label class="custom-control-label small" for="chkIsLater">أجل</label>
+                          </div>
+
+                      </div>
+                  </div>
+
+
+              </div>
+              <div class="col-sm-1 mt-3 ">
+                  <div class=" PayTypeId mt-2" style="padding: 5px;">
+                      <div class="row m-1">
+                          <div class="form-check m-2 custom-control custom-checkbox ">
+                              <input type="checkbox" class="custom-control-input chkIsDocPosted" disabled id="IsPosted" value="option3">
+                              <label class="custom-control-label small" for="IsPosted">مرحل</label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- Left Controls [Doc No, Ref, ..] -->
+              <div class="col-sm-4 mt-3">
+                  <!-- Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">رقم الفاتورة</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm txtDocNo" disabled />
+                      </div>
+                  </div>
+                  <!-- Doc Date -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">التاريخ</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="date" class="form-control form-control-sm dtpInvDate"  />
+                      </div>
+                  </div>
+
+              </div>
+          </div> <!-- End of 1st Row of Main Inputs -->
+      </div>
+  </div>
+</div>
