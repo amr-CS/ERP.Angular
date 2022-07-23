@@ -253,16 +253,22 @@
         </div>
 
         <div class="image-card-style">
-          <div class="card"
+
+          <div class="card imagee"
             style="background-color:lightgrey; width: 200px; height:168px; margin-top:-174px;margin-right: 950px;">
+<div class="imagebutton">
+  <input  type="file" (change)="onChange($event)" />
+</div>
+        <div [hidden]="imageAppear">
+          <div *ngIf="myimage" class="imagee">
+            <img [src]="myimage" width="200px" height="168px" alt="" />
+          </div>
+        </div>
+        <div [hidden]="!imageAppear">
+          <img class="imagee" width="200px" height="168px" *ngIf="ViewImage" [src]="imageSource">
+        </div>
 
-            <input type="file" (change)="onChange($event)" />
-
-            <div *ngIf="myimage">
-              <img [src]="myimage" width="200px" height="200px" alt="" />
-            </div>
             <!-- view image -->
-            <img *ngIf="ViewImage" [src]="imageSource">
           </div>
 
           <div class="card" style="width: 9rem; margin-top:-169px ;margin-right:765px;height:168px">
@@ -696,7 +702,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">مركز الفئات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -709,7 +715,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of lookupDetailsList | lookupCategoryFilter:textFilterModel, let i =index"
-            class='clickable-row' (dblclick)="getItem(item,1);modalRef?.hide()">
+            class='clickable-row' (dblclick)="getItem(item,1);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -728,7 +734,7 @@
     
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">العملات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
     </div>
@@ -741,7 +747,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of currencyList | currencyfilter:textFilterModel, let i =index" class='clickable-row'
-            (dblclick)="getItem(item,2);modalRef?.hide()">
+            (dblclick)="getItem(item,2);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -758,7 +764,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">الوحدات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -771,7 +777,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of ItemUnits |ItemUnit:textFilterModel, let i =index" class='clickable-row'
-            (dblclick)="getItem(item,3);modalRef?.hide()">
+            (dblclick)="getItem(item,3);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -788,7 +794,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">الوحدات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -801,7 +807,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of ItemUnits |ItemUnit:textFilterModel, let i =index" class='clickable-row'
-            (dblclick)="getItem(item,4);modalRef?.hide()">
+            (dblclick)="getItem(item,4);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -818,7 +824,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">العملات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -831,7 +837,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of currencyList | currencyfilter:textFilterModel, let i =index" class='clickable-row'
-            (dblclick)="getItem(item,5);modalRef?.hide()">
+            (dblclick)="getItem(item,5);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -848,7 +854,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">المعدات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -861,7 +867,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of EquipList|ItemUnit:textFilterModel ,let i =index" class='clickable-row'
-            (dblclick)="getItem(item,6);modalRef?.hide()">
+            (dblclick)="getItem(item,6);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -878,7 +884,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">المعدات</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -891,7 +897,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of AllItemList|ItemFilter:textFilterModel ,let i =index" class='clickable-row'
-            (dblclick)="getItem(item,7);modalRef?.hide()">
+            (dblclick)="getItem(item,7);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -908,7 +914,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">وحدات الاصناف</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -921,7 +927,7 @@
       <table class="table">
         <tbody>
           <tr *ngFor="let item of ItemUnitPriceList|ItemUnit:textFilterModel ,let i =index" class='clickable-row'
-            (dblclick)="getItem(item,8);modalRef?.hide()">
+            (dblclick)="getItem(item,8);modalRef.hide()">
             <td scope="row">{{item.code}}</td>
             <td>{{item.nameL1}}</td>
           </tr>
@@ -938,7 +944,7 @@
   <div class="modal-content">
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">بحث</h4>
-      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef?.hide()">
+      <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
 
@@ -985,7 +991,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of AllItemList | ItemFilter:textFilterModel,let i =index" class='clickable-row'
-            (dblclick)="getItem(item,9);modalRef?.hide()">
+            (dblclick)="getItem(item,9);modalRef.hide()">
             <td><input type="checkbox" (change)="isSelect(item,i)" [(ngModel)]="item.isSelected" id="ifLimitAccess" class="switch-input">
             </td>
             <td scope="row">{{item.code}}</td>

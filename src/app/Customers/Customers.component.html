@@ -1,0 +1,381 @@
+
+<div class="container">
+  <app-utilities
+    [name]="pageName">
+  </app-utilities>
+  <div>
+    <div class="page__content shadow p-3 page__content-data mt-3">
+      <div class="container-fluid">
+        <div class="bg-white border rounded p-3">
+          <div class="row">
+            <div class="col">
+              <div class="col-md-12">
+                <div class="row controlRow">
+                  <div class="col-sm-2.5">
+                    <label class="small float-right">الفرع</label>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="d-flex txtStore">
+                      <input type="text" class="form-control form-control-sm w-25 d-none txtStoreId"
+                        name="txtStoreId" />
+
+                      <input type="text"
+                        class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode" required
+                      placeholder="انقر للاختيار"/>
+
+                      <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
+                        name="txtStoreName"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid mt-3">
+      <div class="bg-white border rounded p-3">
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم العميل</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text"  id="start" class="form-control form-control-sm txtStoreName"
+                    readonly name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">اسم العميل - ع</label>
+              </div>
+              <div class="col-md-5  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="form-check-label" for="flexCheckDefault">
+                  عميل ملغي
+                </label>              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input class="form-check-input" type="checkbox" value="hasExpiryDate" id="flexCheckDefault">
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">اسم العميل - E</label>
+              </div>
+              <div class="col-md-5  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">رمز الفئة</label>
+              </div>
+              <div class="col-sm-5">
+                <div class="d-flex txtStore">
+
+                  <input type="text"
+                    class="form-control form-control-sm w-25 d-none txtStoreId"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+
+
+                    name="txtStoreCode" required placeholder="0" />
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    name="txtStoreName" required placeholder="أسم الفئة" />
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">العنوان</label>
+              </div>
+              <div class="col-md-5  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">نوع السعر</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex txtStore">
+
+                  <input type="text"
+                    class="form-control form-control-sm w-25 d-none txtStoreId"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+
+
+                    name="txtStoreCode" required placeholder="0" />
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    name="txtStoreName" required  />
+
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">فترة السماح</label>
+              </div>
+              <div class="col-md-1  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">الدولة</label>
+              </div>
+              <div class="col-sm-2">
+                <div class="d-flex txtStore">
+
+                  <input type="text"
+                    class="form-control form-control-sm w-25 d-none txtStoreId"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+
+
+                    name="txtStoreCode" required placeholder="0" />
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    name="txtStoreName" required placeholder="أسم الدولة" />
+
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">رقم المدينه</label>
+              </div>
+              <div class="col-sm-2">
+                <div class="d-flex txtStore">
+
+                  <input type="text"
+                    class="form-control form-control-sm w-25 d-none txtStoreId"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+
+
+                    name="txtStoreCode" required placeholder="0" />
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    name="txtStoreName" required placeholder="أسم المدينه" />
+
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <label class="small float-right">Area</label>
+              </div>
+              <div class="col-sm-5">
+                <div class="d-flex txtStore">
+
+                  <input type="text"
+                    class="form-control form-control-sm w-25 d-none txtStoreId"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+
+
+                    name="txtStoreCode" placeholder="انقر للاختيار" />
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    name="txtStoreName" required  />
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row mt-1">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم التليفون</label>
+              </div>
+              <div class="col-md-2  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">فاكس</label>
+              </div>
+              <div class="col-md-2 col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <label class="form-check-label" for="flexCheckDefault">
+                   اقامة</label>
+                   <input class="form-check-input" type="checkbox" value="hasExpiryDate" id="flexCheckDefault">
+                  </div>
+
+              <div class="col-md-1">
+                <label class="form-check-label" for="flexCheckDefault">
+                   تنبيه</label>
+                   <input class="form-check-input" type="checkbox" value="hasExpiryDate" id="flexCheckDefault">
+                  </div>
+
+              <div class="col-md-1">
+                <label class="form-check-label" for="flexCheckDefault">
+                   لاشئ</label>
+                   <input class="form-check-input" type="checkbox" value="hasExpiryDate" id="flexCheckDefault">
+                  </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">البريد</label>
+              </div>
+              <div class="col-md-5  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">المسئول</label>
+              </div>
+              <div class="col-md-3  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">الهاتف</label>
+              </div>
+              <div class="col-md-1  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right"> البريد الالكتروني</label>
+              </div>
+              <div class="col-md-5  col-sm-1">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">مندوب المبيعات</label>
+              </div>
+              <div class="col-sm-5">
+                <div class="d-flex txtStore">
+
+                  <input type="text"
+                    class="form-control form-control-sm w-25 d-none txtStoreId"
+                    name="txtStoreId" />
+                  <input type="text" class="form-control form-control-sm w-25  txtStoreCode"
+
+
+                    name="txtStoreCode" required placeholder="انقر للاختيار"/>
+
+
+                  <input type="text" id="start" class="form-control form-control-sm   txtStoreName" readonly
+                    name="txtStoreName" required  />
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="row controlRow">
+              <div class="col-md-1">
+                <label class="small float-right">رقم الحساب</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">اسم الحساب</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+              <div class="col-md-1">
+                <label class="small float-right">السقف المحدد</label>
+              </div>
+              <div class="col-sm-3">
+                <div class="d-flex txtStore mb-1">
+                  <input type="text" id="start"
+                    class="form-control form-control-sm txtStoreName" name="txtStoreName" required />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

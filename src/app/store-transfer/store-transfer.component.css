@@ -1,7 +1,4 @@
-.container{
-  height:600px;
-}
-.small{
+/* .small{
   font-size: 1.25em;
 }
 .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
@@ -19,16 +16,16 @@
 
 .container{
   height:600px;
-}
+} */
 .modal-content {
   direction: rtl;
 }
 .modal-title {
   size: 20px;
 }
-tbody, td, tfoot, th, thead, tr {
+/* tbody, td, tfoot, th, thead, tr {
   line-height: .75;
-}
+} */
 .modal.show .modal-dialog {
   margin-right: 700px;
 }
@@ -41,7 +38,7 @@ tbody, td, tfoot, th, thead, tr {
   padding-bottom: 0px;
 
 }
-.table-responsive {
+/* .table-responsive {
   overflow-x: auto;
   margin-top: 50px;
 }
@@ -50,21 +47,4 @@ tbody, td, tfoot, th, thead, tr {
 }
 .w-25 {
   width: 35%!important;
-}
-
-.image-card-style{
-  margin-top: -133px;
-  margin-right: -15px;
-}
-
-.imagebutton{
-  z-index: 1000;
-  /* right: 956px;
-  position: relative;
-  bottom: 152px; */
-}
-
-
-.imagee{
-  z-index: 500;
-}
+} */

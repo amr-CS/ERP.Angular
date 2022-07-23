@@ -5,11 +5,11 @@
 a {
     color: #0366d6;
   }
-  
+
   code {
     color: #e01a76;
   }
-  
+
   .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -17,10 +17,10 @@ a {
   }
 
   .modal-inside-scroll{
-    height: 100vh !important; 
+    height: 100vh !important;
     overflow-y: scroll !important;
   }
-  
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
@@ -31,3 +31,12 @@ label{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.spinner_overlay {
+  left:50%;
+  top:50%;
+  text-align: center;
+  position: fixed;
+  background-color: #fff;
+  z-index: 1000;
+}

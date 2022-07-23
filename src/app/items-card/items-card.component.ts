@@ -33,9 +33,10 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./items-card.component.css'],
 })
 export class ItemsCardComponent implements OnInit {
-  ViewImage:boolean=false;
-  selectedIndex:number=0;
-  selectedItems:Array<number>=[];
+  imageAppear:boolean=true;
+  ViewImage: boolean = false;
+  selectedIndex: number = 0;
+  selectedItems: Array<number> = [];
   isload: boolean = false;
   SearchFrom: Date = new Date();
   SearchTo: Date = new Date();
@@ -71,9 +72,14 @@ export class ItemsCardComponent implements OnInit {
   ItemUnitPriceList: LookupDetails[] = [];
   ItemUnitId: number = 0;
   RowNumberInItemUnitList: any;
-  barcodeList: any[]=[];
-  CurrentItem: ItemDto=new ItemDto();
+  barcodeList: any[] = [];
+  CurrentItem: ItemDto = new ItemDto();
   imageSource: any;
+  DuplicatedListBarcode: any[] = [];
+  DuplicateItemCount: any[] = [];
+  title = 'imgtobase64';
+  myimage!: Observable<any>;
+  base64code!: any;
   constructor(
     private modalService: BsModalService,
     private lookupServ: LookupService,
@@ -125,9 +131,9 @@ export class ItemsCardComponent implements OnInit {
       itemTypeId: new FormControl(null),
       isDetailsGroup: new FormControl(null),
       itemGroupId: new FormControl(null),
-      itemMinQty:new FormControl(null),
-      itemMaxQty:new FormControl(null),
-      createdOn:new FormControl(null),
+      itemMinQty: new FormControl(null),
+      itemMaxQty: new FormControl(null),
+      createdOn: new FormControl(null),
     });
 
     forkJoin([
@@ -176,9 +182,7 @@ export class ItemsCardComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   openModal(template: TemplateRef<any>, type?: number, index?: number) {
     this.rowIndex = index == undefined ? 0 : index;
@@ -198,23 +202,23 @@ export class ItemsCardComponent implements OnInit {
           this.alertify.error('لا يوجد عنصر بهذا الباركود');
         } else {
           console.log(res);
-          this.CurrentItem=res;
+          this.CurrentItem = res;
           this.buildForm(res);
         }
       },
       (err) => console.log(err)
     );
   }
-  BindName(){
-   this.form.get("nameL2")?.setValue( this.form.get("nameL1")?.value);
-   }
+  BindName() {
+    this.form.get('nameL2')?.setValue(this.form.get('nameL1')?.value);
+  }
   buildForm(Item: ItemDto) {
-    if(Item.image!=""){
-      this.ViewImage=true;
+    if (Item.image != '') {
+      this.ViewImage = true;
     }
     debugger;
     this.form = this.fb.group({
-      id:[Item.id],
+      id: [Item.id],
       code: [Item?.code],
       itemNo: [Item?.itemNo],
       categoryId: [Item?.categoryId],
@@ -252,11 +256,13 @@ export class ItemsCardComponent implements OnInit {
       itemTypeId: [Item?.itemTypeId],
       isDetailsGroup: [Item?.isDetailsGroup],
       itemGroupId: [Item?.itemGroupId],
-      itemMinQty:[Item?.itemMinQty],
-      itemMaxQty:[Item?.itemMaxQty],
-      createdOn:[Item?.createdOn]
+      itemMinQty: [Item?.itemMinQty],
+      itemMaxQty: [Item?.itemMaxQty],
+      createdOn: [Item?.createdOn],
     });
-    this.imageSource = this._sanitizer.bypassSecurityTrustResourceUrl(Item.image);
+    this.imageSource = this._sanitizer.bypassSecurityTrustResourceUrl(
+      Item.image
+    );
     // this.imageSource = this._sanitizer.bypassSecurityTrustResourceUrl(`data:image/png;base64, ${Item.image}`);
 
     if (Item.categoryId != null) {
@@ -279,31 +285,37 @@ export class ItemsCardComponent implements OnInit {
 
     if (Item.tblInvItemUnit.length != 0) {
       Item.tblInvItemUnit.forEach((element) => {
-      let unit = this.ItemUnits.find((x) => x.id == element.unitId);
-      element.unitItemCode = unit==null?0:unit.code;
-      element.unitName = unit==null?"":unit.nameL1;
-
+        let unit = this.ItemUnits.find((x) => x.id == element.unitId);
+        element.unitItemCode = unit == null ? 0 : unit.code;
+        element.unitName = unit == null ? '' : unit.nameL1;
       });
       Item.tblInvItemUnit.forEach((element) => {
-        let unitParent = this.ItemUnits.find((x) => x.id == element.unitParentId);
-        element.unitParentCode = unitParent==null?0:unitParent.code;
-        element.unitParentName = unitParent==null?"":unitParent.nameL1;
-        });
+        let unitParent = this.ItemUnits.find(
+          (x) => x.id == element.unitParentId
+        );
+        element.unitParentCode = unitParent == null ? 0 : unitParent.code;
+        element.unitParentName = unitParent == null ? '' : unitParent.nameL1;
+      });
       Item.tblInvItemUnit.forEach((element) => {
-        let currency = this.currencyList.find((x) => x.id == element.currencyId);
-        element.currencyCode = currency==null?0:currency.code;
-        element.currencyName = currency==null?"":currency.nameL1;
-        });
+        let currency = this.currencyList.find(
+          (x) => x.id == element.currencyId
+        );
+        element.currencyCode = currency == null ? 0 : currency.code;
+        element.currencyName = currency == null ? '' : currency.nameL1;
+      });
 
-        Item.tblInvItemUnit.forEach(element => {
-          var x=element.itemUnitBarcode.find(x=>x.barcode==this.ItemCode);
-          let itemunit=Item.tblInvItemUnit.find(s=>s.invItemUnitId==x?.itemUnitId);
-          if(itemunit!=null){
-            this.itemUnitBarcodeList=itemunit.itemUnitBarcode;
-          }
-        });
-
-
+      Item.tblInvItemUnit.forEach((element) => {
+        // if(element.itemUnitBarcode.length==0){
+        //   this.addNewRow(2)
+        // }
+        var x = element.itemUnitBarcode.find((x) => x.barcode == this.ItemCode);
+        let itemunit = Item.tblInvItemUnit.find(
+          (s) => s.invItemUnitId == x?.itemUnitId
+        );
+        if (itemunit != null) {
+          this.itemUnitBarcodeList = itemunit.itemUnitBarcode;
+        }
+      });
     }
 
     this.itemUnitList = Item.tblInvItemUnit;
@@ -342,58 +354,103 @@ export class ItemsCardComponent implements OnInit {
     }
   }
   save() {
+    this.DuplicatedListBarcode = [];
     let item: ItemDto = new ItemDto();
     item = this.form.value;
-    if(this.itemUnitList.length>1){
-      this.itemUnitList.forEach((element,index) => {
-        if (
-          element.unitId == 0
-        ) {
-          this.itemUnitList.splice(index,1);
+    if (this.itemUnitList.length > 1) {
+      this.itemUnitList.forEach((element, index) => {
+        if (element.unitId == 0) {
+          this.itemUnitList.splice(index, 1);
         }
       });
     }
 
-    this.tblInvItemReplaceList.forEach((element,index) => {
+    this.tblInvItemReplaceList.forEach((element, index) => {
       if (element.replaceItemId == 0) {
-        this.tblInvItemReplaceList.splice(index,1);
+        this.tblInvItemReplaceList.splice(index, 1);
       }
     });
-    this.invItemEquipmentList.forEach((element,index) => {
+    this.invItemEquipmentList.forEach((element, index) => {
       if (element.equipmentId == 0) {
-        this.invItemEquipmentList.splice(index,1);
+        this.invItemEquipmentList.splice(index, 1);
       }
     });
-    this.itemsUnitsPricesList.forEach((element,index) => {
+    this.itemsUnitsPricesList.forEach((element, index) => {
       if (element.sellCostType == 0) {
-        this.itemsUnitsPricesList.splice(index,1);
+        this.itemsUnitsPricesList.splice(index, 1);
       }
     });
-    item.image=this.base64code;
+    item.image = this.base64code;
     item.tblInvItemUnit = this.itemUnitList;
     item.tblInvItemReplace = this.tblInvItemReplaceList;
     item.tblInvItemEquipment = this.invItemEquipmentList;
     item.tblInvItemsUnitsPrices = this.itemsUnitsPricesList;
+    var barcodeList: any[] = [];
 
-    if(item.categoryId!=0&&item.nameL1!=""&&item.nameL2!=""&&item.tblInvItemUnit[0].unitId!=0){
-      this.itemServ.AddEditItem(item).subscribe(
-        (res) => {
-          console.log(res);
-           this.getItemById(res.id);
-          this.alertify.success('تمت العمليه بنجاح');
-          this.itemServ.itemGetAll().subscribe(
-            (res) => (this.AllItemList = res),
-            (err) => console.log(err)
-          )
-        },
-        (err) => console.log(err)
-      );
+    if (item.tblInvItemUnit.length > 0) {
+      item.tblInvItemUnit.forEach((element) => {
+        if (element.itemUnitBarcode.length > 0) {
+          element.itemUnitBarcode.forEach((barcodeItem) => {
+            barcodeList.push(barcodeItem);
+          });
+        }
+      });
 
-      }else{
-          this.alertify.error("برجاء ملء البيانات المطلوبه واضافه عنصر علي الاقل ف جدول وحدات الاصناف")
+      console.log(barcodeList);
+      if (barcodeList.length > 0) {
+        this.checkDup(barcodeList);
+        if (this.DuplicateItemCount.length > 0) {
+          this.alertify.error(
+            `${this.DuplicateItemCount} عفوا هذا الباركود متكرر ف البيانات المدخله..`
+          );
+        } else {
+          this.itemServ.checkBarcodeDuplicate(barcodeList).subscribe(
+            (res) => {
+              this.DuplicatedListBarcode = res;
+              if (this.DuplicatedListBarcode.length > 0) {
+                this.alertify.error(
+                  `عفوا لا يمكن استخدام الباركود  ${this.DuplicatedListBarcode} لانه مستخدم بالفعل فبرجاء التعديل ثم اعادة`
+                );
+              } else {
+                if (
+                  item.categoryId != 0 &&
+                  item.nameL1 != '' &&
+                  item.nameL2 != '' &&
+                  item.tblInvItemUnit[0].unitId != 0
+                ) {
+                  this.itemServ.AddEditItem(item).subscribe(
+                    (res) => {
+                      console.log(res);
+                      this.getItemById(res.id);
+                      this.alertify.success('تمت العمليه بنجاح');
+                      this.itemServ.itemGetAll().subscribe(
+                        (res) => {this.AllItemList = res;
+    this.imageAppear=!this.imageAppear;
+  },
+                        (err) => console.log(err)
+                      );
+                    },
+                    (err) => console.log(err)
+                  );
+                } else {
+                  this.alertify.error(
+                    'برجاء ملء البيانات المطلوبه واضافه عنصر علي الاقل ف جدول وحدات الاصناف'
+                  );
+                }
+              }
+            },
+            (err) => {
+              alert(err);
+            }
+          );
+        }
+      } else {
+        this.alertify.error(
+          'برجاء ملء البيانات المطلوبه واضافه عنصر علي الاقل ف جدول وحدات الاصناف'
+        );
       }
+    }
   }
-
 
   private formatDate(date: any) {
     const d = new Date(date);
@@ -420,72 +477,72 @@ export class ItemsCardComponent implements OnInit {
     this.index = index != undefined ? index : 0;
     debugger;
     let item = this.lookupDetailsList.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.lookupItemDetails.id = item.id;
       this.lookupItemDetails.code = item.code;
       this.lookupItemDetails.nameL1 = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد فئة بذلك الكود');
     }
   }
   currencyByCode(code: any) {
     debugger;
     let item = this.currencyList.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.currencyItem.id = item.id;
       this.currencyItem.code = item.code;
       this.currencyItem.nameL1 = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد عمله بذلك الكود');
     }
   }
-  itemUnitByCode(code:any,index:number){
+  itemUnitByCode(code: any, index: number) {
     let item = this.ItemUnits.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.itemUnitList[index].unitId = item.id;
       this.itemUnitList[index].unitItemCode = item.code;
       this.itemUnitList[index].unitName = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد وحدة بذلك الكود');
     }
   }
-  currencyUnitByCode(code:any,index:number){
+  currencyUnitByCode(code: any, index: number) {
     let item = this.currencyList.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.itemUnitList[index].currencyId = item.id;
       this.itemUnitList[index].currencyCode = item.code;
       this.itemUnitList[index].currencyName = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد وحدة بذلك الكود');
     }
   }
-  EquipByCode(code:any,index:number){
+  EquipByCode(code: any, index: number) {
     let item = this.EquipList.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.invItemEquipmentList[index].equipmentId = item.id;
       this.invItemEquipmentList[index].invItemEquipmentCode = item.code;
       this.invItemEquipmentList[index].equipName = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد معدات بذلك الكود');
     }
   }
-  ReplaceItemByCode(code:any,index:number){
+  ReplaceItemByCode(code: any, index: number) {
     let item = this.AllItemList.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.tblInvItemReplaceList[index].invItemReplaceId = item.id;
       this.tblInvItemReplaceList[index].invItemReplaceCode = item.code;
       this.tblInvItemReplaceList[index].invItemReplaceName = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد عنصر بذلك الكود');
     }
   }
-  priceItemByCode(code:any,index:number){
+  priceItemByCode(code: any, index: number) {
     let item = this.ItemUnitPriceList.find((s) => s.code == code);
-    if(item!=null){
+    if (item != null) {
       this.itemsUnitsPricesList[index].sellCostType = item.id;
       this.itemsUnitsPricesList[index].priceCode = item.code;
       this.itemsUnitsPricesList[index].priceName = item.nameL1;
-    }else{
+    } else {
       this.alertify.error('لا يوجد سعر بذلك الكود');
     }
   }
@@ -502,57 +559,50 @@ export class ItemsCardComponent implements OnInit {
       this.alertify.error('لا يوجد صنف بذلك الرقم');
     }
   }
-  addNewRow(type:number,index?:number) {
-    debugger
-    switch(type){
+  addNewRow(type: number, index?: number) {
+    debugger;
+    switch (type) {
       case 1:
-        if(index!=null){
-          if(this.itemUnitList[index].unitId!=0){
+        if (index != null) {
+          if (this.itemUnitList[index].unitId != 0) {
             var itemUnitDto: ItemUnitDto = new ItemUnitDto();
-            if(index!=null||index!=undefined){
-           itemUnitDto.unitParentId=this.itemUnitList[index].unitId;
-           itemUnitDto.unitParentCode=this.itemUnitList[index].unitItemCode;
-           itemUnitDto.unitParentName=this.itemUnitList[index].unitName;
+            if (index != null || index != undefined) {
+              itemUnitDto.unitParentId = this.itemUnitList[index].unitId;
+              itemUnitDto.unitParentCode =
+                this.itemUnitList[index].unitItemCode;
+              itemUnitDto.unitParentName = this.itemUnitList[index].unitName;
             }
             this.itemUnitList.push(itemUnitDto);
-          }else{
-            this.alertify.error("برجاء ادخال الوحدة ")
+          } else {
+            this.alertify.error('برجاء ادخال الوحدة ');
           }
-        }else{
+        } else {
           var itemUnitDto: ItemUnitDto = new ItemUnitDto();
           this.itemUnitList.push(itemUnitDto);
         }
 
-
         break;
       case 2:
-        if(index!=null){
-            var result=this.barcodeList.find(x=>x.barcode==this.itemUnitBarcodeList[index].barcode)
-              if(result==null){
-                var itemUnitBarcodeDto: ItemUnitBarcodeDto = new ItemUnitBarcodeDto();
-                this.itemUnitBarcodeList.push(itemUnitBarcodeDto);
-                }else{
-                  this.alertify.error("عفوا..الباركود مستخدم من قبل")
-                }
-        }else{
-          var itemUnitBarcodeDto: ItemUnitBarcodeDto = new ItemUnitBarcodeDto();
-                this.itemUnitBarcodeList.push(itemUnitBarcodeDto);
-        }
+        var itemUnitBarcodeDto: ItemUnitBarcodeDto = new ItemUnitBarcodeDto();
+        this.itemUnitBarcodeList.push(itemUnitBarcodeDto);
+
         break;
       case 3:
-        var invItemEquipmentDto: InvItemEquipmentDto = new InvItemEquipmentDto();
+        var invItemEquipmentDto: InvItemEquipmentDto =
+          new InvItemEquipmentDto();
         this.invItemEquipmentList.push(invItemEquipmentDto);
         break;
       case 4:
-        var tblInvItemReplaceDto: TblInvItemReplaceDto = new TblInvItemReplaceDto();
+        var tblInvItemReplaceDto: TblInvItemReplaceDto =
+          new TblInvItemReplaceDto();
         this.tblInvItemReplaceList.push(tblInvItemReplaceDto);
         break;
       case 5:
-        var itemsUnitsPricesDto: ItemsUnitsPricesDto = new ItemsUnitsPricesDto();
+        var itemsUnitsPricesDto: ItemsUnitsPricesDto =
+          new ItemsUnitsPricesDto();
         this.itemsUnitsPricesList.push(itemsUnitsPricesDto);
         break;
     }
-
   }
 
   getItem(item: any, type: number, col?: number) {
@@ -567,34 +617,36 @@ export class ItemsCardComponent implements OnInit {
         this.currencyItem = item;
         break;
       case 3:
-        var found=false;
-        this.itemUnitList.forEach(element => {
-          if(item.id==element.unitId){
-            found=true;
+        var found = false;
+        this.itemUnitList.forEach((element) => {
+          if (item.id == element.unitId) {
+            found = true;
           }
         });
-        if(found){
-          this.alertify.error("لا يمكن اختيار تلك الوحده");
+        if (found) {
+          this.alertify.error('لا يمكن اختيار تلك الوحده');
           break;
-        }else{
-          if(this.itemUnitList[this.rowIndex].unitParentId==item.id){
-            this.alertify.error("لا يمكن ان تكون الوحده مساوية للوحده الرئيسيه");
-          }else{
+        } else {
+          if (this.itemUnitList[this.rowIndex].unitParentId == item.id) {
+            this.alertify.error(
+              'لا يمكن ان تكون الوحده مساوية للوحده الرئيسيه'
+            );
+          } else {
             this.itemUnitList[this.rowIndex].unit = item;
             this.itemUnitList[this.rowIndex].unitId = item.id;
             this.itemUnitList[this.rowIndex].unitItemCode = item.code;
             this.itemUnitList[this.rowIndex].unitName = item.nameL1;
 
-            if(this.rowIndex<this.itemUnitList.length-1){
-              this.itemUnitList[this.rowIndex+1].unitParentId = item.id;
-              this.itemUnitList[this.rowIndex+1].unitParentCode = item.code;
-              this.itemUnitList[this.rowIndex+1].unitParentName = item.nameL1;
+            if (this.rowIndex < this.itemUnitList.length - 1) {
+              this.itemUnitList[this.rowIndex + 1].unitParentId = item.id;
+              this.itemUnitList[this.rowIndex + 1].unitParentCode = item.code;
+              this.itemUnitList[this.rowIndex + 1].unitParentName = item.nameL1;
             }
           }
         }
         break;
       case 4:
-        this.itemUnitList[this.rowIndex].unitParent=item;
+        this.itemUnitList[this.rowIndex].unitParent = item;
         this.itemUnitList[this.rowIndex].unitParentId = item.id;
         this.itemUnitList[this.rowIndex].unitParentCode = item.code;
         this.itemUnitList[this.rowIndex].unitParentName = item.nameL1;
@@ -640,7 +692,7 @@ export class ItemsCardComponent implements OnInit {
     this.itemServ.itemGetById(id).subscribe(
       (res) => {
         this.isload = false;
-        this.CurrentItem=res;
+        this.CurrentItem = res;
         this.buildForm(res);
       },
       (err) => {
@@ -673,104 +725,100 @@ export class ItemsCardComponent implements OnInit {
     }
   }
 
-  DeleteRow(index:any,type:number){
-    debugger
-  switch(type){
-    case 1:
-        if(this.itemUnitList[index].id!=0){
-          this.alertify.confirm("are you sure you want delete",()=>{
-            this.itemUnitList[index].isDeleted=true;
+  DeleteRow(index: any, type: number) {
+    debugger;
+    switch (type) {
+      case 1:
+        if (this.itemUnitList[index].id != 0) {
+          this.alertify.confirm('are you sure you want delete', () => {
+            this.itemUnitList[index].isDeleted = true;
             //this.itemUnitList.splice(index,1);
             this.save();
           });
-        }else{
-          this.itemUnitList.splice(index,1);
-          if(this.itemUnitList.length==0){
+        } else {
+          this.itemUnitList.splice(index, 1);
+          if (this.itemUnitList.length == 0) {
             this.addNewRow(1);
           }
         }
 
-      break;
-    case 2:
-        this.alertify.confirm("are you sure you want delete",()=>{
-          if(this.invItemEquipmentList[index].invItemEquipmentId!=0){
-            this.invItemEquipmentList[index].isDeleted=true;
+        break;
+      case 2:
+        this.alertify.confirm('are you sure you want delete', () => {
+          if (this.invItemEquipmentList[index].invItemEquipmentId != 0) {
+            this.invItemEquipmentList[index].isDeleted = true;
             this.save();
             this.getItemById(this.invItemEquipmentList[index].itemId);
             //this.invItemEquipmentList.splice(index,1);
-          }else{
-            this.invItemEquipmentList.splice(index,1);
-            if(this.invItemEquipmentList.length==0){
+          } else {
+            this.invItemEquipmentList.splice(index, 1);
+            if (this.invItemEquipmentList.length == 0) {
               this.addNewRow(3);
             }
           }
         });
-      break;
-    case 3:
-        this.alertify.confirm("are you sure you want delete",()=>{
-          if(this.tblInvItemReplaceList[index].invItemReplaceId!=0){
-            this.tblInvItemReplaceList[index].isDeleted=true;
+        break;
+      case 3:
+        this.alertify.confirm('are you sure you want delete', () => {
+          if (this.tblInvItemReplaceList[index].invItemReplaceId != 0) {
+            this.tblInvItemReplaceList[index].isDeleted = true;
             this.save();
             this.getItemById(this.tblInvItemReplaceList[index].itemId);
             //this.tblInvItemReplaceList.splice(index,1);
-          }else{
-            this.tblInvItemReplaceList.splice(index,1);
-            if(this.tblInvItemReplaceList.length==0){
+          } else {
+            this.tblInvItemReplaceList.splice(index, 1);
+            if (this.tblInvItemReplaceList.length == 0) {
               this.addNewRow(4);
             }
           }
         });
-      break;
-    case 4:
-        this.alertify.confirm("are you sure you want delete",()=>{
-          if(this.itemsUnitsPricesList[index].sellCostType!=0){
-            this.itemsUnitsPricesList[index].isDeleted=true;
+        break;
+      case 4:
+        this.alertify.confirm('are you sure you want delete', () => {
+          if (this.itemsUnitsPricesList[index].sellCostType != 0) {
+            this.itemsUnitsPricesList[index].isDeleted = true;
             this.save();
             this.getItemById(this.itemsUnitsPricesList[index].itemId);
 
             //this.itemsUnitsPricesList.splice(index,1);
-          }else{
-            this.itemsUnitsPricesList.splice(index,1);
-            if(this.itemsUnitsPricesList.length==0){
+          } else {
+            this.itemsUnitsPricesList.splice(index, 1);
+            if (this.itemsUnitsPricesList.length == 0) {
               this.addNewRow(5);
             }
           }
-
         });
-      break;
+        break;
       case 5:
-        this.alertify.confirm("are you sure you want delete",()=>{
-          if(this.itemUnitBarcodeList[index].id!=0){
-            this.itemUnitBarcodeList[index].isDeleted=true;
+        this.alertify.confirm('are you sure you want delete', () => {
+          if (this.itemUnitBarcodeList[index].id != 0) {
+            this.itemUnitBarcodeList[index].isDeleted = true;
             this.save();
             this.getItemById(this.itemUnitBarcodeList[index].id);
 
             //this.itemsUnitsPricesList.splice(index,1);
-          }else{
-            this.itemUnitBarcodeList.splice(index,1);
-            if(this.itemUnitBarcodeList.length==0){
+          } else {
+            this.itemUnitBarcodeList.splice(index, 1);
+            if (this.itemUnitBarcodeList.length == 0) {
               this.addNewRow(2);
             }
           }
-
         });
-      break;
-    default:
-          console.log('No such type exists!');
-          break;
+        break;
+      default:
+        console.log('No such type exists!');
+        break;
+    }
   }
-  }
-//
-
-
+  //
 
   deleteItem() {
-    if(this.CurrentItem.id==0){
-      this.alertify.error("برجاء اختيار العنصر المراد حذفه")
-    }else{
+    if (this.CurrentItem.id == 0) {
+      this.alertify.error('برجاء اختيار العنصر المراد حذفه');
+    } else {
       Swal.fire({
-        title:`هل تريد حذف عنصر : ${this.CurrentItem.nameL1} `,
-       // text: "You won't be able to revert this!",
+        title: `هل تريد حذف عنصر : ${this.CurrentItem.nameL1} `,
+        // text: "You won't be able to revert this!",
         icon: 'question',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -778,180 +826,181 @@ export class ItemsCardComponent implements OnInit {
         confirmButtonText: 'نعم',
         cancelButtonText: 'لا',
       }).then((result) => {
-        this.CurrentItem.tblInvItemUnit.forEach((element,index) => {
-          if(element.invItemUnitId==0){
-            this.CurrentItem.tblInvItemUnit.splice(index,1)
-          }else{
-            element.isDeleted=true;
-            element.itemUnitBarcode.forEach((element2,index2) => {
-              if(element2.id==0){
-                this.CurrentItem.tblInvItemUnit[index].itemUnitBarcode.splice(index2,1);
-                this.CurrentItem.tblInvItemUnit.splice(index2,1)
-              }else{
-                element2.isDeleted=true;
+        this.CurrentItem.tblInvItemUnit.forEach((element, index) => {
+          if (element.invItemUnitId == 0) {
+            this.CurrentItem.tblInvItemUnit.splice(index, 1);
+          } else {
+            element.isDeleted = true;
+            element.itemUnitBarcode.forEach((element2, index2) => {
+              if (element2.id == 0) {
+                this.CurrentItem.tblInvItemUnit[index].itemUnitBarcode.splice(
+                  index2,
+                  1
+                );
+                this.CurrentItem.tblInvItemUnit.splice(index2, 1);
+              } else {
+                element2.isDeleted = true;
               }
             });
           }
         });
-        this.CurrentItem.tblInvItemEquipment.forEach((element,index) => {
-          if(element.invItemEquipmentId==0){
-            this.CurrentItem.tblInvItemEquipment.splice(index,1)
-          }else{
-            element.isDeleted=true;
+        this.CurrentItem.tblInvItemEquipment.forEach((element, index) => {
+          if (element.invItemEquipmentId == 0) {
+            this.CurrentItem.tblInvItemEquipment.splice(index, 1);
+          } else {
+            element.isDeleted = true;
           }
         });
-        this.CurrentItem.tblInvItemReplace.forEach((element,index) => {
-          if(element.invItemReplaceId==0){
-            this.CurrentItem.tblInvItemReplace.splice(index,1)
-          }else{
-            element.isDeleted=true;
+        this.CurrentItem.tblInvItemReplace.forEach((element, index) => {
+          if (element.invItemReplaceId == 0) {
+            this.CurrentItem.tblInvItemReplace.splice(index, 1);
+          } else {
+            element.isDeleted = true;
           }
         });
-        this.CurrentItem.tblInvItemsUnitsPrices.forEach((element,index) => {
-          if(element.sellCostType==0){
-            this.CurrentItem.tblInvItemsUnitsPrices.splice(index,1)
-          }else{
-            element.isDeleted=true;
+        this.CurrentItem.tblInvItemsUnitsPrices.forEach((element, index) => {
+          if (element.sellCostType == 0) {
+            this.CurrentItem.tblInvItemsUnitsPrices.splice(index, 1);
+          } else {
+            element.isDeleted = true;
           }
         });
 
-        this.CurrentItem.isDeleted=true;
+        this.CurrentItem.isDeleted = true;
         console.log(this.CurrentItem);
         this.itemServ.AddEditItem(this.CurrentItem).subscribe(
-          (res)=>{ Swal.fire(
-            'تم الحذف بنجاح',
-            `تم حذف عنصر :${this.CurrentItem.nameL1}`,
-            'success',
-          );
-          this.buildForm(new ItemDto());
-          this.itemServ.itemGetAll().subscribe(
-            (res) => (this.AllItemList = res),
-            (err) => console.log(err)
-          )
-        },
-          (err)=>{
+          (res) => {
+            Swal.fire(
+              'تم الحذف بنجاح',
+              `تم حذف عنصر :${this.CurrentItem.nameL1}`,
+              'success'
+            );
+            this.buildForm(new ItemDto());
+            this.itemServ.itemGetAll().subscribe(
+              (res) => (this.AllItemList = res),
+              (err) => console.log(err)
+            );
+          },
+          (err) => {
             Swal.fire(
               'فشل ف حذف العنصر   :',
               `${this.CurrentItem.nameL1}`,
-              'error',
-            )
+              'error'
+            );
           }
-        )
-
-
-      })
-    }
-
-    }
-
-
-    isSelect(item:any,index:any){
-      var itemIsExist=this.selectedItems.find(x=>x==item.id);
-
-      if(itemIsExist==undefined){
-        this.selectedItems.push(item?.id);
-        this.AllItemList[index].isSelected=true;
-      }else{
-        this.selectedItems.forEach((element,index) => {
-          if(element==item?.id){
-            this.selectedItems.splice(index,1);
-            this.AllItemList[index].isSelected=false;
-
-          }
-        });
-      }
-      console.log(this.selectedItems)
-    }
-
-    getItemBySelectedIds(type:number){
-      var id=0;
-      var length=this.selectedItems.length;
-      if(length==0){
-        this.alertify.error("برجاء تحديد العناصر المراد عرضها");
-        return
-      }
-
-      if(length==0){
-        this.alertify.error("لا يوجد عناصر محددة للعرض")
-      }else{
-        switch(type){
-          case 1:
-            this.selectedIndex=0;
-             id=this.selectedItems[0];
-            break;
-          case 2:
-            this.selectedIndex=length-1;
-             id=this.selectedItems[length-1];
-            break;
-          case 3:
-            if(this.selectedIndex==length-1)
-              this.alertify.error("لا يوجد عناصر اخري لعرضها")
-            if(this.selectedIndex<length-1){
-              this.selectedIndex=this.selectedIndex+1;
-               id=this.selectedItems[this.selectedIndex];
-            }
-            break;
-          case 4:
-            if(this.selectedIndex==0)
-              this.alertify.error("لا يوجد عناصر اخري لعرضها")
-            if(this.selectedIndex>0){
-              this.selectedIndex=this.selectedIndex-1;
-               id=this.selectedItems[this.selectedIndex];
-            }
-            break;
-          case 5:
-           id=this.selectedItems[0];
-          break;
-        }
-        if(id!=0)
-          this.getItemById(id);
-      }
-      this.modalRef.hide();
-    }
-
-
-
-
-
-    title = 'imgtobase64';
-    myimage!: Observable<any>;
-    base64code!: any
-
-    onChange = ($event: Event) => {
-      const target = $event.target as HTMLInputElement;
-      const file: File = (target.files as FileList)[0];
-      console.log(file);
-      this.convertToBase64(file)
-    };
-
-    convertToBase64(file: File) {
-      const observable = new Observable((subscriber: Subscriber<any>) => {
-        this.readFile(file, subscriber);
+        );
       });
+    }
+  }
 
-      observable.subscribe((d) => {
-        console.log(d)
-        this.myimage = d
-        this.base64code = d
-      })
+  isSelect(item: any, index: any) {
+    var itemIsExist = this.selectedItems.find((x) => x == item.id);
 
-      console.log(this.base64code)
+    if (itemIsExist == undefined) {
+      this.selectedItems.push(item?.id);
+      this.AllItemList[index].isSelected = true;
+    } else {
+      this.selectedItems.forEach((element, index) => {
+        if (element == item?.id) {
+          this.selectedItems.splice(index, 1);
+          this.AllItemList[index].isSelected = false;
+        }
+      });
+    }
+    console.log(this.selectedItems);
+  }
+
+  getItemBySelectedIds(type: number) {
+    var id = 0;
+    var length = this.selectedItems.length;
+    if (length == 0) {
+      this.alertify.error('برجاء تحديد العناصر المراد عرضها');
+      return;
     }
 
-    readFile(file: File, subscriber: Subscriber<any>) {
-      const filereader = new FileReader();
-      filereader.readAsDataURL(file);
-
-      filereader.onload = () => {
-        subscriber.next(filereader.result);
-        subscriber.complete();
-      };
-      filereader.onerror = (error) => {
-        subscriber.error(error);
-        subscriber.complete();
-      };
+    if (length == 0) {
+      this.alertify.error('لا يوجد عناصر محددة للعرض');
+    } else {
+      switch (type) {
+        case 1:
+          this.selectedIndex = 0;
+          id = this.selectedItems[0];
+          break;
+        case 2:
+          this.selectedIndex = length - 1;
+          id = this.selectedItems[length - 1];
+          break;
+        case 3:
+          if (this.selectedIndex == length - 1)
+            this.alertify.error('لا يوجد عناصر اخري لعرضها');
+          if (this.selectedIndex < length - 1) {
+            this.selectedIndex = this.selectedIndex + 1;
+            id = this.selectedItems[this.selectedIndex];
+          }
+          break;
+        case 4:
+          if (this.selectedIndex == 0)
+            this.alertify.error('لا يوجد عناصر اخري لعرضها');
+          if (this.selectedIndex > 0) {
+            this.selectedIndex = this.selectedIndex - 1;
+            id = this.selectedItems[this.selectedIndex];
+          }
+          break;
+        case 5:
+          id = this.selectedItems[0];
+          break;
+      }
+      if (id != 0) this.getItemById(id);
     }
+    this.modalRef.hide();
+  }
 
+  onChange = ($event: Event) => {
+    const target = $event.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+    console.log(file);
+    this.convertToBase64(file);
+    this.imageAppear=!this.imageAppear;
+  };
 
+  convertToBase64(file: File) {
+    const observable = new Observable((subscriber: Subscriber<any>) => {
+      this.readFile(file, subscriber);
+    });
 
+    observable.subscribe((d) => {
+      console.log(d);
+      this.myimage = d;
+      this.base64code = d;
+    });
+
+    console.log(this.base64code);
+  }
+
+  readFile(file: File, subscriber: Subscriber<any>) {
+    const filereader = new FileReader();
+    filereader.readAsDataURL(file);
+
+    filereader.onload = () => {
+      subscriber.next(filereader.result);
+      subscriber.complete();
+    };
+    filereader.onerror = (error) => {
+      subscriber.error(error);
+      subscriber.complete();
+    };
+  }
+
+  checkDup(list: ItemUnitBarcodeDto[]) {
+    var barcodes: any[] = [];
+    list.forEach((elem) => barcodes.push(elem.barcode));
+    const count = (barcodes: any[]) =>
+      barcodes.reduce((a, b) => ({ ...a, [b]: (a[b] || 0) + 1 }), {});
+
+    const duplicates = (dict: { [x: string]: number }) =>
+      Object.keys(dict).filter((a) => dict[a] > 1);
+    this.DuplicateItemCount = duplicates(count(barcodes));
+    console.log(duplicates(count(barcodes)));
+
+  }
 }
