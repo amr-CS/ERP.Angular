@@ -77,6 +77,9 @@ export class ItemsCardComponent implements OnInit {
   imageSource: any;
   DuplicatedListBarcode: any[] = [];
   DuplicateItemCount: any[] = [];
+  title = 'imgtobase64';
+  myimage!: Observable<any>;
+  base64code!: any;
   constructor(
     private modalService: BsModalService,
     private lookupServ: LookupService,
@@ -951,10 +954,6 @@ export class ItemsCardComponent implements OnInit {
     }
     this.modalRef.hide();
   }
-
-  title = 'imgtobase64';
-  myimage!: Observable<any>;
-  base64code!: any;
 
   onChange = ($event: Event) => {
     const target = $event.target as HTMLInputElement;

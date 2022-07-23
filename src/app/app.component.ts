@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { LangChangeEvent, TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { LoaderService } from './Loader/loader.service';
 import { AuthService } from './services/auth.service';
 
 @Component({
@@ -9,18 +11,21 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit{
+  isLoading: Subject<boolean> = this.loader.isLoading;
   title = 'DemoGraphicInfoAngular';
   public pageDirection :any ;
   helper = new JwtHelperService();
   token:any;
-  constructor(private translateService:TranslateService,private authService:AuthService) {  
-    this.pageDirection ="rtl";   
+  constructor(
+    private loader: LoaderService,
+    private translateService:TranslateService,private authService:AuthService) {
+    this.pageDirection ="rtl";
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) =>
     {
       if(event.lang == 'ar-AR')
       {
         this.pageDirection = 'rtl';
-      } 
+      }
       else
       {
         this.pageDirection = 'ltr';
@@ -29,7 +34,7 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(): void {
     console.log(localStorage.getItem('token'))
-       this.token =localStorage.getItem('token') 
+       this.token =localStorage.getItem('token')
       if(this.token){
       this.authService.decodedToken=this.helper.decodeToken(this.token)
       }

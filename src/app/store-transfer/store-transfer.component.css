@@ -1,0 +1,50 @@
+/* .small{
+  font-size: 1.25em;
+}
+.container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+  width: 100%;
+  padding-right: var(--bs-gutter-x,.75rem);
+  padding-left: var(--bs-gutter-x,.75rem);
+  margin-right: auto;
+  margin-left: auto;
+  height: 100px;
+}
+.small, .float-right{
+  margin-left: -110px;
+
+}
+
+.container{
+  height:600px;
+} */
+.modal-content {
+  direction: rtl;
+}
+.modal-title {
+  size: 20px;
+}
+/* tbody, td, tfoot, th, thead, tr {
+  line-height: .75;
+} */
+.modal.show .modal-dialog {
+  margin-right: 700px;
+}
+.modal-header .btn-close {
+  padding: 0.5rem 0.5rem;
+   margin: 0;
+   padding-bottom: 0px;
+}
+.modal-header{
+  padding-bottom: 0px;
+
+}
+/* .table-responsive {
+  overflow-x: auto;
+  margin-top: 50px;
+}
+.indexStyle{
+  width: 50px;
+}
+.w-25 {
+  width: 35%!important;
+} */

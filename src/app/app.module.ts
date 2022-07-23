@@ -97,6 +97,8 @@ import { ItemsCardComponent } from './items-card/items-card.component';
 import { ItemUnitPipe } from './pipes/ItemUnit.pipe';
 import { ItemFilterPipe } from './pipes/ItemFilter.pipe';
 import { CustomersComponent } from './Customers/Customers.component';
+import { StoreTransferComponent } from './store-transfer/store-transfer.component';
+import { LoaderInterceptor } from './Loader/loader.interceptor';
 
 
 
@@ -107,7 +109,7 @@ export function HttpLoaderFactory(http:HttpClient){
 
 @NgModule({
 
-  declarations: [	
+  declarations: [
     AppComponent,
     ItemUnitPipe,
     ItemFilterPipe,
@@ -146,7 +148,8 @@ export function HttpLoaderFactory(http:HttpClient){
       InvoiceOrderComponent,
       AccountCategoryComponent,
       ItemsCardComponent,
-      CustomersComponent
+      CustomersComponent,
+      StoreTransferComponent
    ],
   imports: [
     ModalModule,
@@ -213,10 +216,17 @@ export function HttpLoaderFactory(http:HttpClient){
       }
     })
   ],
-  providers: [DatePipe,
+  providers: [
+    DatePipe,
     AuthGuard,
-    BsModalService
-  ],
+    BsModalService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true
+    }
+
+],
   bootstrap: [
     AppComponent,
     //TreeComponent,
