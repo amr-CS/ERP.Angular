@@ -1,0 +1,139 @@
+<div class="container">
+  <app-utilities   [name]="pageName"></app-utilities>
+<div class="bg-white border rounded p-3 mb-3">
+
+  <div class="row">
+      <!-- Main Inputs -->
+      <div class="col-sm-12">
+
+          <!-- 1st Row Input -->
+          <div class="row">
+
+              <div class="form-group">
+                  <input type="text" class="form-control form-control-sm w-25 txtInvId d-none" value="0" />
+              </div>
+              <!-- Right Controls [Doc No, Ref, ..] -->
+              <div class="col-sm-4 mt-3">
+                  <!-- Doc Date -->
+                  <div class="row mt-2">
+                      <div class="col-sm-2">
+                          <label class="small float-right pt-2">رقم المخزن </label>
+                      </div>
+                      <div class="col-sm-6 d-flex">
+                          <input type="text" class="form-control form-control-sm d-none w-25 txtStoreId" />
+                          <input type="text" class="form-control form-control-sm  w-25  txtStoreCode" />
+                          <input type="text" class="form-control form-control-sm w-75 txtStoreName" value="" disabled />
+                      </div>
+                  </div>
+                  <!-- Source -->
+                  <div class="row mt-2">
+                      <div class="col-sm-2 ">
+                          <label class="small float-right pt-2">المورد</label>
+                      </div>
+                      <div class="col-sm-6 d-flex">
+                          <input type="text" class="form-control form-control-sm w-25 d-none  txtCustomerId" />
+                          <input type="text" class="form-control form-control-sm w-25 txtCustomerCode" />
+                          <input type="text" class="form-control form-control-sm w-75 txtCustomerName" value="" disabled />
+                      </div>
+                  </div>
+
+                  <!-- Ref Doc Date -->
+              </div>
+              <div class="col-sm-3  mt-2">
+
+                  <div class="divCashBox PayTypeId ">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                      <label class="form-check-label" for="inlineCheckbox1">نقدا</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                      <label class="form-check-label" for="inlineCheckbox2">شيك</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" >
+                      <label class="form-check-label" for="inlineCheckbox3">اجل</label>
+                    </div>
+                  </div>
+                  <div class="row controlRow">
+                    <div class="col-sm-4">
+                        <label class="small float-right pt-2">رقم المرجع</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control form-control-sm dtpInvDate"  />
+                    </div>
+                </div>
+
+              </div>
+              <div class="col-sm-1 mt-3 ">
+                  <div class=" PayTypeId mt-2" style="padding: 5px;">
+                      <div class="row m-1">
+                          <div class="form-check m-2 custom-control custom-checkbox ">
+                              <input type="checkbox" class="custom-control-input chkIsDocPosted" disabled id="IsPosted" value="option3">
+                              <label class="custom-control-label small" for="IsPosted">مرحل</label>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <!-- Left Controls [Doc No, Ref, ..] -->
+              <div class="col-sm-4 mt-3">
+                  <!-- Doc No -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">رقم الفاتورة</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="text" class="form-control form-control-sm txtDocNo" disabled />
+                      </div>
+                  </div>
+                  <!-- Doc Date -->
+                  <div class="row controlRow">
+                      <div class="col-sm-4">
+                          <label class="small float-right pt-2">التاريخ</label>
+                      </div>
+                      <div class="col-sm-8">
+                          <input type="date" class="form-control form-control-sm dtpInvDate"  />
+                      </div>
+                  </div>
+
+              </div>
+          </div> <!-- End of 1st Row of Main Inputs -->
+      </div>
+  </div>
+</div>
+<div class="page__content shadow p-3 page__content-data mt-3">
+  <ul class="nav nav-tabs" id="myTab" role="tablist" >
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
+        aria-controls="home" aria-selected="true">نقدا </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
+        aria-controls="profile" aria-selected="false">شيك</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages" type="button"
+        role="tab" aria-controls="messages" aria-selected="false">اجل</button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab" style="margin-right: 30px;">
+      
+
+    </div>
+    <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+     
+
+    </div>
+    <div class="tab-pane" id="messages" role="tabpanel" aria-labelledby="messages-tab">
+    
+      
+    </div>
+    <div class="tab-pane" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+      
+       
+      </div>
+    </div>
+  </div>
+</div>

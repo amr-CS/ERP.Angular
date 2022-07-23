@@ -27,7 +27,6 @@
                       <input type="text" formControlName="branchId"
                         class="form-control form-control-sm w-25 txtStoreCode" name="txtStoreCode" required
                         placeholder="13" />
-
                       <input type="text" id="start" class="form-control form-control-sm txtStoreName" readonly
                         name="txtStoreName" value="وليمة السلطان - الدرعية - طريق الملك عبد العزيز" required />
                     </div>
@@ -35,7 +34,6 @@
                 </div>
               </div>
             </div>
-
             <div class="col">
               <div class="col-md-12">
                 <div class="row controlRow">
@@ -732,13 +730,15 @@
 
 <ng-template #currencyTemplete>
   <div class="modal-content">
+   
+    
     <div class="modal-header">
       <h4 class="modal-title" style="color: black;">العملات</h4>
       <button type="button" class="btn-close close" aria-label="Close" (click)="modalRef.hide()">
         <span aria-hidden="true" class="visually-hidden">&times;</span>
       </button>
-
     </div>
+
     <div class="modal-body">
       <p>
         <input type="text" placeholder="{{'search'|translate}}" [(ngModel)]="textFilterModel"

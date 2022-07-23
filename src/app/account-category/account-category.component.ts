@@ -97,7 +97,7 @@ export class AccountCategoryComponent implements OnInit {
   ngOnInit(): void {
     this.addNewRow();
     forkJoin([
-      this.lookupServ.lookupDetailsGetById(114).subscribe(
+      this.lookupServ.lookupDetailsGetById(122).subscribe(
         (res) => {
           this.lookupDetailsList = res;
         },

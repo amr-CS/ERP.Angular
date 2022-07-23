@@ -99,6 +99,7 @@ import { ItemFilterPipe } from './pipes/ItemFilter.pipe';
 import { CustomersComponent } from './Customers/Customers.component';
 import { StoreTransferComponent } from './store-transfer/store-transfer.component';
 import { LoaderInterceptor } from './Loader/loader.interceptor';
+import { InvoiceComponent } from './Invoice/Invoice.component';
 
 
 
@@ -149,7 +150,8 @@ export function HttpLoaderFactory(http:HttpClient){
       AccountCategoryComponent,
       ItemsCardComponent,
       CustomersComponent,
-      StoreTransferComponent
+      StoreTransferComponent,
+      InvoiceComponent
    ],
   imports: [
     ModalModule,
