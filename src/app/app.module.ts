@@ -101,6 +101,7 @@ import { StoreTransferComponent } from './store-transfer/store-transfer.componen
 import { LoaderInterceptor } from './Loader/loader.interceptor';
 import { InvoiceComponent } from './Invoice/Invoice.component';
 
+import { ItemUnitFilterPipe } from './pipes/ItemUnitFilter.pipe';
 
 
 export function HttpLoaderFactory(http:HttpClient){
@@ -113,6 +114,7 @@ export function HttpLoaderFactory(http:HttpClient){
   declarations: [
     AppComponent,
     ItemUnitPipe,
+    ItemUnitFilterPipe,
     ItemFilterPipe,
     LookupCategoryFilterPipe,
     DemographicinfoComponent,
